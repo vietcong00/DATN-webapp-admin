@@ -13,37 +13,7 @@ export const BillingSortOptions = [
     },
 ];
 
-export const BillingStatusOptions = [
-    {
-        label: 'billing.billing.statusBillingOptions.eating',
-        value: BillingStatus.EATING,
-    },
-    {
-        label: 'billing.billing.statusBillingOptions.canceled',
-        value: BillingStatus.CANCELED,
-    },
-    {
-        label: 'billing.billing.statusBillingOptions.wait_for_pay',
-        value: BillingStatus.WAIT_FOR_PAY,
-    },
-    {
-        label: 'billing.billing.statusBillingOptions.paid',
-        value: BillingStatus.PAID,
-    },
-];
-
-export const PaymentMethodOptions = [
-    {
-        label: 'billing.billing.paymentMethodOptions.banking',
-        value: PaymentMethod.BANKING,
-    },
-    {
-        label: 'billing.billing.paymentMethodOptions.ready_cash',
-        value: PaymentMethod.READY_CASH,
-    },
-];
-
-export const validateBillingSchema = yup.object({
+export const validateChefSchema = yup.object({
     customerName: yup.string().trim().max(INPUT_TEXT_MAX_LENGTH).label('billingName'),
     customerPhone: yup.string().trim().matches(REGEX.PHONE_NUMBER).optional(),
     paymentMethod: yup

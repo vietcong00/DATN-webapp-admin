@@ -15,10 +15,12 @@ import {
     INPUT_URL_MAX_LENGTH,
     MIN_DATE_PICKER,
     SupportLanguage,
+    VAT_TAX_RATE,
 } from '@/common/constants';
 import { appModule } from '@/store/app';
 import moment from 'moment';
 import { IUserPosition } from '@/modules/user/types';
+import { BillingStatusOptions, PaymentMethodOptions } from '@/modules/billing/constants';
 
 export class UtilMixins extends Vue {
     // Common variable
@@ -29,7 +31,8 @@ export class UtilMixins extends Vue {
     INPUT_URL_MAX_LENGTH = INPUT_URL_MAX_LENGTH;
     INPUT_TEXT_MAX_LENGTH = INPUT_TEXT_MAX_LENGTH;
     YYYY_MM_DD_HYPHEN_HH_MM_COLON = DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
-
+    PaymentMethodOptions = PaymentMethodOptions;
+    BillingStatusOptions = BillingStatusOptions;
     // Common function
     async showConfirmPopup(
         message: string,
@@ -91,5 +94,13 @@ export class UtilMixins extends Vue {
                 label: pos.value?.[currentLanguage],
             })),
         );
+    }
+
+    calculateVAT(price: number): number {
+        return Math.round(price * VAT_TAX_RATE);
+    }
+
+    calculatePriceIncludeTax(price: number): number {
+        return Math.round(price + this.calculateVAT(price));
     }
 }

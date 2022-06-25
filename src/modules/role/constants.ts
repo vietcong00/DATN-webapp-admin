@@ -11,6 +11,7 @@ export enum PermissionResources {
     BILLING = 'billing',
     CLOSING_REVENUE = 'closing_revenue',
     ROLE = 'role',
+    CHEF = 'chef',
 }
 
 export enum PermissionActions {

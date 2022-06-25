@@ -3,6 +3,7 @@ export const MAIN_LAYOUT_NAME = 'MainLayout';
 export const GUEST_LAYOUT_NAME = 'GuestLayout';
 export const LOGIN_LAYOUT_NAME = 'LoginLayout';
 export const ERROR_LAYOUT_NAME = 'ErrorLayout';
+export const VAT_TAX_RATE = 0.08;
 
 export const INPUT_MONEY_MIN_VALUE = 0;
 
@@ -134,12 +135,8 @@ export enum PageName {
     DASHBOARD_PAGE = 'DashboardPage',
     PROFILE_PAGE = 'ProfilePage',
     USER_PAGE = 'UserPage',
-    HOME_PAGE = 'HomePage',
     ROLE_LIST_PAGE = 'RoleListPage',
-    ROLE_CREATE_PAGE = 'RoleCreatePage',
-    ROLE_EDIT_PAGE = 'RoleEditPage',
     BILLING_PAGE = 'BillingPage',
-    PERMISSION_LIST_PAGE = 'PermissionListPage',
     NOT_FOUND_PAGE = 'NotFoundPage',
     SETTINGS_POSITION_PAGE = 'SettingsPositionPage',
 
@@ -147,19 +144,11 @@ export enum PageName {
     BOOKING_PAGE = 'BookingPage',
     MENU_FOOD_PAGE = 'FoodPage',
     MENU_CATEGORY_PAGE = 'CategoryPage',
-    STORE_MATERIAL_PAGE = 'StoreMaterialPage',
-    STORE_CONVERT_PAGE = 'StoreConvertPage',
-    STORE_SUPPLIER_PAGE = 'StoreSupplierPage',
-    STORE_IMPORT_MATERIAL_PAGE = 'StoreImportMaterialPage',
-    STORE_IMPORT_MATERIAL_DETAIL_PAGE = 'StoreImportMaterialDetailPage',
-    STORE_EXPORT_PAGE = 'StoreExportPage',
-    STORE_EXPORT_MATERIAL_DETAIL_PAGE = 'StoreExportMaterialDetailPage',
-    STORE_CHECK_INVENTORY_PAGE = 'StoreCheckInventoryPage',
-    STORE_INVENTORY_DETAIL_PAGE = 'StoreInventoryDetailPage',
     PAYMENT_PAGE = 'PaymentPage',
     RECEIPT_PAGE = 'ReceiptPage',
     PROMOTION_PAGE = 'PromotionPage',
     REPORT_CLOSING_REVENUE_PAGE = 'ReportClosingRevenuePage',
+    CHEF_PAGE = 'chefPage',
 }
 
 export enum OrderDirection {
@@ -211,6 +200,7 @@ export enum ModuleName {
     BILLING = 'billing',
     CLOSING_REVENUE = 'closingRevenue',
     ROLE = 'role',
+    CHEF = 'chef',
 }
 
 export enum SpecialPage {

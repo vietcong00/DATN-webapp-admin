@@ -7,6 +7,7 @@ import {
     Key as KeyIcon,
     Money as MoneyIcon,
     KnifeFork as KnifeForkIcon,
+    Dish as DishIcon,
     Calendar as CalendarIcon,
     Grid as GridIcon,
 } from '@element-plus/icons-vue';
@@ -90,7 +91,7 @@ const booking: ISidebar = {
 };
 
 const menuMenu: ISidebar = {
-    iconComponent: KnifeForkIcon,
+    iconComponent: DishIcon,
     name: 'common.app.menu.menu.title',
     active: false,
     children: [
@@ -135,6 +136,18 @@ const closingRevenueMenu: ISidebar = {
     ],
 };
 
+const chef: ISidebar = {
+    iconComponent: KnifeForkIcon,
+    name: 'common.app.menu.chef.title',
+    active: false,
+    to: '/chef',
+    pageName: PageName.CHEF_PAGE,
+    requiredPermissions: [
+        `${PermissionResources.CHEF}_${PermissionActions.READ}`,
+        `${PermissionResources.CHEF}_${PermissionActions.UPDATE}`,
+    ],
+};
+
 export const sidebars = [
     dashboard,
     userMenu,
@@ -144,4 +157,5 @@ export const sidebars = [
     billing,
     closingRevenueMenu,
     roleMenu,
+    chef,
 ];

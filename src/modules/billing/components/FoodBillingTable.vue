@@ -3,29 +3,37 @@
         <template #table-columns>
             <el-table-column
                 prop="food.name"
-                :label="$t('billing.form.foodBillingTable.food')"
-            />
+                :label="$t('billing.billing.foodBillingTable.food')"
+            >
+                <template #default="scope">
+                    {{ scope.row.food?.foodName }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="food.price"
                 width="170"
-                :label="$t('billing.form.foodBillingTable.price')"
+                :label="$t('billing.billing.foodBillingTable.price')"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.food.price) }}
+                    {{ parseMoney(scope.row.food?.price) }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="quantity"
                 width="200"
-                :label="$t('billing.form.foodBillingTable.quantity')"
-            />
+                :label="$t('billing.billing.foodBillingTable.quantity')"
+            >
+                <template #default="scope">
+                    {{ scope.row.doneCount }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="total"
                 width="200"
-                :label="$t('billing.form.foodBillingTable.total')"
+                :label="$t('billing.billing.foodBillingTable.total')"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.total) }}
+                    {{ parseMoney((scope.row.doneCount * scope.row.food?.price) | 0) }}
                 </template>
             </el-table-column>
         </template>
@@ -33,9 +41,8 @@
 </template>
 
 <script lang="ts">
-import { Options, setup } from 'vue-class-component';
+import { Options } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
-import { setupDelete } from '../composition/billingList';
 import { IFoodBilling } from '../types';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { UtilMixins } from '@/mixins/utilMixins';
@@ -47,9 +54,7 @@ import { billingModule } from '../store';
         EditIcon,
     },
 })
-export default class BillingTable extends mixins(UtilMixins) {
-    deleteAction = setup(() => setupDelete());
-
+export default class FoodBillingTable extends mixins(UtilMixins) {
     get foodBillingTable(): IFoodBilling[] {
         return billingModule.foodBillingList;
     }

@@ -2,30 +2,40 @@
     <BaseTableLayout :data="billingList">
         <template #table-columns>
             <el-table-column
-                prop="nameCustomer"
-                :label="$t('billing.form.billingTable.nameCustomer')"
+                prop="customerName"
+                :label="$t('billing.billing.billingTable.customerName')"
             />
             <el-table-column
-                prop="totalBillingPrice"
-                :label="$t('billing.form.billingTable.totalBillingPrice')"
+                prop="table"
+                :label="$t('billing.billing.billingTable.table')"
             >
                 <template #default="scope">
                     <span class="totalBillingPrice">
-                        {{ parseMoney(scope.row.totalBillingPrice) }}
+                        {{ scope.row.table?.name || '' }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="paymentTotal"
+                :label="$t('billing.billing.billingTable.paymentTotal')"
+            >
+                <template #default="scope">
+                    <span class="totalBillingPrice">
+                        {{ parseMoney(scope.row.paymentTotal) }}
                     </span>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="payDate"
-                :label="$t('billing.form.billingTable.payDate')"
+                :label="$t('billing.billing.billingTable.paymentTime')"
                 align="center"
                 min-width="120"
             >
                 <template #default="scope">
                     {{
-                        scope.row.payDate
+                        scope.row.paymentTime
                             ? parseDateTime(
-                                  scope.row.payDate,
+                                  scope.row.paymentTime,
                                   YYYY_MM_DD_HYPHEN_HH_MM_COLON,
                               )
                             : ''
@@ -34,17 +44,17 @@
             </el-table-column>
             <el-table-column
                 width="200"
-                :label="$t('billing.form.billingTable.statusBilling')"
+                :label="$t('billing.billing.billingTable.billingStatus')"
             >
                 <template #default="scope">
                     <div
                         :class="`badge status-field badge-md bg-${statusBadge(
-                            scope.row.statusBilling,
+                            scope.row.billingStatus,
                         )}`"
                     >
                         {{
                             $t(
-                                `billing.list.statusBillingOptions.${scope.row.statusBilling}`,
+                                `billing.billing.statusBillingOptions.${scope.row.billingStatus}`,
                             )
                         }}
                     </div>
@@ -54,16 +64,13 @@
                 fixed="right"
                 width="150"
                 align="center"
-                :label="$t('billing.form.billingTable.action')"
+                :label="$t('billing.billing.billingTable.action')"
             >
                 <template #default="scope">
-                    <div
-                        class="button-group"
-                        :class="checkFullPermissionActions() ? 'group-left' : ''"
-                    >
+                    <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('billing.list.tooltip.edit')"
+                            :content="$t('billing.billing.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate"
                         >
@@ -75,20 +82,6 @@
                                 <EditIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('billing.list.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
                     </div>
                 </template>
             </el-table-column>
@@ -97,10 +90,9 @@
 </template>
 
 <script lang="ts">
-import { Options, setup } from 'vue-class-component';
+import { Options } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
 import { billingModule } from '@billing/store';
-import { setupDelete } from '../composition/billingList';
 import { IBilling, IBillingUpdate, BillingStatus } from '../types';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
@@ -114,27 +106,8 @@ import { UtilMixins } from '@/mixins/utilMixins';
     },
 })
 export default class BillingTable extends mixins(UtilMixins) {
-    deleteAction = setup(() => setupDelete());
-
     get billingList(): IBilling[] {
-        // return billingModule.billingList;
-        return [
-            {
-                id: 1,
-                nameCustomer: 'Chu Sở Lâm',
-                phone: '1231231231',
-                totalBillingPrice: 12,
-                statusBilling: BillingStatus.WAIT_FOR_PAY,
-            },
-            {
-                id: 2,
-                nameCustomer: 'Trương Tam Phong',
-                phone: '1231231231',
-                totalBillingPrice: 12,
-                payDate: '2022-04-04 12:12',
-                statusBilling: BillingStatus.PAID,
-            },
-        ];
+        return billingModule.billingList;
     }
 
     get isCanDelete(): boolean {
@@ -152,21 +125,6 @@ export default class BillingTable extends mixins(UtilMixins) {
     async onClickButtonEdit(updateBilling: IBillingUpdate): Promise<void> {
         billingModule.setSelectedBilling(updateBilling);
         billingModule.setIsShowBillingFormPopUp(true);
-    }
-
-    async onClickButtonDelete(id: number): Promise<void> {
-        await this.deleteAction.deleteBilling(id);
-    }
-
-    checkFullPermissionActions(): boolean {
-        return (
-            checkUserHasPermission(billingModule.userPermissions, [
-                `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
-            ]) &&
-            checkUserHasPermission(billingModule.userPermissions, [
-                `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
-            ])
-        );
     }
 
     statusBadge(status: BillingStatus): string {

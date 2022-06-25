@@ -1,8 +1,7 @@
+import { appService } from './../../../utils/app';
 import { useField, useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 import moment from 'moment';
-import { IBilling, IBillingCreate } from '../types';
 import { billingService } from '../services/api.services';
 import { billingModule } from '../store';
 import { validateBillingSchema } from '../constants';
@@ -13,47 +12,45 @@ import {
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
+import { IBillingUpdate, IBilling } from '../types';
 
 export function initData() {
     const { t } = useI18n();
     const initValues = {
-        nameCustomer: '',
-        phone: '',
-        payDate: undefined,
-        totalBillingPrice: undefined,
-        statusBilling: undefined,
+        customerName: '',
+        customerPhone: '',
+        paymentMethod: undefined,
+        billingStatus: undefined,
+        paymentTime: '',
+        cashier: '',
+        note: '',
     };
-    const isCreate = computed(() => !billingModule.selectedBilling?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
         validationSchema: validateBillingSchema,
     });
 
     const onSubmit = handleSubmit(async (values) => {
-        const createBody = {
-            ...values,
-            nameCustomer: values.nameCustomer?.trim(),
-            phone: values.phone?.trim(),
-            totalBillingPrice: values.totalBillingPrice,
-            payDate: moment(values.payDate).utc().fmFullTimeString(),
-            statusBilling: values.statusBilling,
-        } as IBillingCreate;
-        let response;
+        const body = {
+            customerName: values.customerName?.trim(),
+            customerPhone: values.customerPhone?.trim(),
+            cashierId: appService.getUser().id,
+            paymentTotal: 0,
+            paymentMethod: values.paymentMethod,
+            paymentTime: moment(new Date()).utc().fmFullTimeWithoutSecond(),
+            billingStatus: values.billingStatus,
+            note: values.note?.trim(),
+        } as IBillingUpdate;
         const billingId = billingModule.selectedBilling?.id;
         const loading = ElLoading.service({
             target: '.billing-form-popup',
         });
-        if (!isCreate.value) {
-            response = await billingService.update(billingId as number, createBody);
-        } else {
-            response = await billingService.create(createBody);
-        }
+        const response = await billingService.update(billingId as number, body);
+
         loading.close();
         if (response.success) {
             showSuccessNotificationFunction(
-                !isCreate.value
-                    ? t('billing.list.message.updateSuccess')
-                    : (t('billing.list.message.createSuccess') as string),
+                t('billing.billing.message.updateSuccess') as string,
             );
             billingModule.setIsShowBillingFormPopUp(false);
             billingModule.setBillingQueryString({ page: DEFAULT_FIRST_PAGE });
@@ -74,46 +71,49 @@ export function initData() {
             }
         }
     });
-    const { value: nameCustomer } = useField('nameCustomer');
-    const { value: phone } = useField('phone');
-    const { value: totalBillingPrice } = useField('totalBillingPrice');
-    const { value: payDate } = useField('payDate');
-    const { value: statusBilling } = useField('statusBilling');
+    const { value: customerName } = useField('customerName');
+    const { value: customerPhone } = useField('customerPhone');
+    const { value: paymentMethod } = useField('paymentMethod');
+    const { value: billingStatus } = useField('billingStatus');
+    const { value: paymentTime } = useField('paymentTime');
+    const { value: cashier } = useField('cashier');
+    const { value: note } = useField('note');
 
     const openPopup = async () => {
-        if (!isCreate.value) {
-            const loading = ElLoading.service({ target: '.billing-form-popup' });
-            const billingDetail = (await billingService.getDetail(
-                billingModule.selectedBilling?.id || 0,
-            )) as IBodyResponse<IBilling>;
-            loading.close();
+        const loading = ElLoading.service({ target: '.billing-form-popup' });
+        await billingModule.getFoodBillingList();
+        const billingDetail = (await billingService.getDetail(
+            billingModule.selectedBilling?.id || 0,
+        )) as IBodyResponse<IBilling>;
+        loading.close();
 
-            resetForm({
-                values: {
-                    nameCustomer: billingDetail.data?.nameCustomer,
-                    phone: billingDetail.data?.phone,
-                    totalBillingPrice: billingDetail.data?.totalBillingPrice,
-                    payDate: moment(
-                        billingDetail.data?.payDate,
-                    ).fmFullTimeWithoutSecond(),
-                    statusBilling: billingDetail.data?.statusBilling,
-                },
-            });
-        } else {
-            resetForm({
-                values: initValues,
-            });
-        }
+        resetForm({
+            values: {
+                customerName: billingDetail.data?.customerName,
+                customerPhone: billingDetail.data?.customerPhone,
+                paymentMethod: billingDetail.data?.paymentMethod,
+                billingStatus: billingDetail.data?.billingStatus,
+                cashier: billingDetail.data?.cashier.fullName
+                    ? billingDetail.data?.cashier.fullName
+                    : appService.getUser().fullName,
+                paymentTime: billingDetail.data?.paymentTime
+                    ? moment(billingDetail.data?.paymentTime)
+                          .utc()
+                          .fmFullTimeWithoutSecond()
+                    : moment(new Date()).utc().fmFullTimeWithoutSecond(),
+                note: billingDetail.data?.note,
+            },
+        });
     };
     return {
         errors,
-        name,
-        nameCustomer,
-        phone,
-        totalBillingPrice,
-        payDate,
-        statusBilling,
-        isCreate,
+        customerName,
+        customerPhone,
+        paymentMethod,
+        billingStatus,
+        paymentTime,
+        cashier,
+        note,
         validate,
         openPopup,
         onSubmit,

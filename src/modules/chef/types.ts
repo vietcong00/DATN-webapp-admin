@@ -1,5 +1,5 @@
-import { ITable } from './../table-diagram/types';
-import { IUser } from './../user/types';
+import { ITable } from '../table-diagram/types';
+import { IUser } from '../user/types';
 import { IQueryString } from '@/common/types';
 
 export enum BillingStatus {

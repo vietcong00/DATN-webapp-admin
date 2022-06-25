@@ -1,23 +1,22 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/store';
-import { IBilling, IBillingUpdate, IFoodBilling, IQueryStringBilling } from './types';
-import { billingService } from './services/api.services';
 import {
-    IBodyResponse,
-    IGetListResponse,
-    ISelectOptions,
-    IDropdownUserItem,
-} from '@/common/types';
-import { commonService } from '@/common/services/api.services';
+    IBilling,
+    IBillingUpdate,
+    IFoodBilling,
+    IQueryStringBilling,
+    IQueryStringFoodBilling,
+} from './types';
+import { billingService, foodBillingApiService } from './services/api.services';
+import { IBodyResponse, IGetListResponse } from '@/common/types';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
 import {
     DEFAULT_FIRST_PAGE,
+    DEFAULT_MAX_SIZE_PER_PAGE,
     DEFAULT_ORDER_BY,
     DEFAULT_ORDER_DIRECTION,
     LIMIT_PER_PAGE,
-    WITH_DELETED_OPTION,
-    WITH_INACTIVE_OPTION,
 } from '@/common/constants';
 
 const initQueryString = {
@@ -26,42 +25,36 @@ const initQueryString = {
     orderBy: DEFAULT_ORDER_BY,
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: '',
-    payerIds: [],
+};
+
+const initFoodBookingQueryString = {
+    page: DEFAULT_FIRST_PAGE,
+    limit: DEFAULT_MAX_SIZE_PER_PAGE,
+    orderBy: DEFAULT_ORDER_BY,
+    orderDirection: DEFAULT_ORDER_DIRECTION,
+    keyword: '',
+    billingId: undefined,
 };
 
 @Module({ dynamic: true, stateFactory: true, namespaced: true, store, name: 'billing' })
 class BillingModule extends VuexModule {
+    // billing
     billingList: IBilling[] = [];
-    foodBillingList: IFoodBilling[] = [];
-    totalFoodPrice = 0;
     totalBillings = 0;
-    promotionBilling = 0;
-    payerOptions: ISelectOptions[] = [];
     billingQueryString: IQueryStringBilling = initQueryString;
-
     isShowBillingFormPopUp = false;
-    isDisabledSaveButton = false;
     selectedBilling: IBillingUpdate | null = null;
+
+    // food-billing
+    foodBillingList: IFoodBilling[] = [];
+    totalFoodBillings = 0;
+    foodBillingQueryString: IQueryStringFoodBilling = initFoodBookingQueryString;
 
     get userPermissions(): string[] {
         return appService.getUserPermissionsByResource(PermissionResources.BILLING);
     }
 
     // actions
-
-    @Action
-    async getPayers() {
-        const response = await commonService.getDropdownUsers({
-            withDeleted: WITH_DELETED_OPTION.YES,
-            withInactive: WITH_INACTIVE_OPTION.YES,
-        });
-        if (response.success) {
-            this.MUTATE_PAYER_OPTIONS(response.data?.items || []);
-        } else {
-            this.MUTATE_PAYER_OPTIONS([]);
-        }
-        return response;
-    }
 
     @Action
     async getBillingList(): Promise<IBodyResponse<IGetListResponse<IBilling>>> {
@@ -79,27 +72,21 @@ class BillingModule extends VuexModule {
     }
 
     @Action
-    async getFoodBillingList(): Promise<void> {
-        const foodBillings: IFoodBilling[] = [
-            {
-                id: 1,
-                food: {
-                    id: 1,
-                    foodName: 'Chu Sở Lâm',
-                    price: 123321,
-                },
-                quantity: 12,
-                total: 0,
-            },
-        ];
-        let totalFoodPrice = 0;
-        foodBillings.forEach((foodBilling) => {
-            foodBilling.total = foodBilling.food.price * foodBilling.quantity;
-            totalFoodPrice += foodBilling.total;
+    async getFoodBillingList(): Promise<IBodyResponse<IGetListResponse<IFoodBilling>>> {
+        this.MUTATE_FOOD_BILLING_QUERY_STRING({
+            billingId: this.selectedBilling?.id,
         });
-        this.MUTATE_PROMOTION_BILLING(0);
-        this.MUTATE_TOTAL_FOOD_PRICE(totalFoodPrice);
-        this.MUTATE_FOOD_BILLING_LIST(foodBillings);
+        const response = (await foodBillingApiService.getList({
+            ...this.foodBillingQueryString,
+        })) as IBodyResponse<IGetListResponse<IFoodBilling>>;
+        if (response.success) {
+            this.MUTATE_FOOD_BILLING_LIST(response?.data?.items || []);
+            this.MUTATE_TOTAL_FOOD_BILLING(response?.data?.totalItems || 0);
+        } else {
+            this.MUTATE_FOOD_BILLING_LIST([]);
+            this.MUTATE_TOTAL_FOOD_BILLING(0);
+        }
+        return response;
     }
 
     @Action
@@ -108,13 +95,13 @@ class BillingModule extends VuexModule {
     }
 
     @Action
-    setIsDisabledSaveButton(value: boolean) {
-        this.MUTATE_IS_DISABLED_SAVE_BUTTON(value);
+    setBillingQueryString(query: IQueryStringBilling) {
+        this.MUTATE_BILLING_QUERY_STRING(query);
     }
 
     @Action
-    setBillingQueryString(query: IQueryStringBilling) {
-        this.MUTATE_BILLING_QUERY_STRING(query);
+    setFoodBillingQueryString(query: IQueryStringFoodBilling) {
+        this.MUTATE_FOOD_BILLING_QUERY_STRING(query);
     }
 
     @Action
@@ -123,21 +110,16 @@ class BillingModule extends VuexModule {
     }
 
     @Action
-    clearQueryString() {
+    clearBillingQueryString() {
         this.MUTATE_BILLING_QUERY_STRING(initQueryString);
     }
 
-    // MUTATIONS
-
-    @Mutation
-    MUTATE_PAYER_OPTIONS(payerOptions: IDropdownUserItem[]) {
-        this.payerOptions = payerOptions.map(function (payer) {
-            return {
-                label: payer.fullName,
-                value: payer.id,
-            };
-        });
+    @Action
+    clearFoodBillingQueryString() {
+        this.MUTATE_FOOD_BILLING_QUERY_STRING(initFoodBookingQueryString);
     }
+
+    // MUTATIONS
 
     @Mutation
     MUTATE_BILLING_LIST(billings: IBilling[]) {
@@ -145,8 +127,8 @@ class BillingModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_FOOD_BILLING_LIST(foodBillings: IFoodBilling[]) {
-        this.foodBillingList = foodBillings;
+    MUTATE_FOOD_BILLING_LIST(billings: IFoodBilling[]) {
+        this.foodBillingList = billings;
     }
 
     @Mutation
@@ -155,13 +137,8 @@ class BillingModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_PROMOTION_BILLING(promotionBilling: number) {
-        this.promotionBilling = promotionBilling;
-    }
-
-    @Mutation
-    MUTATE_TOTAL_FOOD_PRICE(totalFoodPrice: number) {
-        this.totalFoodPrice = totalFoodPrice;
+    MUTATE_TOTAL_FOOD_BILLING(totals: number) {
+        this.totalFoodBillings = totals;
     }
 
     @Mutation
@@ -170,14 +147,17 @@ class BillingModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_IS_DISABLED_SAVE_BUTTON(value: boolean) {
-        this.isDisabledSaveButton = value;
-    }
-
-    @Mutation
     MUTATE_BILLING_QUERY_STRING(query: IQueryStringBilling) {
         this.billingQueryString = {
             ...this.billingQueryString,
+            ...query,
+        };
+    }
+
+    @Mutation
+    MUTATE_FOOD_BILLING_QUERY_STRING(query: IQueryStringFoodBilling) {
+        this.foodBillingQueryString = {
+            ...this.foodBillingQueryString,
             ...query,
         };
     }

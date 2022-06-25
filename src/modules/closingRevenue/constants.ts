@@ -8,11 +8,11 @@ import {
 
 export const ClosingRevenueSortOptions = [
     {
-        label: 'billing.list.filterForm.createdAt',
+        label: 'billing.billing.filterForm.createdAt',
         value: 'createdAt',
     },
     {
-        label: 'billing.list.filterForm.name',
+        label: 'billing.billing.filterForm.name',
         value: 'name',
     },
 ];

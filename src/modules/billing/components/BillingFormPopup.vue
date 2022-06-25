@@ -10,57 +10,64 @@
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('billing.form.createTitle')
-                        : $t('billing.form.updateTitle')
+                        ? $t('billing.billing.createTitle')
+                        : $t('billing.billing.updateTitle')
                 }}
             </h3>
         </template>
         <div class="row">
             <div class="col-md-4">
                 <BaseInputText
-                    v-model:value="form.nameCustomer"
+                    :class="checkBillingDone ? 'readonly-input-text' : ''"
+                    v-model:value="form.customerName"
                     :error="translateYupError(form.errors.nameCustomer)"
                     :is-required="true"
-                    :label="$t('billing.form.billingForm.nameCustomer')"
-                    :placeholder="$t('billing.form.placeholder.nameCustomer')"
+                    :isReadonly="checkBillingDone"
+                    :label="$t('billing.billing.billingForm.nameCustomer')"
+                    :placeholder="$t('billing.billing.placeholder.nameCustomer')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputNumber
+                    :class="checkBillingDone ? 'readonly-input-text' : ''"
                     name="phone"
                     is-required="true"
-                    v-model:value="form.phone"
-                    :label="$t('billing.form.billingForm.phone')"
-                    :placeholder="$t('billing.form.placeholder.phone')"
+                    v-model:value="form.customerPhone"
+                    :isReadonly="checkBillingDone"
+                    :label="$t('billing.billing.billingForm.phone')"
+                    :placeholder="$t('billing.billing.placeholder.phone')"
                     :error="translateYupError(form.errors.phone)"
                 />
             </div>
             <div class="col-md-4">
                 <BaseSingleSelect
-                    v-model:value="form.statusBilling"
+                    v-model:value="form.billingStatus"
                     :filterable="true"
                     :options="statusBillingOptions"
                     :is-required="true"
-                    :label="$t('billing.form.billingForm.statusBilling')"
-                    :error="translateYupError(form.errors.statusBilling)"
+                    :isDisabled="checkBillingDone"
+                    :label="$t('billing.billing.billingForm.statusBilling')"
+                    :error="translateYupError(form.errors.billingStatus)"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputText
                     class="readonly-input-text"
-                    v-model:value="form.payDate"
-                    :error="translateYupError(form.errors.payDate)"
+                    v-model:value="form.paymentTime"
+                    :error="translateYupError(form.errors.paymentTime)"
                     :isReadonly="true"
-                    :label="$t('billing.form.billingForm.payDate')"
+                    :label="$t('billing.billing.billingForm.paymentTime')"
                 />
             </div>
             <div class="col-md-4">
-                <BaseInputText
-                    class="readonly-input-text"
+                <BaseSingleSelect
                     v-model:value="form.paymentMethod"
+                    :filterable="true"
+                    :options="paymentMethodOptions"
+                    :is-required="true"
+                    :isDisabled="checkBillingDone"
                     :error="translateYupError(form.errors.paymentMethod)"
-                    :isReadonly="true"
-                    :label="$t('billing.form.billingForm.paymentMethod')"
+                    :label="$t('billing.billing.billingForm.paymentMethod')"
                 />
             </div>
             <div class="col-md-4">
@@ -69,28 +76,28 @@
                     v-model:value="form.cashier"
                     :error="translateYupError(form.errors.cashier)"
                     :isReadonly="true"
-                    :label="$t('billing.form.billingForm.cashier')"
+                    :label="$t('billing.billing.billingForm.cashier')"
                 />
             </div>
             <div class="col-md-12 mb-3">
                 <FoodBillingTable />
             </div>
             <div class="col-md-10 text-end font-weight-bold">
-                {{ $t('billing.form.billingForm.total') }}
+                {{ $t('billing.billing.billingForm.total') }}
             </div>
             <div class="col-md-2 text-end">
                 {{ parseMoney(totalFoodPrice) }}
             </div>
             <div class="col-md-10 text-end font-weight-bold">
-                {{ $t('billing.form.billingForm.vat') }}
+                {{ $t('billing.billing.billingForm.vat') }}
             </div>
             <div class="col-md-2 text-end">+&nbsp;{{ parseMoney(vat) }}</div>
             <div class="col-md-10 text-end font-weight-bold">
-                {{ $t('billing.form.billingForm.promotion') }}
+                {{ $t('billing.billing.billingForm.promotion') }}
             </div>
             <div class="col-md-2 text-end">-&nbsp;{{ parseMoney(promotionBilling) }}</div>
             <div class="col-md-10 text-end mt-2 pt-2 font-weight-bold">
-                {{ $t('billing.form.billingForm.totalBillingPrice') }}
+                {{ $t('billing.billing.billingForm.totalBillingPrice') }}
             </div>
             <div class="col-md-2 d-flex mt-2 justify-content-end">
                 <div class="price-text pt-2">{{ parseMoney(totalBillingPrice) }}</div>
@@ -103,18 +110,18 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="onClickCancel">
-                            {{ $t('billing.form.button.cancel') }}
+                            {{ $t('billing.billing.button.cancel') }}
                         </el-button>
                     </div>
                     <div
                         class="col-md-4 col-sm-6 d-flex justify-content-md-start justify-content-center"
                     >
                         <el-button
-                            :disabled="isDisabledSaveButton"
                             type="primary"
                             @click="onClickSaveButton()"
+                            v-if="!checkBillingDone"
                         >
-                            {{ $t('billing.form.button.submit') }}
+                            {{ $t('billing.billing.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -130,38 +137,41 @@ import { billingModule } from '../store';
 import { ISelectOptions } from '@/common/types';
 import { UtilMixins } from '@/mixins/utilMixins';
 import FoodBillingTable from '../components/FoodBillingTable.vue';
-import { BillingStatusOptions } from '../constants';
 import { parseLanguageSelectOptions } from '@/utils/helper';
+import { BillingStatus } from '../types';
 
 @Options({
     components: { FoodBillingTable },
 })
 export default class BillingFormPopup extends UtilMixins {
-    BillingStatusOptions = BillingStatusOptions;
+    get checkBillingDone(): boolean {
+        return billingModule.selectedBilling?.billingStatus === BillingStatus.PAID;
+    }
+
     get statusBillingOptions(): ISelectOptions[] {
-        return parseLanguageSelectOptions(BillingStatusOptions);
+        return parseLanguageSelectOptions(this.BillingStatusOptions);
+    }
+
+    get paymentMethodOptions(): ISelectOptions[] {
+        return parseLanguageSelectOptions(this.PaymentMethodOptions);
     }
 
     form = setup(() => initData());
 
     get totalFoodPrice(): number {
-        return billingModule.totalFoodPrice;
+        return billingModule.selectedBilling?.paymentTotal || 0;
     }
 
     get vat(): number {
-        return Math.round(this.totalFoodPrice * 0.08);
+        return this.calculateVAT(this.totalFoodPrice);
     }
 
     get promotionBilling(): number {
-        return billingModule.promotionBilling;
+        return 0;
     }
 
     get totalBillingPrice(): number {
-        return this.totalFoodPrice + this.vat;
-    }
-
-    get isDisabledSaveButton(): boolean {
-        return billingModule.isDisabledSaveButton;
+        return this.calculatePriceIncludeTax(this.totalFoodPrice);
     }
 
     get isShowBillingFormPopUp(): boolean {
@@ -170,10 +180,6 @@ export default class BillingFormPopup extends UtilMixins {
 
     set isShowBillingFormPopUp(val: boolean) {
         billingModule.setIsShowBillingFormPopUp(val);
-    }
-
-    get payerOptions(): ISelectOptions[] {
-        return billingModule.payerOptions;
     }
 
     onClickCancel(): void {
@@ -187,13 +193,7 @@ export default class BillingFormPopup extends UtilMixins {
     }
 
     async onClickSaveButton(): Promise<void> {
-        billingModule.setIsDisabledSaveButton(true);
         await this.form.onSubmit();
-        billingModule.setIsDisabledSaveButton(false);
-    }
-
-    created(): void {
-        billingModule.getFoodBillingList();
     }
 }
 </script>

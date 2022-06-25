@@ -16,20 +16,11 @@
                     <div class="col-xl-4 col-md-4 col-12">
                         <BaseInputText
                             v-model:value="filterForm.keyword"
-                            :label="$t('billing.list.filterForm.keyword.label')"
+                            :label="$t('billing.billing.filterForm.keyword.label')"
                             :placeholder="
-                                $t('billing.list.filterForm.keyword.placeholder')
+                                $t('billing.billing.filterForm.keyword.placeholder')
                             "
                             size="default"
-                        />
-                    </div>
-                    <div class="col-xl-4 col-md-4 col-12">
-                        <BaseMultipleSelect
-                            :filterable="true"
-                            v-model:value="filterForm.payerIds"
-                            :label="$t('billing.list.filterForm.payer.label')"
-                            :options="payerOptions"
-                            :placeholder="$t('billing.list.filterForm.payer.placeholder')"
                         />
                     </div>
                     <div class="col-xl-4 col-md-4 col-12">
@@ -37,7 +28,7 @@
                             class="text-start w-100 fw-bold"
                             style="margin-bottom: 8px"
                             >{{
-                                $t('billing.list.filterForm.paymentDateRange.label')
+                                $t('billing.billing.filterForm.paymentDateRange.label')
                             }}</label
                         >
                         <el-date-picker
@@ -46,13 +37,15 @@
                             unlink-panels
                             size="medium"
                             :range-separator="
-                                $t('billing.list.filterForm.paymentDateRange.to')
+                                $t('billing.billing.filterForm.paymentDateRange.to')
                             "
                             :start-placeholder="
-                                $t('billing.list.filterForm.paymentDateRange.startDate')
+                                $t(
+                                    'billing.billing.filterForm.paymentDateRange.startDate',
+                                )
                             "
                             :end-placeholder="
-                                $t('billing.list.filterForm.paymentDateRange.endDate')
+                                $t('billing.billing.filterForm.paymentDateRange.endDate')
                             "
                         />
                     </div>
@@ -64,10 +57,8 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { parseSelectOptions } from '@/utils/helper';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { Prop, Watch } from 'vue-property-decorator';
-import { ISelectOptions } from '@/common/types';
 import { ElLoading } from 'element-plus';
 import { billingModule } from '../store';
 import { IQueryStringBilling } from '../types';
@@ -82,17 +73,13 @@ export default class FilterForm extends Vue {
 
     paymentDateRange = [];
 
-    get payerOptions(): ISelectOptions[] {
-        return parseSelectOptions(billingModule.payerOptions);
-    }
-
     async resetFilter(): Promise<void> {
         this.filterForm = {
             keyword: '',
             payerIds: [],
         };
         this.paymentDateRange = [];
-        billingModule.clearQueryString();
+        billingModule.clearBillingQueryString();
         await this.handleFilter();
     }
 

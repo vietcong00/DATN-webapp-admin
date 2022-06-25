@@ -23,32 +23,6 @@
                             size="default"
                         />
                     </div>
-                    <div class="col-xl-4 col-md-4 col-12">
-                        <label
-                            class="text-start w-100 fw-bold"
-                            style="margin-bottom: 8px"
-                            >{{
-                                $t('billing.billing.filterForm.paymentDateRange.label')
-                            }}</label
-                        >
-                        <el-date-picker
-                            v-model="paymentDateRange"
-                            type="daterange"
-                            unlink-panels
-                            size="medium"
-                            :range-separator="
-                                $t('billing.billing.filterForm.paymentDateRange.to')
-                            "
-                            :start-placeholder="
-                                $t(
-                                    'billing.billing.filterForm.paymentDateRange.startDate',
-                                )
-                            "
-                            :end-placeholder="
-                                $t('billing.billing.filterForm.paymentDateRange.endDate')
-                            "
-                        />
-                    </div>
                 </div>
             </div>
         </slot>
@@ -60,8 +34,8 @@ import { Vue } from 'vue-class-component';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { Prop, Watch } from 'vue-property-decorator';
 import { ElLoading } from 'element-plus';
-import { closingRevenueModule } from '../store';
-import { IQueryStringClosingRevenue } from '../types';
+import { chefModule } from '../store';
+import { IQueryStringBilling } from '../types';
 import moment from 'moment';
 export default class FilterForm extends Vue {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -79,12 +53,12 @@ export default class FilterForm extends Vue {
             payerIds: [],
         };
         this.paymentDateRange = [];
-        closingRevenueModule.clearQueryString();
+        chefModule.clearFoodBillingQueryString();
         await this.handleFilter();
     }
 
     async handleFilter(): Promise<void> {
-        const query: IQueryStringClosingRevenue = {
+        const query: IQueryStringBilling = {
             page: DEFAULT_FIRST_PAGE,
             limit: LIMIT_PER_PAGE,
             keyword: this.filterForm.keyword.trim()?.length
@@ -97,11 +71,11 @@ export default class FilterForm extends Vue {
                   )
                 : null,
         };
-        closingRevenueModule.setClosingRevenueQueryString(query);
+        chefModule.setFoodBillingQueryString(query);
         const loading = ElLoading.service({
             target: '.content',
         });
-        await closingRevenueModule.getClosingRevenueList();
+        await chefModule.getFoodBillingList();
         loading.close();
     }
 

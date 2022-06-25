@@ -3,10 +3,8 @@
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
             :pageTitle="$t('billing.billing.title')"
-            :totalItems="totalItems"
             :createButtonText="$t('billing.billing.button.create')"
             :hasSortBox="true"
-            v-model:page="selectedPage"
             v-model:keyword="keyword"
             :isShowCreateButton="false"
             @onPaginate="handlePaginate"
@@ -17,8 +15,7 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <BillingTable />
-        <BillingPopup />
+        <ChefTable />
     </div>
 </template>
 
@@ -26,58 +23,44 @@
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins } from 'vue-property-decorator';
 import { Options } from 'vue-class-component';
-import BillingTable from '../components/BillingTable.vue';
-import BillingSort from '../components/Sort.vue';
-import BillingPopup from '../components/BillingFormPopup.vue';
+import ChefTable from '../components/ChefTable.vue';
 import FilterForm from '../components/FilterForm.vue';
-import { billingModule } from '../store';
-import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
+import { DEFAULT_MAX_SIZE_PER_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
+import { chefModule } from '../store';
 
 @Options({
-    components: { FilterForm, BillingTable, BillingSort, BillingPopup },
+    components: { FilterForm, ChefTable },
 })
-export default class BillingPage extends mixins(UtilMixins) {
+export default class ChefPage extends mixins(UtilMixins) {
     isShowSearchBox = true;
     isToggleFilterForm = true;
 
-    get totalItems(): number {
-        return billingModule.totalBillings;
-    }
-
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(billingModule.userPermissions, [
+        return checkUserHasPermission(chefModule.userPermissions, [
             `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,
         ]);
     }
 
-    get selectedPage(): number {
-        return billingModule.billingQueryString?.page || DEFAULT_FIRST_PAGE;
-    }
-
-    set selectedPage(value: number) {
-        billingModule.billingQueryString.page = value;
-    }
-
     get keyword(): string {
-        return billingModule.billingQueryString?.keyword || '';
+        return chefModule.foodBillingQueryString?.keyword || '';
     }
 
     set keyword(value: string) {
-        billingModule.billingQueryString.keyword = value;
+        chefModule.foodBillingQueryString.keyword = value;
     }
 
     created(): void {
-        billingModule.clearBillingQueryString();
+        chefModule.clearFoodBillingQueryString();
         this.fetchData();
     }
 
     async fetchData(): Promise<void> {
         const loading = ElLoading.service({});
-        await billingModule.getBillingList();
+        await chefModule.getFoodBillingList();
         loading.close();
     }
 
@@ -89,24 +72,17 @@ export default class BillingPage extends mixins(UtilMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await billingModule.getBillingList();
+        await chefModule.getFoodBillingList();
         loading.close();
     }
 
     async handleFilter(): Promise<void> {
-        billingModule.setBillingQueryString({
-            page: DEFAULT_FIRST_PAGE,
+        chefModule.setFoodBillingQueryString({
+            page: DEFAULT_MAX_SIZE_PER_PAGE,
             limit: LIMIT_PER_PAGE,
             keyword: this.keyword?.trim(),
         });
         await this.getBillingList();
-    }
-
-    async handlePaginate(): Promise<void> {
-        billingModule.setBillingQueryString({
-            page: this.selectedPage,
-        });
-        this.getBillingList();
     }
 }
 </script>
