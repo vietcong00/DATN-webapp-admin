@@ -31,7 +31,9 @@ export default {
     },
 
     statusBillingOptions: {
-        waitForPay: 'Wait For Pay',
+        eating: 'Customer having meal',
+        canceled: 'Canceled',
+        wait_for_pay: 'Wait For Pay',
         paid: 'Paid',
     },
 };

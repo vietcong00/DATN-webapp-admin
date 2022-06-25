@@ -1,4 +1,4 @@
-import { STATUS_BILLING } from './types';
+import { BillingStatus } from './types';
 import yup from '@/plugins/yup/index';
 import { INPUT_TEXT_MAX_LENGTH, INPUT_NUMBER_MAX_VALUE, REGEX } from '@/common/constants';
 
@@ -13,14 +13,22 @@ export const BillingSortOptions = [
     },
 ];
 
-export const STATUS_BILLING_OPTIONS = [
+export const BillingStatusOptions = [
     {
-        label: 'billing.list.statusBillingOptions.waitForPay',
-        value: STATUS_BILLING.WAIT_FOR_PAY,
+        label: 'billing.list.statusBillingOptions.eating',
+        value: BillingStatus.EATING,
+    },
+    {
+        label: 'billing.list.statusBillingOptions.canceled',
+        value: BillingStatus.CANCELED,
+    },
+    {
+        label: 'billing.list.statusBillingOptions.wait_for_pay',
+        value: BillingStatus.WAIT_FOR_PAY,
     },
     {
         label: 'billing.list.statusBillingOptions.paid',
-        value: STATUS_BILLING.PAID,
+        value: BillingStatus.PAID,
     },
 ];
 
@@ -48,7 +56,7 @@ export const validateBillingSchema = yup.object({
     statusBilling: yup
         .string()
         .max(INPUT_TEXT_MAX_LENGTH)
-        .oneOf(Object.values(STATUS_BILLING))
+        .oneOf(Object.values(BillingStatus))
         .nullable()
         .optional(),
 });

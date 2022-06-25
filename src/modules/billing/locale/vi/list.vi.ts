@@ -30,6 +30,8 @@ export default {
         },
     },
     statusBillingOptions: {
+        eating: 'Khách đang dùng bữa',
+        canceled: 'Hủy',
         waitForPay: 'Chờ thanh toán',
         paid: 'Đã thanh toán',
     },

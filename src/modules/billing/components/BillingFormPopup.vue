@@ -130,16 +130,16 @@ import { billingModule } from '../store';
 import { ISelectOptions } from '@/common/types';
 import { UtilMixins } from '@/mixins/utilMixins';
 import FoodBillingTable from '../components/FoodBillingTable.vue';
-import { STATUS_BILLING_OPTIONS } from '../constants';
+import { BillingStatusOptions } from '../constants';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 
 @Options({
     components: { FoodBillingTable },
 })
 export default class BillingFormPopup extends UtilMixins {
-    STATUS_BILLING_OPTIONS = STATUS_BILLING_OPTIONS;
+    BillingStatusOptions = BillingStatusOptions;
     get statusBillingOptions(): ISelectOptions[] {
-        return parseLanguageSelectOptions(STATUS_BILLING_OPTIONS);
+        return parseLanguageSelectOptions(BillingStatusOptions);
     }
 
     form = setup(() => initData());

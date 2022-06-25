@@ -8,7 +8,6 @@ import {
     Money as MoneyIcon,
     KnifeFork as KnifeForkIcon,
     Calendar as CalendarIcon,
-    HomeFilled as HomeFilledIcon,
     Grid as GridIcon,
 } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
@@ -121,79 +120,6 @@ const menuMenu: ISidebar = {
         },
     ],
 };
-const storeMenu: ISidebar = {
-    iconComponent: HomeFilledIcon,
-    name: 'common.app.menu.store.title',
-    active: false,
-    children: [
-        {
-            name: 'common.app.menu.store.material',
-            to: '/material',
-            active: false,
-            pageName: PageName.STORE_MATERIAL_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CREATE}`,
-                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.DELETE}`,
-                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.store.convert',
-            to: '/convert-history',
-            active: false,
-            pageName: PageName.STORE_CONVERT_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_CONVERT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.STORE_CONVERT}_${PermissionActions.CONVERT_MATERIAL}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.store.supplier',
-            to: '/supplier',
-            active: false,
-            pageName: PageName.STORE_SUPPLIER_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
-                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.store.import',
-            to: '/import-material',
-            active: false,
-            pageName: PageName.STORE_IMPORT_MATERIAL_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.store.export',
-            to: '/export-material',
-            active: false,
-            pageName: PageName.STORE_EXPORT_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.store.checkInventory',
-            to: '/check-inventory',
-            active: false,
-            pageName: PageName.STORE_CHECK_INVENTORY_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
-                `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
-            ],
-        },
-    ],
-};
 
 const closingRevenueMenu: ISidebar = {
     iconComponent: MoneyIcon,
@@ -215,7 +141,6 @@ export const sidebars = [
     tableDiagram,
     booking,
     menuMenu,
-    storeMenu,
     billing,
     closingRevenueMenu,
     roleMenu,

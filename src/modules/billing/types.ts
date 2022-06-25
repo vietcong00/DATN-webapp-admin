@@ -1,15 +1,21 @@
 import { IQueryString } from '@/common/types';
 import { IFood } from '../menu/types';
 
-export enum STATUS_BILLING {
-    WAIT_FOR_PAY = 'waitForPay',
+export enum BillingStatus {
+    EATING = 'eating',
+    WAIT_FOR_PAY = 'wait_for_pay',
+    CANCELED = 'canceled',
     PAID = 'paid',
 }
 
-export enum PAYMENT_METHOD {
-    READY_CASH = 'READY_CASH',
-    BANKING = 'BANKING',
-    SWIPE_CARD = 'SWIPE_CARD',
+export enum ReasonCanceled {
+    OUT_OF_FOOD = 'out_of_food',
+    ANOTHER_REASON = 'another_reason',
+}
+
+export enum PaymentMethod {
+    READY_CASH = 'ready_cash',
+    BANKING = 'banking',
 }
 export interface ICashier {
     id: number;
@@ -27,8 +33,8 @@ export interface IBilling {
     phone: string;
     totalBillingPrice: number;
     payDate?: string;
-    statusBilling: STATUS_BILLING;
-    paymentMethod?: PAYMENT_METHOD;
+    statusBilling: BillingStatus;
+    paymentMethod?: PaymentMethod;
     cashier?: ICashier;
 }
 
@@ -37,7 +43,7 @@ export interface IBillingCreate {
     phone: string | undefined;
     totalBillingPrice: number | undefined;
     payDate: string | undefined;
-    statusBilling: STATUS_BILLING | undefined;
+    statusBilling: BillingStatus | undefined;
 }
 
 export interface IBillingUpdate extends IBillingCreate {

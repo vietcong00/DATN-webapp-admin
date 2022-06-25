@@ -101,7 +101,7 @@ import { Options, setup } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
 import { billingModule } from '@billing/store';
 import { setupDelete } from '../composition/billingList';
-import { IBilling, IBillingUpdate, STATUS_BILLING } from '../types';
+import { IBilling, IBillingUpdate, BillingStatus } from '../types';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
@@ -124,7 +124,7 @@ export default class BillingTable extends mixins(UtilMixins) {
                 nameCustomer: 'Chu Sở Lâm',
                 phone: '1231231231',
                 totalBillingPrice: 12,
-                statusBilling: STATUS_BILLING.WAIT_FOR_PAY,
+                statusBilling: BillingStatus.WAIT_FOR_PAY,
             },
             {
                 id: 2,
@@ -132,7 +132,7 @@ export default class BillingTable extends mixins(UtilMixins) {
                 phone: '1231231231',
                 totalBillingPrice: 12,
                 payDate: '2022-04-04 12:12',
-                statusBilling: STATUS_BILLING.PAID,
+                statusBilling: BillingStatus.PAID,
             },
         ];
     }
@@ -169,12 +169,16 @@ export default class BillingTable extends mixins(UtilMixins) {
         );
     }
 
-    statusBadge(status: STATUS_BILLING): string {
+    statusBadge(status: BillingStatus): string {
         switch (status) {
-            case STATUS_BILLING.WAIT_FOR_PAY:
+            case BillingStatus.EATING:
                 return 'info';
-            case STATUS_BILLING.PAID:
+            case BillingStatus.WAIT_FOR_PAY:
+                return 'info';
+            case BillingStatus.PAID:
                 return 'success';
+            case BillingStatus.CANCELED:
+                return 'danger';
         }
     }
 }
