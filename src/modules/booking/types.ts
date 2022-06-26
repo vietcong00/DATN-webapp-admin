@@ -27,7 +27,7 @@ export interface IBooking {
     phone: string;
     arrivalTime: Date;
     status: string;
-    table: ITable;
+    tablesRestaurant: ITable;
     numberPeople: number;
 }
 

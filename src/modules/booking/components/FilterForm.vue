@@ -13,13 +13,13 @@
                 <div class="col-md-4 col-sm-12">
                     <BaseInputText
                         v-model:value="filterForm.keyword"
-                        :placeholder="$t('booking.list.placeholder.keyword')"
-                        :label="$t('booking.list.filterForm.keyword')"
+                        :placeholder="$t('booking.booking.placeholder.keyword')"
+                        :label="$t('booking.booking.filterForm.keyword')"
                     />
                 </div>
                 <div class="col-xl-4 col-md-4 col-12">
                     <label class="text-start w-100 fw-bold" style="margin-bottom: 8px">{{
-                        $t('booking.list.filterForm.arrivalTimeRange')
+                        $t('booking.booking.filterForm.arrivalTimeRange')
                     }}</label>
                     <BaseDatePickerRange
                         v-model:value="arrivalTimeRange"
@@ -27,16 +27,16 @@
                         :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                         :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                         size="medium"
-                        :range-separator="$t('booking.list.filterForm.to')"
-                        :start-placeholder="$t('booking.list.filterForm.startDate')"
-                        :end-placeholder="$t('booking.list.filterForm.endDate')"
+                        :range-separator="$t('booking.booking.filterForm.to')"
+                        :start-placeholder="$t('booking.booking.filterForm.startDate')"
+                        :end-placeholder="$t('booking.booking.filterForm.endDate')"
                     />
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <BaseMultipleSelect
                         v-model:value="filterForm.status"
-                        :placeholder="$t('booking.list.placeholder.status')"
-                        :label="$t('booking.list.filterForm.status')"
+                        :placeholder="$t('booking.booking.placeholder.status')"
+                        :label="$t('booking.booking.filterForm.status')"
                         :options="bookingStatusOptions"
                     />
                 </div>

@@ -1,3 +1,4 @@
+import { TableStatus } from './../modules/table-diagram/constants';
 import { IPopupAttributes, ISelectOptions } from '@/common/types';
 import { MessageBoxData } from 'element-plus';
 import {
@@ -33,6 +34,7 @@ export class UtilMixins extends Vue {
     YYYY_MM_DD_HYPHEN_HH_MM_COLON = DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
     PaymentMethodOptions = PaymentMethodOptions;
     BillingStatusOptions = BillingStatusOptions;
+    TableStatus = TableStatus;
     // Common function
     async showConfirmPopup(
         message: string,

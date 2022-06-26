@@ -55,8 +55,8 @@ export function initData() {
         if (response.success) {
             showSuccessNotificationFunction(
                 !isCreate.value
-                    ? t('booking.list.message.update.success')
-                    : (t('booking.list.message.create.success') as string),
+                    ? t('booking.booking.message.update.success')
+                    : (t('booking.booking.message.create.success') as string),
             );
             bookingModule.setBookingQueryString({
                 page: DEFAULT_FIRST_PAGE,

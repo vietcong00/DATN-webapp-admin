@@ -1,4 +1,19 @@
 export default {
+    bookingDialog: {
+        titleCreate: 'Create new booking',
+        titleUpdate: 'Update booking',
+    },
+    button: {
+        cancel: 'Cancel',
+        submit: 'Submit',
+    },
+    bookingForm: {
+        status: 'Status',
+        nameCustomer: 'Name Customer',
+        phone: 'Phone',
+        arrivalTime: 'Arrival Time',
+        numberPeople: 'Number People',
+    },
     bookingTable: {
         header: {
             id: 'ID',
@@ -53,17 +68,24 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create booking successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update booking successfully!',
         },
 
-        delete: {
-            title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+        complete: {
+            confirmAsk: 'Are you sure you want to complete this booking?',
+        },
+
+        canceled: {
+            confirmAsk: 'Are you sure you want to canceled this booking?',
+        },
+
+        button: {
+            cancel: 'Cancel',
+            confirm: 'Confirm',
         },
     },
 

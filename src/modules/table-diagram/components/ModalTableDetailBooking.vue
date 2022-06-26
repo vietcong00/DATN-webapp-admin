@@ -91,14 +91,14 @@
                                 type="info"
                                 plain
                                 class="modal-button"
-                                @click="sendData('ready')"
+                                @click="sendData(TableStatus.READY)"
                                 ><div class="text-btn">Đã sử dụng xong</div></el-button
                             >
                             <el-button
                                 type="danger"
                                 plain
                                 class="modal-button"
-                                @click="sendData('used')"
+                                @click="sendData(TableStatus.USED)"
                                 ><div class="text-btn">Bắt đầu sử dụng</div></el-button
                             >
                         </slot>
@@ -123,6 +123,10 @@ import { ElLoading } from 'element-plus';
 import { IBooking } from '@/modules/booking/types';
 import { bookingModule } from '@/modules/booking/store';
 import { UtilMixins } from '@/mixins/utilMixins';
+import { TableStatus } from '../constants';
+import { billingService } from '@/modules/billing/services/api.services';
+import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
+import moment from 'moment';
 @Options({
     name: 'modal-table-detail-booking',
     components: { CloseBoldIcon },
@@ -136,16 +140,27 @@ export default class ModalTableDetailBooking extends mixins(UtilMixins) {
         tableDiagramModule.updateCheckShowModalTableDetail(false);
     }
 
-    async sendData(status: string): Promise<void> {
-        this.closeModal();
+    async sendData(status: TableStatus): Promise<void> {
+        let createBillingResponse;
+        if (status === TableStatus.USED) {
+            createBillingResponse = await billingService.create({
+                tableId: tableDiagramModule.tableSelected?.id || '',
+                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
+                billingStatus: BillingStatus.EATING,
+            } as IBillingCreate);
 
+            if (!createBillingResponse?.success) {
+                showErrorNotificationFunction(createBillingResponse?.message as string);
+                return;
+            }
+        }
         const loading = ElLoading.service({
             target: '.content',
         });
         const response = await tableService.update(
             tableDiagramModule.tableSelected?.id as number,
             {
-                status: status,
+                status,
             },
         );
         loading.close();
@@ -153,6 +168,7 @@ export default class ModalTableDetailBooking extends mixins(UtilMixins) {
             showSuccessNotificationFunction('Thay đổi trạng thái bàn thành công');
             await tableDiagramModule.getTables();
             loading.close();
+            this.closeModal();
         } else {
             showErrorNotificationFunction(response.message);
             if (response.code === HttpStatus.ITEM_NOT_FOUND) {

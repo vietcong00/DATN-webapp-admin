@@ -89,12 +89,12 @@ export function initData() {
 
         resetForm({
             values: {
-                customerName: billingDetail.data?.customerName,
-                customerPhone: billingDetail.data?.customerPhone,
+                customerName: billingDetail.data?.customerName || '',
+                customerPhone: billingDetail.data?.customerPhone || '',
                 paymentMethod: billingDetail.data?.paymentMethod,
                 billingStatus: billingDetail.data?.billingStatus,
-                cashier: billingDetail.data?.cashier.fullName
-                    ? billingDetail.data?.cashier.fullName
+                cashier: billingDetail.data?.cashier?.fullName
+                    ? billingDetail.data?.cashier?.fullName
                     : appService.getUser().fullName,
                 paymentTime: billingDetail.data?.paymentTime
                     ? moment(billingDetail.data?.paymentTime)

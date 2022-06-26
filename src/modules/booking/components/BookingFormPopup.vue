@@ -11,8 +11,8 @@
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('booking.form.bookingDialog.titleCreate')
-                        : $t('booking.form.bookingDialog.titleUpdate')
+                        ? $t('booking.booking.bookingDialog.titleCreate')
+                        : $t('booking.booking.bookingDialog.titleUpdate')
                 }}
             </h3>
         </template>
@@ -21,8 +21,8 @@
                 <BaseInputText
                     v-model:value="form.nameCustomer"
                     :is-required="true"
-                    :placeholder="$t('booking.list.placeholder.nameCustomer')"
-                    :label="$t('booking.form.nameCustomer')"
+                    :placeholder="$t('booking.booking.placeholder.nameCustomer')"
+                    :label="$t('booking.booking.nameCustomer')"
                     :error="translateYupError(form.errors.nameCustomer)"
                 />
             </div>
@@ -31,15 +31,15 @@
                     v-model:value="form.phone"
                     :error="translateYupError(form.errors.phone)"
                     :is-required="true"
-                    :label="$t('booking.form.phone')"
-                    :placeholder="$t('booking.list.placeholder.phone')"
+                    :label="$t('booking.booking.phone')"
+                    :placeholder="$t('booking.booking.placeholder.phone')"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputNumber
                     v-model:value="form.numberPeople"
-                    :placeholder="$t('booking.list.placeholder.numberPeople')"
-                    :label="$t('booking.form.numberPeople')"
+                    :placeholder="$t('booking.booking.placeholder.numberPeople')"
+                    :label="$t('booking.booking.numberPeople')"
                     :error="translateYupError(form.errors.numberPeople)"
                     @change="setNumberPeople"
                 />
@@ -47,8 +47,8 @@
             <div class="col-md-6">
                 <BaseDatePicker
                     v-model:value="form.arrivalTime"
-                    :placeholder="$t('booking.list.placeholder.arrivalTime')"
-                    :label="$t('booking.form.arrivalTime')"
+                    :placeholder="$t('booking.booking.placeholder.arrivalTime')"
+                    :label="$t('booking.booking.arrivalTime')"
                     :error="translateYupError(form.errors.arrivalTime)"
                     :is-required="true"
                     :min-date="new Date()"
@@ -68,7 +68,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('booking.form.button.cancel') }}
+                            {{ $t('booking.booking.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -79,7 +79,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('booking.form.button.submit') }}
+                            {{ $t('booking.booking.button.submit') }}
                         </el-button>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="form-group position-relative">
-        <label class="mb-2" v-if="label" :class="textLabel">{{ label }}</label>
+        <label class="mb-2" v-if="label" :class="type">{{ label }}</label>
         <el-input-number
             v-model="inputData"
             type="number"
@@ -20,7 +20,7 @@ import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputCountFood extends Vue {
     @Prop({ default: '' }) readonly label!: string;
     @Prop({ default: 10 }) readonly max!: number;
-    @Prop({ default: '' }) readonly textLabel!: string;
+    @Prop({ default: '' }) readonly type!: string;
 
     @Model('value', { type: Number })
     readonly inputData!: number;
@@ -43,6 +43,7 @@ export default class InputCountFood extends Vue {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 10px 0px !important;
 }
 .form-group label {
     text-align: initial;
@@ -51,15 +52,15 @@ export default class InputCountFood extends Vue {
     margin-bottom: 8px;
 }
 
-.info {
+.processing {
     color: green;
 }
 
-.success {
+.done {
     color: blue;
 }
 
-.danger {
+.canceled {
     color: red;
 }
 </style>

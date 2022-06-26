@@ -13,8 +13,8 @@
                 <div class="col-md-4 col-sm-12">
                     <BaseInputText
                         v-model:value="filterForm.keyword"
-                        :placeholder="$t('booking.list.placeholder.keyword')"
-                        :label="$t('booking.list.filterForm.keyword')"
+                        :placeholder="$t('booking.booking.placeholder.keyword')"
+                        :label="$t('booking.booking.filterForm.keyword')"
                     />
                 </div>
             </div>

@@ -3,14 +3,14 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('booking.list.bookingTable.header.id')"
+                :label="$t('booking.booking.bookingTable.header.id')"
                 type="index"
                 width="75"
             >
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('booking.list.bookingTable.header.nameCustomer')"
+                :label="$t('booking.booking.bookingTable.header.nameCustomer')"
                 width="200"
                 sortable="custom"
             >
@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('booking.list.bookingTable.header.phone')"
+                :label="$t('booking.booking.bookingTable.header.phone')"
                 width="170"
                 sortable="custom"
             >
@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column
                 prop="arrivalTime"
-                :label="$t('booking.list.bookingTable.header.arrivalTime')"
+                :label="$t('booking.booking.bookingTable.header.arrivalTime')"
                 width="250"
                 sortable="custom"
             >
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column
                 prop="idCategory"
-                :label="$t('booking.list.bookingTable.header.numberPeople')"
+                :label="$t('booking.booking.bookingTable.header.numberPeople')"
                 width="200"
             >
                 <template #default="scope">
@@ -64,7 +64,7 @@
             </el-table-column>
             <el-table-column
                 prop="idCategory"
-                :label="$t('booking.list.bookingTable.header.table')"
+                :label="$t('booking.booking.bookingTable.header.table')"
                 width="150"
             >
                 <template #default="scope">
@@ -75,7 +75,7 @@
             </el-table-column>
             <el-table-column
                 prop="idCategory"
-                :label="$t('booking.list.bookingTable.header.status')"
+                :label="$t('booking.booking.bookingTable.header.status')"
                 width="150"
             >
                 <template #default="scope">
@@ -92,57 +92,79 @@
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('booking.list.bookingTable.header.actions')"
-                width="150"
+                :label="$t('booking.booking.bookingTable.header.actions')"
+                width="120"
                 fixed="right"
             >
                 <template #default="scope">
                     <div class="booking__table__action">
-                        <div
-                            class="booking-done"
-                            v-if="scope.row.status == BookingStatus.WAITING"
-                        >
-                            <el-popconfirm
-                                confirm-button-text="Yes"
-                                cancel-button-text="No"
-                                icon-color="green"
-                                title="Bạn có chắc chắn hoàn thành yêu cầu đặt bàn này?"
-                                @confirm="changeStatus(scope.row.id, BookingStatus.DONE)"
-                            >
-                                <template #reference>
-                                    <div>
-                                        <comp-icon :iconName="'check-icon'" />
-                                    </div>
-                                </template>
-                            </el-popconfirm>
-                        </div>
-                        <div
-                            class="booking-canceled"
-                            v-if="scope.row.status == BookingStatus.WAITING"
-                        >
-                            <el-popconfirm
-                                confirm-button-text="Yes"
-                                cancel-button-text="No"
-                                icon-color="red"
-                                title="Bạn có muốn hủy yêu cầu đặt bàn này không?"
-                                @confirm="
-                                    changeStatus(scope.row.id, BookingStatus.CANCELED)
+                        <div class="status-btn-group">
+                            <div
+                                class="booking-done action-button"
+                                v-if="
+                                    scope.row.status == BookingStatus.WAITING &&
+                                    scope.row.tablesRestaurant
                                 "
                             >
-                                <template #reference>
-                                    <div>
-                                        <comp-icon :iconName="'x-icon'" />
-                                    </div>
-                                </template>
-                            </el-popconfirm>
+                                <el-popconfirm
+                                    :confirm-button-text="
+                                        $t('booking.booking.message.button.confirm')
+                                    "
+                                    :cancel-button-text="
+                                        $t('booking.booking.message.button.cancel')
+                                    "
+                                    icon-color="green"
+                                    :title="
+                                        $t('booking.booking.message.complete.confirmAsk')
+                                    "
+                                    @confirm="changeStatus(scope.row, BookingStatus.DONE)"
+                                >
+                                    <template #reference>
+                                        <div>
+                                            <SelectIcon class="icon-class" />
+                                        </div>
+                                    </template>
+                                </el-popconfirm>
+                            </div>
+                            <div
+                                class="booking-canceled action-button"
+                                v-if="scope.row.status == BookingStatus.WAITING"
+                            >
+                                <el-popconfirm
+                                    :confirm-button-text="
+                                        $t('booking.booking.message.button.confirm')
+                                    "
+                                    :cancel-button-text="
+                                        $t('booking.booking.message.button.cancel')
+                                    "
+                                    icon-color="red"
+                                    :title="
+                                        $t('booking.booking.message.canceled.confirmAsk')
+                                    "
+                                    @confirm="
+                                        changeStatus(scope.row, BookingStatus.CANCELED)
+                                    "
+                                >
+                                    <template #reference>
+                                        <div>
+                                            <CloseBoldIcon class="icon-class" />
+                                        </div>
+                                    </template>
+                                </el-popconfirm>
+                            </div>
                         </div>
                         <div
-                            class="booking-change-table"
-                            :class="!scope.row.tablesRestaurant ? 'need-table' : ''"
+                            class="booking-change-table action-button"
+                            :class="
+                                !scope.row.tablesRestaurant ? 'need-select-table' : ''
+                            "
                             @click="openModal(scope.row)"
                             v-if="scope.row.status == BookingStatus.WAITING"
                         >
-                            <comp-icon :iconName="'dinning-table-small-icon'" />
+                            <img
+                                class="icon-select-table"
+                                :src="require('@/assets/icons/dinner-table.svg')"
+                            />
                         </div>
                     </div>
                 </template>
@@ -155,17 +177,28 @@
 import { mixins, Options } from 'vue-property-decorator';
 
 import { IBooking } from '../types';
-import CompIcon from '../../../components/CompIcon.vue';
 import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
 import { bookingService } from '@/modules/table-diagram/services/api.service';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { BookingStatus } from '../constants';
-
+import { billingService } from '@/modules/billing/services/api.services';
+import moment from 'moment';
+import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import i18n from '@/plugins/vue-i18n';
+import {
+    Select as SelectIcon,
+    CloseBold as CloseBoldIcon,
+} from '@element-plus/icons-vue';
 @Options({
     name: 'booking-table-component',
     components: {
-        CompIcon,
+        SelectIcon,
+        CloseBoldIcon,
     },
 })
 export default class BookingTable extends mixins(BookingMixins) {
@@ -177,11 +210,29 @@ export default class BookingTable extends mixins(BookingMixins) {
         bookingModule.getBookings();
     }
 
-    async changeStatus(id: number, status: BookingStatus): Promise<void> {
-        const response = await bookingService.update(id, {
+    async changeStatus(booking: IBooking, status: BookingStatus): Promise<void> {
+        let createBillingResponse;
+        if (status === BookingStatus.DONE) {
+            createBillingResponse = await billingService.create({
+                customerName: booking?.nameCustomer || '',
+                customerPhone: booking?.phone || '',
+                tableId: booking?.tablesRestaurant?.id || '',
+                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
+                billingStatus: BillingStatus.EATING,
+            } as IBillingCreate);
+
+            if (!createBillingResponse?.success) {
+                showErrorNotificationFunction(createBillingResponse?.message as string);
+                return;
+            }
+        }
+        const response = await bookingService.update(booking.id, {
             status: status,
         });
         if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('booking.booking.message.update.success'),
+            );
             bookingModule.getBookings();
             tableDiagramModule.setCanChosenTable(false);
         }
@@ -209,56 +260,22 @@ export default class BookingTable extends mixins(BookingMixins) {
 .header-options-table {
     padding: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    .input-search-booking {
-        width: 200px;
-    }
-    .pagination-group {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        .page-size-dropdown {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            width: fit-content;
-            padding: 8px 10px 8px 22px;
-            border: 2px solid #d0d0d0;
-            .text-dropdown {
-                color: #8c8c8c;
-                margin-right: 10px;
-            }
-        }
-    }
 }
-.booking-table-data {
-    .booking__table__action {
+.booking__table__action {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 18%;
+    .status-btn-group {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-around;
-        margin: 0 18%;
-        :hover {
-            border-radius: 5px;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            cursor: pointer;
-        }
-
-        .need-table {
-            width: 50px;
-            border: 2px solid rgb(255, 21, 21);
-            border-radius: 8px;
-        }
-
-        .booking-change-table:hover {
-            width: 50px;
-            border: 2px solid rgb(21, 239, 255);
-        }
-
+        justify-content: space-evenly;
+        width: 100%;
         .booking-done:hover {
             color: green;
             border: 2px solid rgb(3, 180, 3);
@@ -269,5 +286,33 @@ export default class BookingTable extends mixins(BookingMixins) {
             border: 2px solid rgb(235, 0, 0);
         }
     }
+
+    .need-select-table {
+        border: 2px solid rgb(255, 21, 21);
+        border-radius: 5px;
+    }
+
+    .booking-change-table {
+        margin: 2px;
+        padding: 5px;
+        &:hover {
+            border: 2px solid rgb(21, 239, 255);
+        }
+
+        .icon-select-table {
+            height: 20px;
+        }
+    }
+}
+
+.icon-class {
+    height: 20px;
+    width: 20px;
+}
+
+.action-button {
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid 2px #fff;
 }
 </style>

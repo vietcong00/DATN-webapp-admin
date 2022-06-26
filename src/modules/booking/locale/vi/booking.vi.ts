@@ -1,4 +1,19 @@
 export default {
+    bookingDialog: {
+        titleCreate: 'Tạo mới đặt bàn',
+        titleUpdate: 'Cập nhật đặt bàn',
+    },
+    button: {
+        cancel: 'Hủy',
+        submit: 'Xác nhận',
+    },
+    bookingForm: {
+        status: 'Trạng thái',
+        nameCustomer: 'Tên khách hàng',
+        phone: 'Số điện thoại',
+        arrivalTime: 'Thời gian tới',
+        numberPeople: 'Số người',
+    },
     bookingTable: {
         header: {
             id: 'ID',
@@ -53,17 +68,24 @@ export default {
     message: {
         title: 'Thông báo',
         create: {
-            success: 'Tạo sự kiện thành công!',
+            success: 'Tạo đơn đặt bàn thành công!',
         },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhậtđoen đặt bàn thành công!',
         },
 
-        delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+        complete: {
+            confirmAsk: 'Bạn có chắc chắn muốn hoàn thành đơn đặt bàn này không?',
+        },
+
+        canceled: {
+            confirmAsk: 'Bạn có chắc chắn muốn hủy đơn đặt bàn này không?',
+        },
+
+        button: {
+            cancel: 'Hủy',
+            confirm: 'Xác nhận',
         },
     },
 

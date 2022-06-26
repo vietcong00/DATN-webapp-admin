@@ -30,15 +30,15 @@ export const SortOptions = [
 
 export const bookingStatusOptions = [
     {
-        label: 'booking.list.status.done',
+        label: 'booking.booking.status.done',
         value: BookingStatus.DONE,
     },
     {
-        label: 'booking.list.status.canceled',
+        label: 'booking.booking.status.canceled',
         value: BookingStatus.CANCELED,
     },
     {
-        label: 'booking.list.status.waiting',
+        label: 'booking.booking.status.waiting',
         value: BookingStatus.WAITING,
     },
 ];

@@ -36,6 +36,15 @@ export interface IBilling {
     note: string;
 }
 
+export interface IBillingCreate {
+    id?: number | undefined;
+    customerName: string | undefined;
+    customerPhone: string | undefined;
+    tableId: number | undefined;
+    billingStatus: BillingStatus | undefined;
+    arrivalTime: string | Date;
+}
+
 export interface IBillingUpdate {
     id?: number | undefined;
     customerName: string | undefined;

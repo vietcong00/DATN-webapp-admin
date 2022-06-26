@@ -3,6 +3,7 @@
         <template #table-columns>
             <el-table-column
                 prop="food.name"
+                align="left"
                 :label="$t('chef.chef.foodBillingTable.food')"
             >
                 <template #default="scope">
@@ -12,6 +13,7 @@
             <el-table-column
                 prop="billing.table.name"
                 :label="$t('chef.chef.foodBillingTable.table')"
+                width="120"
             >
                 <template #default="scope">
                     {{ scope.row.billing?.table?.name }}
@@ -20,6 +22,7 @@
             <el-table-column
                 prop="food.category.name"
                 :label="$t('chef.chef.foodBillingTable.category')"
+                width="120"
             >
                 <template #default="scope">
                     {{ scope.row.food?.category?.name }}
@@ -28,6 +31,8 @@
             <el-table-column
                 prop="food.category.priority"
                 :label="$t('chef.chef.foodBillingTable.priority')"
+                align="center"
+                width="120"
             >
                 <template #default="scope">
                     {{ scope.row.food?.category?.priority }}
@@ -35,7 +40,8 @@
             </el-table-column>
             <el-table-column
                 prop="quantity"
-                width="200"
+                align="center"
+                width="100"
                 :label="$t('chef.chef.foodBillingTable.selectedCount')"
             >
                 <template #default="scope">
@@ -44,33 +50,8 @@
             </el-table-column>
             <el-table-column
                 prop="quantity"
-                width="250"
-                :label="$t('chef.chef.foodBillingTable.selectedCount')"
-            >
-                <template #default="scope">
-                    <InputCountFood
-                        v-model:value="scope.row.processingCount"
-                        :max="scope.row.selectedCount"
-                        :textLabel="'info'"
-                        :label="$t('chef.chef.foodBillingTable.processingCount')"
-                    />
-                    <InputCountFood
-                        v-model:value="scope.row.doneCount"
-                        :max="scope.row.selectedCount"
-                        :textLabel="'success'"
-                        :label="$t('chef.chef.foodBillingTable.doneCount')"
-                    />
-                    <InputCountFood
-                        v-model:value="scope.row.canceledCount"
-                        :max="scope.row.selectedCount"
-                        :textLabel="'danger'"
-                        :label="$t('chef.chef.foodBillingTable.canceledCount')"
-                    />
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="quantity"
-                width="200"
+                width="120"
+                align="center"
                 :label="$t('chef.chef.foodBillingTable.remainingCount')"
             >
                 <template #default="scope">
@@ -80,6 +61,67 @@
                         scope.row.doneCount -
                         scope.row.canceledCount
                     }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="quantity"
+                align="center"
+                width="260"
+                :label="$t('chef.chef.foodBillingTable.cook')"
+            >
+                <template #default="scope">
+                    <InputCountFood
+                        v-model:value="scope.row.processingCount"
+                        :max="
+                            scope.row.selectedCount -
+                            scope.row.doneCount -
+                            scope.row.canceledCount
+                        "
+                        :type="'processing'"
+                        :label="$t('chef.chef.foodBillingTable.processingCount')"
+                    />
+                    <InputCountFood
+                        v-model:value="scope.row.doneCount"
+                        :max="
+                            scope.row.selectedCount -
+                            scope.row.processingCount -
+                            scope.row.canceledCount
+                        "
+                        :type="'done'"
+                        :label="$t('chef.chef.foodBillingTable.doneCount')"
+                    />
+                    <InputCountFood
+                        v-model:value="scope.row.canceledCount"
+                        :max="
+                            scope.row.selectedCount -
+                            scope.row.processingCount -
+                            scope.row.doneCount
+                        "
+                        :type="'canceled'"
+                        :label="$t('chef.chef.foodBillingTable.canceledCount')"
+                    />
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="quantity"
+                align="center"
+                width="100"
+                :label="$t('chef.chef.foodBillingTable.action')"
+            >
+                <template #default="scope">
+                    <el-button
+                        type="primary"
+                        @click="
+                            saveCookProcessingCount(
+                                scope.row.id,
+                                scope.row.selectedCount,
+                                scope.row.processingCount,
+                                scope.row.doneCount,
+                                scope.row.canceledCount,
+                            )
+                        "
+                        >{{ $t('chef.chef.foodBillingTable.button.save') }}</el-button
+                    >
                 </template>
             </el-table-column>
         </template>
@@ -93,6 +135,14 @@ import { IFoodBilling } from '../types';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { chefModule } from '../store';
 import InputCountFood from './InputCountFood.vue';
+import { foodBillingApiService } from '@/modules/billing/services/api.services';
+import {
+    showSuccessNotificationFunction,
+    showErrorNotificationFunction,
+    showConfirmPopUpFunction,
+} from '@/utils/helper';
+import { ElLoading } from 'element-plus';
+import i18n from '@/plugins/vue-i18n';
 
 @Options({
     components: {
@@ -102,6 +152,44 @@ import InputCountFood from './InputCountFood.vue';
 export default class ChefTable extends mixins(UtilMixins) {
     get foodBillingTable(): IFoodBilling[] {
         return chefModule.foodBillingList;
+    }
+
+    async saveCookProcessingCount(
+        id: number,
+        selectedCount: number,
+        processingCount: number,
+        doneCount: number,
+        canceledCount: number,
+    ): Promise<void> {
+        if (selectedCount === doneCount + canceledCount) {
+            const isConfirm = await showConfirmPopUpFunction(
+                i18n.global.t('chef.chef.message.confirm.confirmAsk') as string,
+                i18n.global.t('chef.chef.message.confirm.title') as string,
+                {},
+            );
+            if (!isConfirm) {
+                return;
+            }
+        }
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        const response = await foodBillingApiService.update(id, {
+            processingCount,
+            doneCount,
+            canceledCount,
+        });
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('chef.chef.message.updateSuccess'),
+            );
+            await chefModule.getFoodBillingList();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            await chefModule.getFoodBillingList();
+            loading.close();
+        }
     }
 }
 </script>
