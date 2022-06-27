@@ -8,29 +8,27 @@ export enum SHIFT {
 
 export interface IClosingRevenue {
     id: number;
-    shiftWork: SHIFT;
+    shift: SHIFT;
+    shiftLeaderId: number;
     shiftLeader: IUser;
     cashAtBeginningOfShift: number;
     billingRevenue: number;
-    importMoney: number;
-    exportMoney: number;
     cashAtEndingOfShift: number;
     bankingRevenue: number;
     differenceRevenue: number;
     note: string;
 }
 
-export interface IClosingRevenueCreateBody {
-    shiftWork: SHIFT | undefined;
+export interface IClosingRevenueUpdateBody {
+    id: number | undefined;
+    shift: SHIFT | undefined;
+    shiftLeaderId: number | undefined;
+    shiftLeader: IUser | undefined;
     cashAtBeginningOfShift: number | undefined;
     cashAtEndingOfShift: number | undefined;
     bankingRevenue: number | undefined;
     differenceRevenue: number | undefined;
     note: string | undefined;
-}
-
-export interface IClosingRevenueUpdateBody extends IClosingRevenueCreateBody {
-    id: number | undefined;
 }
 
 export interface IQueryStringClosingRevenue extends IQueryString {

@@ -1,9 +1,9 @@
-import { AcceptStatus } from './../modules/store/constants';
 import { AxiosResponse } from 'axios';
 import {
     WITH_DELETED_OPTION,
     OrderDirection,
     WITH_INACTIVE_OPTION,
+    AcceptStatus,
 } from '@/common/constants';
 import { Vue } from 'vue-class-component';
 import { Component } from 'vue';

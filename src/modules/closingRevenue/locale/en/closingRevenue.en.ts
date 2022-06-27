@@ -9,6 +9,7 @@ export default {
         cashAtBeginningOfShift: 'Cash at the Beginning of Shift',
         cashAtEndingOfShift: 'Cash at the End of Shift',
         bankingRevenue: 'Banking Revenue',
+        billingRevenue: 'Billing Revenue',
         differenceRevenue: 'Difference Revenue',
         note: 'Note',
         action: 'Actions',

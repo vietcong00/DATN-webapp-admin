@@ -29,7 +29,7 @@ export const SHIFT_OPTIONS = [
 ];
 
 export const validateClosingRevenueSchema = yup.object({
-    shiftWork: yup
+    shift: yup
         .string()
         .max(INPUT_TEXT_MAX_LENGTH)
         .oneOf(Object.values(SHIFT))
@@ -47,18 +47,6 @@ export const validateClosingRevenueSchema = yup.object({
         .max(INPUT_NUMBER_MAX_VALUE)
         .required()
         .label('billingRevenue'),
-    importMoney: yup
-        .number()
-        .min(INPUT_MONEY_MIN_VALUE)
-        .max(INPUT_NUMBER_MAX_VALUE)
-        .required()
-        .label('importMoney'),
-    exportMoney: yup
-        .number()
-        .min(INPUT_MONEY_MIN_VALUE)
-        .max(INPUT_NUMBER_MAX_VALUE)
-        .required()
-        .label('exportMoney'),
     cashAtEndingOfShift: yup
         .number()
         .min(INPUT_MONEY_MIN_VALUE)
@@ -71,11 +59,6 @@ export const validateClosingRevenueSchema = yup.object({
         .max(INPUT_NUMBER_MAX_VALUE)
         .required()
         .label('bankingRevenue'),
-    differenceRevenue: yup
-        .number()
-        .min(INPUT_MONEY_MIN_VALUE)
-        .max(INPUT_NUMBER_MAX_VALUE)
-        .required()
-        .label('differenceRevenue'),
+    differenceRevenue: yup.number().label('differenceRevenue'),
     note: yup.string().trim().required().max(INPUT_TEXT_MAX_LENGTH).label('note'),
 });

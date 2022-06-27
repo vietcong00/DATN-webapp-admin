@@ -9,8 +9,8 @@
             >
                 <template #default="scope">
                     {{
-                        scope.row.date
-                            ? parseDateTime(scope.row.date, YYYY_MM_DD_HYPHEN)
+                        scope.row.createdAt
+                            ? parseDateTime(scope.row.createdAt, YYYY_MM_DD_HYPHEN)
                             : ''
                     }}
                 </template>
@@ -22,24 +22,35 @@
                 <template #default="scope">
                     <div
                         :class="`badge status-field badge-md bg-${shiftBadge(
-                            scope.row.shiftWork,
+                            scope.row.shift,
                         )}`"
                     >
                         {{
                             $t(
-                                `closingRevenue.closingRevenue.shiftWork.${scope.row.shiftWork}`,
+                                `closingRevenue.closingRevenue.shiftWork.${scope.row.shift}`,
                             )
                         }}
                     </div>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="shiftLeader.name"
+                prop="shiftLeader.fullName"
                 :label="
                     $t('closingRevenue.closingRevenue.closingRevenueTable.shiftLeader')
                 "
                 width="150"
             />
+            <el-table-column
+                prop="billingRevenue"
+                :label="
+                    $t('closingRevenue.closingRevenue.closingRevenueTable.billingRevenue')
+                "
+                width="150"
+            >
+                <template #default="scope">
+                    {{ parseMoney(scope.row.billingRevenue) }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="cashAtBeginningOfShift"
                 :label="
@@ -89,7 +100,7 @@
                 <template #default="scope">
                     <div
                         :class="`badge status-field badge-md bg-${differenceRevenueBadge(
-                            scope.row.shiftWork,
+                            scope.row.shift,
                         )}`"
                     >
                         {{ parseMoney(scope.row.differenceRevenue) }}

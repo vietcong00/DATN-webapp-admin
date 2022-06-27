@@ -7,6 +7,7 @@ export default {
         shiftWork: 'Ca',
         shiftLeader: 'Trưởng ca',
         cashAtBeginningOfShift: 'Tiền mặt đầu ca',
+        billingRevenue: 'Doanh thu hóa đơn',
         cashAtEndingOfShift: 'Tiền mặt cuối ca',
         bankingRevenue: 'Doanh thu chuyển khoản',
         differenceRevenue: 'Chênh lệch doanh thu',

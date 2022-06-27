@@ -25,7 +25,13 @@ const initQueryString = {
     payerIds: [],
 };
 
-@Module({ dynamic: true, stateFactory: true, namespaced: true, store, name: 'report' })
+@Module({
+    dynamic: true,
+    stateFactory: true,
+    namespaced: true,
+    store,
+    name: 'closing-revenue',
+})
 class ClosingRevenueModule extends VuexModule {
     closingRevenueList: IClosingRevenue[] = [];
     totalClosingRevenueList = 0;

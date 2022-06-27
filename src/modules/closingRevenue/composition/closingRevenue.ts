@@ -1,7 +1,7 @@
+import { appService } from './../../../utils/app';
 import { closingRevenueModule } from './../store';
 import { useField, useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import { validateClosingRevenueSchema } from '../constants';
@@ -12,13 +12,13 @@ import {
     showSuccessNotificationFunction,
 } from '@/utils/helper';
 import i18n from '@/plugins/vue-i18n';
-import { IClosingRevenue, IClosingRevenueCreateBody } from '../types';
+import { IClosingRevenue, IClosingRevenueUpdateBody } from '../types';
 import { closingRevenueService } from '../services/closing-revenue.api.services';
 
 export function initData() {
     const { t } = useI18n();
     const initValues = {
-        shiftWork: undefined,
+        shift: undefined,
         shiftLeaderId: undefined,
         cashAtBeginningOfShift: undefined,
         cashAtEndingOfShift: undefined,
@@ -26,10 +26,7 @@ export function initData() {
         differenceRevenue: 0,
         note: '',
         billingRevenue: 0,
-        importMoney: 0,
-        exportMoney: 0,
     };
-    const isCreate = computed(() => !closingRevenueModule.selectedClosingRevenue?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
         validationSchema: validateClosingRevenueSchema,
@@ -37,32 +34,27 @@ export function initData() {
 
     const onSubmit = handleSubmit(async (values) => {
         const createBody = {
-            shiftWork: values.shiftWork,
+            shiftLeaderId: appService.getUser().id,
+            shift: values.shift,
             cashAtBeginningOfShift: values.cashAtBeginningOfShift,
             cashAtEndingOfShift: values.cashAtEndingOfShift,
             bankingRevenue: values.bankingRevenue,
             differenceRevenue: values.differenceRevenue,
             note: values.note,
-        } as IClosingRevenueCreateBody;
-        let response;
+        } as IClosingRevenueUpdateBody;
         const closingRevenueId = closingRevenueModule.selectedClosingRevenue?.id;
         const loading = ElLoading.service({
             target: '.closing-revenue-form',
         });
-        if (!isCreate.value) {
-            response = await closingRevenueService.update(
-                closingRevenueId as number,
-                createBody,
-            );
-        } else {
-            response = await closingRevenueService.create(createBody);
-        }
+        const response = await closingRevenueService.update(
+            closingRevenueId as number,
+            createBody,
+        );
+
         loading.close();
         if (response.success) {
             showSuccessNotificationFunction(
-                !isCreate.value
-                    ? t('menu.closingRevenue.message.update.success')
-                    : (t('menu.closingRevenue.message.create.success') as string),
+                t('menu.closingRevenue.message.update.success'),
             );
             closingRevenueModule.setIsShowClosingRevenueFormPopUp(false);
             closingRevenueModule.setClosingRevenueQueryString({
@@ -85,7 +77,7 @@ export function initData() {
             }
         }
     });
-    const { value: shiftWork } = useField('shiftWork');
+    const { value: shift } = useField('shift');
     const { value: shiftLeaderId } = useField('shiftLeaderId');
     const { value: cashAtBeginningOfShift } = useField('cashAtBeginningOfShift');
     const { value: cashAtEndingOfShift } = useField('cashAtEndingOfShift');
@@ -93,49 +85,35 @@ export function initData() {
     const { value: differenceRevenue } = useField('differenceRevenue');
     const { value: note } = useField('note');
     const { value: billingRevenue } = useField('billingRevenue');
-    const { value: importMoney } = useField('importMoney');
-    const { value: exportMoney } = useField('exportMoney');
 
     const openPopup = async () => {
-        if (!isCreate.value) {
-            const loading = ElLoading.service({ target: '.closing-revenue-form-popup' });
-            const closingRevenueDetail = (await closingRevenueService.getDetail(
-                closingRevenueModule.selectedClosingRevenue?.id || 0,
-            )) as IBodyResponse<IClosingRevenue>;
-            loading.close();
-            resetForm({
-                values: {
-                    shiftWork: closingRevenueDetail.data?.shiftWork,
-                    cashAtBeginningOfShift:
-                        closingRevenueDetail.data?.cashAtBeginningOfShift,
-                    cashAtEndingOfShift: closingRevenueDetail.data?.cashAtEndingOfShift,
-                    bankingRevenue: closingRevenueDetail.data?.bankingRevenue,
-                    differenceRevenue: closingRevenueDetail.data?.differenceRevenue,
-                    note: closingRevenueDetail.data?.note,
-                    billingRevenue: closingRevenueDetail.data?.billingRevenue | 0,
-                    importMoney: closingRevenueDetail.data?.importMoney | 0,
-                    exportMoney: closingRevenueDetail.data?.exportMoney | 0,
-                },
-            });
-        } else {
-            resetForm({
-                values: initValues,
-            });
-        }
+        const loading = ElLoading.service({ target: '.closing-revenue-form-popup' });
+        const closingRevenueDetail = (await closingRevenueService.getDetail(
+            closingRevenueModule.selectedClosingRevenue?.id || 0,
+        )) as IBodyResponse<IClosingRevenue>;
+        loading.close();
+        resetForm({
+            values: {
+                shift: closingRevenueDetail.data?.shift,
+                cashAtBeginningOfShift: closingRevenueDetail.data?.cashAtBeginningOfShift,
+                cashAtEndingOfShift: closingRevenueDetail.data?.cashAtEndingOfShift,
+                bankingRevenue: closingRevenueDetail.data?.bankingRevenue,
+                differenceRevenue: closingRevenueDetail.data?.differenceRevenue,
+                note: closingRevenueDetail.data?.note,
+                billingRevenue: closingRevenueDetail.data?.billingRevenue | 0,
+            },
+        });
     };
     return {
         errors,
-        shiftWork,
+        shift,
         shiftLeaderId,
         cashAtBeginningOfShift,
         billingRevenue,
-        importMoney,
-        exportMoney,
         cashAtEndingOfShift,
         bankingRevenue,
         differenceRevenue,
         note,
-        isCreate,
         validate,
         openPopup,
         onSubmit,

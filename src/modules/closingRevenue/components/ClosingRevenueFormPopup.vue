@@ -43,7 +43,7 @@
                     :label="
                         $t('closingRevenue.closingRevenue.closingRevenueForm.shiftWork')
                     "
-                    :error="translateYupError(form.errors.shiftWork)"
+                    :error="translateYupError(form.errors.shift)"
                 />
             </div>
             <div class="col-md-6">
@@ -77,16 +77,6 @@
                         )
                     "
                     :error="translateYupError(form.errors.billingRevenue)"
-                />
-                <BaseInputText
-                    name="exportMoney"
-                    class="readonly-input-text"
-                    :isReadonly="true"
-                    :value="parseMoney(form.exportMoney)"
-                    :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.exportMoney')
-                    "
-                    :error="translateYupError(form.errors.exportMoney)"
                 />
             </div>
             <div class="col-md-6">
@@ -122,16 +112,6 @@
                         $t('closingRevenue.closingRevenue.placeholder.bankingRevenue')
                     "
                     :error="translateYupError(form.errors.bankingRevenue)"
-                />
-                <BaseInputText
-                    name="importMoney"
-                    class="readonly-input-text"
-                    :isReadonly="true"
-                    :value="parseMoney(form.importMoney)"
-                    :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.importMoney')
-                    "
-                    :error="translateYupError(form.errors.importMoney)"
                 />
             </div>
             <div class="col-md-6">
@@ -202,6 +182,7 @@
                     >
                         <el-button
                             :disabled="isDisabledSaveButton"
+                            v-show="checkIsShiftLeaderOfClosingRevenue"
                             type="primary"
                             @click="onClickSaveButton()"
                         >
@@ -229,6 +210,19 @@ export default class ClosingRevenueFormPopup extends UtilMixins {
         return parseLanguageSelectOptions(SHIFT_OPTIONS);
     }
 
+    get checkIsShiftLeaderOfClosingRevenue(): boolean {
+        if (!closingRevenueModule.selectedClosingRevenue?.shiftLeaderId) {
+            return true;
+        }
+        if (
+            closingRevenueModule.selectedClosingRevenue?.shiftLeaderId ===
+            appService.getUser().id
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     form = setup(() => initData());
 
     get isDisabledSaveButton(): boolean {
@@ -243,28 +237,30 @@ export default class ClosingRevenueFormPopup extends UtilMixins {
         closingRevenueModule.setIsShowClosingRevenueFormPopUp(val);
     }
 
-    get fullNameShiftLeader(): string {
-        return appService.getUser().fullName || '';
+    get fullNameShiftLeader(): string | undefined {
+        return closingRevenueModule.selectedClosingRevenue?.shiftLeaderId
+            ? closingRevenueModule.selectedClosingRevenue?.shiftLeader?.fullName
+            : appService.getUser().fullName;
     }
 
     get calculateTotalInput(): number {
         return (
             parseFloat(this.form.cashAtBeginningOfShift as string) +
-            parseFloat(this.form.billingRevenue as string) +
-            parseFloat(this.form.exportMoney as string)
+            parseFloat(this.form.billingRevenue as string)
         );
     }
 
     get calculateTotalOutput(): number {
         return (
             parseFloat(this.form.cashAtEndingOfShift as string) +
-            parseFloat(this.form.bankingRevenue as string) +
-            parseFloat(this.form.importMoney as string)
+            parseFloat(this.form.bankingRevenue as string)
         );
     }
 
     get calculateDifference(): number {
-        return this.calculateTotalInput - this.calculateTotalOutput;
+        const diff = this.calculateTotalInput - this.calculateTotalOutput || 0;
+        this.form.differenceRevenue = diff;
+        return diff;
     }
 
     onClickCancel(): void {

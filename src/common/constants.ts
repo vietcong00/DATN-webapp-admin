@@ -316,3 +316,11 @@ export const I18nConfig = {
 };
 
 export const MAX_FILE_SIZE_IN_BYTE = 2097152; // 2MB = 2097152B
+
+export enum AcceptStatus {
+    APPROVE = 'APPROVE',
+    WAITING_APPROVE = 'WAITING_APPROVE',
+    REQUEST_CHECK_AGAIN = 'REQUEST_CHECK_AGAIN',
+    CHECKED_AGAIN = 'CHECKED_AGAIN',
+    REJECT = 'REJECT',
+}
