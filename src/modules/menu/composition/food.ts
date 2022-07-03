@@ -84,6 +84,8 @@ export function initData() {
             const foodDetail = (await foodService.getDetail(
                 menuModule.selectedFood?.id || 0,
             )) as IBodyResponse<IFood>;
+            menuModule.setFoodImgUrl(foodDetail?.data?.foodImg?.url as string);
+            menuModule.setUploadingFoodImgUrl(foodDetail?.data?.foodImg?.url as string);
             loading.close();
             resetForm({
                 values: {

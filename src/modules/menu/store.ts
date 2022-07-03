@@ -64,7 +64,7 @@ class MenuModule extends VuexModule {
 
     isDisabledSaveButton = false;
     foodImgUrl = '';
-
+    uploadingFoodImgUrl = '';
     categoryOptions: ISelectOptions[] = [];
 
     // GETTERS
@@ -143,6 +143,11 @@ class MenuModule extends VuexModule {
     }
 
     @Mutation
+    MUTATE_UPLOADING_FOOD_IMG_URL(url: string) {
+        this.uploadingFoodImgUrl = url;
+    }
+
+    @Mutation
     MUTATE_CATEGORY_OPTIONS(categoryOptions: ISelectOptions[]) {
         this.categoryOptions = categoryOptions;
     }
@@ -197,6 +202,11 @@ class MenuModule extends VuexModule {
     @Action
     setFoodImgUrl(url: string) {
         this.MUTATE_FOOD_IMG_URL(url);
+    }
+
+    @Action
+    setUploadingFoodImgUrl(url: string) {
+        this.MUTATE_UPLOADING_FOOD_IMG_URL(url);
     }
 
     // API Table

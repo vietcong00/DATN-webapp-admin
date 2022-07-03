@@ -37,6 +37,7 @@ import { chefModule } from '../store';
 export default class ChefPage extends mixins(UtilMixins) {
     isShowSearchBox = true;
     isToggleFilterForm = true;
+    interval: any;
 
     // check permission
     get isCanCreate(): boolean {
@@ -51,11 +52,6 @@ export default class ChefPage extends mixins(UtilMixins) {
 
     set keyword(value: string) {
         chefModule.foodBillingQueryString.keyword = value;
-    }
-
-    created(): void {
-        chefModule.clearFoodBillingQueryString();
-        this.fetchData();
     }
 
     async fetchData(): Promise<void> {
@@ -83,6 +79,16 @@ export default class ChefPage extends mixins(UtilMixins) {
             keyword: this.keyword?.trim(),
         });
         await this.getBillingList();
+    }
+
+    created(): void {
+        chefModule.clearFoodBillingQueryString();
+        this.fetchData();
+        this.interval = setInterval(() => this.fetchData(), 20000);
+    }
+
+    destroyed(): void {
+        clearInterval(this.interval);
     }
 }
 </script>

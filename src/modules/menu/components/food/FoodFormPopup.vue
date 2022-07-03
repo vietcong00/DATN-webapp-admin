@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowBookingFormPopUp"
+        v-model="isShowFoodFormPopUp"
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
@@ -22,10 +22,10 @@
                     isHorizontal="true"
                     name="avatar"
                     path="avatar"
-                    :reset="isShowBookingFormPopUp"
-                    :currentImageURL="avatarUrl"
+                    :reset="isShowFoodFormPopUp"
+                    :currentImageURL="foodImgUrl"
                     @set-avatar-id="setFoodImgId"
-                    @set-avatar-url="setFoodImgUrl"
+                    @set-avatar-url="setUploadingFoodImgUrl"
                 />
             </div>
             <div class="col-md-12">
@@ -100,16 +100,19 @@ export default class MaterialFormPopUp extends mixins(UtilMixins) {
         return menuModule.isDisabledSaveButton;
     }
 
-    get isShowBookingFormPopUp(): boolean {
+    get isShowFoodFormPopUp(): boolean {
         return menuModule.isShowFoodFormPopUp || false;
     }
 
-    set isShowBookingFormPopUp(val: boolean) {
+    set isShowFoodFormPopUp(val: boolean) {
         menuModule.setIsShowFoodFormPopUp(val);
     }
 
     get foodImgUrl(): string {
-        return menuModule.foodImgUrl;
+        return (
+            menuModule?.uploadingFoodImgUrl ||
+            require('@/assets/icons/avatar-default.png')
+        );
     }
 
     get categoryOptions(): ISelectOptions[] {
@@ -119,7 +122,7 @@ export default class MaterialFormPopUp extends mixins(UtilMixins) {
     form = setup(() => initData());
 
     async closePopup(): Promise<void> {
-        menuModule.setFoodImgUrl('');
+        menuModule.setUploadingFoodImgUrl('');
         menuModule.setIsShowFoodFormPopUp(false);
         menuModule.setFoodSelected(null);
         (this.form.resetForm as () => void)();
@@ -135,8 +138,8 @@ export default class MaterialFormPopUp extends mixins(UtilMixins) {
         this.form.foodImgId = fileId;
     }
 
-    setFoodImgUrl(url: string): void {
-        menuModule.setFoodImgUrl(url);
+    setUploadingFoodImgUrl(url: string): void {
+        menuModule.setUploadingFoodImgUrl(url);
     }
 }
 </script>

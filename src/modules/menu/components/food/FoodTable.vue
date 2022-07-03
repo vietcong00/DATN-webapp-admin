@@ -35,15 +35,6 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="image"
-                :label="$t('menu.food.foodTable.header.image')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.image) }}
-                </template>
-            </el-table-column>
-            <el-table-column
                 align="center"
                 prop="id"
                 :label="$t('menu.food.foodTable.header.actions')"

@@ -1,4 +1,5 @@
 import { IQueryString } from '@/common/types';
+import { IAvatar } from '../user/types';
 
 export interface ICategory {
     id: number;
@@ -22,6 +23,7 @@ export interface IFood {
     foodName: string;
     price: number;
     foodImgId?: number;
+    foodImg?: IAvatar | null;
     categoryId?: number;
 }
 
