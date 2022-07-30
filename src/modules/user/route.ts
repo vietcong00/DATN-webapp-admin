@@ -16,6 +16,15 @@ export default [
 
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.user',
+                            link: '/user',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.USER}_${PermissionActions.READ}`,
                         `${PermissionResources.USER}_${PermissionActions.CREATE}`,

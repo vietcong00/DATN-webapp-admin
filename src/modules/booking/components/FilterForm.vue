@@ -4,6 +4,8 @@
         @search="handleFilter"
         @reset="resetFilter"
         @keyup.enter="handleFilter"
+        :isShowCreateButton="isCanCreate"
+        @create="onClickButtonCreate"
     >
         <template #filter-title>
             <h5 class="filter-title">{{ $t('common.app.filterForm.search') }}</h5>
@@ -58,10 +60,11 @@ import { bookingStatusOptions } from '../constants';
 import { bookingModule } from '../store';
 import { IQueryStringBooking } from '../types';
 import { Prop, mixins } from 'vue-property-decorator';
-import { parseLanguageSelectOptions } from '@/utils/helper';
+import { checkUserHasPermission, parseLanguageSelectOptions } from '@/utils/helper';
 import { ISelectOptions } from '@/common/types';
 import moment from 'moment';
 import { BookingMixins } from '../mixins';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 
 export default class FilterForm extends mixins(BookingMixins) {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -79,6 +82,13 @@ export default class FilterForm extends mixins(BookingMixins) {
 
     get bookingStatusOptions(): ISelectOptions[] {
         return parseLanguageSelectOptions(bookingStatusOptions);
+    }
+
+    // check permission
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(bookingModule.userPermissions, [
+            `${PermissionResources.BOOKING}_${PermissionActions.CREATE}`,
+        ]);
     }
 
     async resetFilter(): Promise<void> {
@@ -113,6 +123,10 @@ export default class FilterForm extends mixins(BookingMixins) {
         await bookingModule.getBookings();
         loading.close();
     }
+
+    onClickButtonCreate(): void {
+        bookingModule.setIsShowBookingFormPopUp(true);
+    }
 }
 </script>
 
@@ -121,8 +135,8 @@ export default class FilterForm extends mixins(BookingMixins) {
     font-weight: bold;
     margin-bottom: 8px;
 }
-:deep(.form-group) {
-    margin-bottom: 0 !important;
+.form-group {
+    margin-bottom: 10px !important;
 }
 :deep(label) {
     font-size: 13px;

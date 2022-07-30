@@ -1,5 +1,12 @@
 <template>
-    <BaseTableLayout :data="bookingList" class="booking-table-data">
+    <BaseTableLayout
+        :data="bookingList"
+        class="booking-table-data"
+        :isHighlightCurrentRow="true"
+        v-model:selectedPage="selectedPage"
+        :totalItems="totalItems"
+        @handlePaginate="handlePaginate"
+    >
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -194,6 +201,8 @@ import {
     Select as SelectIcon,
     CloseBold as CloseBoldIcon,
 } from '@element-plus/icons-vue';
+import { ElLoading } from 'element-plus';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 @Options({
     name: 'booking-table-component',
     components: {
@@ -204,6 +213,18 @@ import {
 export default class BookingTable extends mixins(BookingMixins) {
     get bookingList(): IBooking[] {
         return bookingModule.bookingList;
+    }
+
+    get selectedPage(): number {
+        return bookingModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+    }
+
+    set selectedPage(value: number) {
+        bookingModule.bookingQueryString.page = value;
+    }
+
+    get totalItems(): number {
+        return bookingModule.totalBookings;
     }
 
     created(): void {
@@ -252,6 +273,19 @@ export default class BookingTable extends mixins(BookingMixins) {
             case BookingStatus.CANCELED:
                 return 'danger';
         }
+    }
+
+    async handlePaginate(): Promise<void> {
+        bookingModule.setBookingQueryString({ page: this.selectedPage });
+        this.getBookingList();
+    }
+
+    async getBookingList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await bookingModule.getBookings();
+        loading.close();
     }
 }
 </script>

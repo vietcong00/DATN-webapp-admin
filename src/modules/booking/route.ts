@@ -15,6 +15,15 @@ export default [
                 component: BookingPage,
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.booking',
+                            link: '/booking',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.BOOKING}_${PermissionActions.READ}`,
                         `${PermissionResources.BOOKING}_${PermissionActions.CREATE}`,

@@ -1,8 +1,10 @@
 <template>
     <BaseFilterFormLayout
-        :isToggleFilterForm="isToggleFilterForm"
         @search="state.applyFilter"
         @reset="state.clearFilter"
+        @keyup.enter="handleFilter"
+        :isShowCreateButton="isCanCreate"
+        @create="onClickButtonCreate"
     >
         <template #filter-title>
             <h5 class="filter-title">
@@ -76,18 +78,17 @@
 
 <script lang="ts">
 import { Options, setup } from 'vue-class-component';
-import { Prop, mixins } from 'vue-property-decorator';
+import { mixins } from 'vue-property-decorator';
 import { applyFilter, handleFilter } from '../composition/userList';
 import { ISelectOptions } from '@/common/types';
-import { parseLanguageSelectOptions } from '@/utils/helper';
+import { checkUserHasPermission, parseLanguageSelectOptions } from '@/utils/helper';
 import { GenderOptions, StatusOptions } from '../constants';
 import { userModule } from '../store';
 import { UtilMixins } from '@/mixins/utilMixins';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 
 @Options({})
 export default class FilterForm extends mixins(UtilMixins) {
-    @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
-
     get roleOptions(): Record<string, string | number>[] {
         return userModule.roleOptions;
     }
@@ -106,6 +107,17 @@ export default class FilterForm extends mixins(UtilMixins) {
 
     get positionOptions(): ISelectOptions[] {
         return this.getPositionOptions(userModule.userPositionList);
+    }
+
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(userModule.userPermissions, [
+            `${PermissionResources.USER}_${PermissionActions.CREATE}`,
+        ]);
+    }
+
+    onClickButtonCreate(): void {
+        userModule.setIsShowUserFormPopup(true);
+        userModule.setIsDisabledSaveButton(false);
     }
 
     state = setup(() => {

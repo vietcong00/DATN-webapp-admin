@@ -1,26 +1,34 @@
 <template>
     <div class="main-wrapper">
-        <Header />
-        <Sidebar @toggleSidebar="handleToggleSidebar" />
-        <!-- Page Wrapper -->
-        <div
-            name="slide-fade"
-            class="page-wrapper"
-            :class="isCollapse ? 'page-content-collapse' : 'page-content-expand'"
-        >
-            <!-- Page Content -->
-            <div class="content">
-                <router-view v-slot="{ Component }">
-                    <component :is="Component" />
-                </router-view>
-            </div>
-            <!-- /Page Content -->
-        </div>
-        <!-- /Page Wrapper -->
+        <el-container>
+            <el-aside :width="sidebarWidth"><Sidebar /></el-aside>
+            <el-container>
+                <el-header><Header /></el-header>
+                <el-main
+                    ><!-- Page Wrapper -->
+                    <div
+                        class="page-wrapper"
+                        :style="{
+                            overflowX: 'hidden',
+                        }"
+                    >
+                        <!-- Page Content -->
+                        <router-view v-slot="{ Component }">
+                            <component :is="Component" />
+                        </router-view>
+                        <!-- /Page Content -->
+                    </div>
+                    <!-- /Page Wrapper --></el-main
+                >
+            </el-container>
+        </el-container>
     </div>
 </template>
 
 <script lang="ts">
+import { SidebarWidth } from '@/common/constants';
+import { authModule } from '@/modules/auth/store';
+import { appModule } from '@/store/app';
 import { Options, Vue } from 'vue-class-component';
 import Header from './components/Header.vue';
 import Sidebar from './components/Sidebar.vue';
@@ -29,26 +37,50 @@ import Sidebar from './components/Sidebar.vue';
     components: { Header, Sidebar },
 })
 export default class MainLayout extends Vue {
-    isCollapse = false;
+    get sidebarWidth(): string {
+        if (this.openSidebar) {
+            return SidebarWidth.expand;
+        }
+        return SidebarWidth.collapse;
+    }
 
-    handleToggleSidebar(isCollapse: boolean): void {
-        this.isCollapse = isCollapse;
+    get openSidebar(): boolean {
+        return appModule.openSidebar;
+    }
+
+    async created(): Promise<void> {
+        await authModule.getProfile();
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.page-content-collapse {
-    margin-left: 64px;
+.el-aside {
+    transition: width 0.5s;
+    margin: 10px;
 }
-.page-content-expand {
-    margin-left: 260px;
+.el-container {
+    height: 100%;
+    .el-header {
+        height: 95px;
+        padding: 0px;
+        display: flex;
+        align-items: center;
+    }
+    .el-main {
+        padding: 0px;
+    }
+}
+
+.main-wrapper {
+    height: 100vh;
+    background-color: #f8f9fa;
 }
 .page-wrapper {
     left: 0;
-    padding-top: 64px;
     position: relative;
     transition: all 0.2s ease-in-out;
+    height: fit-content;
     @media only screen and (max-width: 991.98px) {
         margin-left: 0;
     }

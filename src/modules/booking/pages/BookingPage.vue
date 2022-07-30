@@ -1,24 +1,13 @@
 <template>
-    <div class="booking-list">
-        <BaseListPageHeader
-            @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.booking.pageName')"
-            :hasSortBox="true"
-            v-model:page="selectedPage"
-            :totalItems="totalBookings"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
-            @onPaginate="handlePaginate"
-        >
-            <template #sort-box-content>
-                <Sort />
-            </template>
-        </BaseListPageHeader>
-        <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <BookingTable />
-        <BookingFormPopup />
-        <ModalChosenTable v-show="isShowModalChosenTable" />
+    <div class="content-wrapper filter-wrapper">
+        <FilterForm />
     </div>
+
+    <div class="content-wrapper">
+        <BookingTable />
+    </div>
+    <BookingFormPopup />
+    <ModalChosenTable v-show="isShowModalChosenTable" />
 </template>
 
 <script lang="ts">
@@ -96,55 +85,14 @@ export default class BookingPage extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.img-item {
-    width: 75px;
-    height: 75px;
-    margin: 20px auto;
+.content-wrapper {
+    margin: 20px 25px;
+    padding: 30px 25px;
+    background-color: white;
+    border-radius: 15px;
 }
 
-.list-note-diagram {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    .note-item {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 10px;
-        .note-color {
-            width: 30px;
-            height: 30px;
-            margin-right: 20px;
-            border-radius: 5px;
-        }
-
-        .booked {
-            background: #ebff78;
-        }
-
-        .used {
-            background: #9eb3fa;
-        }
-
-        .not-enough {
-            opacity: 0.2;
-        }
-
-        .selected {
-            border: 1px solid #ff0000;
-        }
-    }
-}
-
-.list-table {
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    border-top: 1px solid #bebebe;
-    border-bottom: 1px solid #bebebe;
+.filter-wrapper {
+    margin-top: 0;
 }
 </style>

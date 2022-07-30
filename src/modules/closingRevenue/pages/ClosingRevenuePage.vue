@@ -1,26 +1,12 @@
 <template>
-    <div>
-        <BaseListPageHeader
-            @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('closingRevenue.closingRevenue.pageName')"
-            :totalItems="totalItems"
-            :createButtonText="$t('closingRevenue.closingRevenue.button.create')"
-            :hasSortBox="true"
-            v-model:page="selectedPage"
-            v-model:keyword="keyword"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
-            @onPaginate="handlePaginate"
-            @search="handleFilter"
-        >
-            <template #sort-box-content>
-                <ClosingRevenueSort />
-            </template>
-        </BaseListPageHeader>
-        <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <ClosingRevenueTable />
-        <ClosingRevenuePopup />
+    <div class="content-wrapper filter-wrapper">
+        <FilterForm />
     </div>
+
+    <div class="content-wrapper">
+        <ClosingRevenueTable />
+    </div>
+    <ClosingRevenuePopup />
 </template>
 
 <script lang="ts">
@@ -49,23 +35,11 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
     isShowSearchBox = true;
     isToggleFilterForm = true;
 
-    get totalItems(): number {
-        return closingRevenueModule.totalClosingRevenueList;
-    }
-
     // check permission
     get isCanCreate(): boolean {
         return checkUserHasPermission(closingRevenueModule.userPermissions, [
             `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
         ]);
-    }
-
-    get selectedPage(): number {
-        return closingRevenueModule.closingRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
-    }
-
-    set selectedPage(value: number) {
-        closingRevenueModule.closingRevenueQueryString.page = value;
     }
 
     get keyword(): string {
@@ -108,15 +82,21 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
         await this.getClosingRevenueList();
     }
 
-    async handlePaginate(): Promise<void> {
-        closingRevenueModule.setClosingRevenueQueryString({
-            page: this.selectedPage,
-        });
-        this.getClosingRevenueList();
-    }
-
     onClickButtonCreate(): void {
         closingRevenueModule.setIsShowClosingRevenueFormPopUp(true);
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.content-wrapper {
+    margin: 20px 25px;
+    padding: 30px 25px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.filter-wrapper {
+    margin-top: 0;
+}
+</style>

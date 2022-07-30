@@ -1,5 +1,11 @@
 <template>
-    <BaseTableLayout :data="closingRevenueList">
+    <BaseTableLayout
+        :data="closingRevenueList"
+        :isHighlightCurrentRow="true"
+        v-model:selectedPage="selectedPage"
+        :totalItems="totalItems"
+        @handlePaginate="handlePaginate"
+    >
         <template #table-columns>
             <el-table-column
                 prop="date"
@@ -165,6 +171,8 @@ import { checkUserHasPermission } from '@/utils/helper';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { closingRevenueModule } from '../store';
 import { IClosingRevenue, IClosingRevenueUpdateBody, SHIFT } from '../types';
+import { ElLoading } from 'element-plus';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 
 @Options({
     components: {
@@ -177,6 +185,18 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
 
     get closingRevenueList(): IClosingRevenue[] {
         return closingRevenueModule.closingRevenueList;
+    }
+
+    get totalItems(): number {
+        return closingRevenueModule.totalClosingRevenueList;
+    }
+
+    get selectedPage(): number {
+        return closingRevenueModule.closingRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
+    }
+
+    set selectedPage(value: number) {
+        closingRevenueModule.closingRevenueQueryString.page = value;
     }
 
     get isCanDelete(): boolean {
@@ -219,6 +239,21 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
                 return '';
         }
     }
+
+    async getClosingRevenueList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await closingRevenueModule.getClosingRevenueList();
+        loading.close();
+    }
+
+    async handlePaginate(): Promise<void> {
+        closingRevenueModule.setClosingRevenueQueryString({
+            page: this.selectedPage,
+        });
+        this.getClosingRevenueList();
+    }
 }
 </script>
 
@@ -228,24 +263,9 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
     justify-content: space-around;
     flex-wrap: nowrap;
 }
-.group-left {
-    justify-content: space-between;
-}
+
 .action-icon {
     height: 1em;
     width: 1em;
-}
-
-.billing-image {
-    text-decoration: underline;
-}
-
-.description {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    -webkit-box-orient: vertical;
 }
 </style>

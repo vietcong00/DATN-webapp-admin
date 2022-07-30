@@ -1,5 +1,11 @@
 <template>
-    <BaseTableLayout :data="categoryList">
+    <BaseTableLayout
+        :data="categoryList"
+        :isHighlightCurrentRow="true"
+        v-model:selectedPage="selectedPage"
+        :totalItems="totalItems"
+        @handlePaginate="handlePaginate"
+    >
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -90,6 +96,8 @@ import { checkUserHasPermission } from '@/utils/helper';
 import { ICategory, ICategoryUpdateBody } from '../../types';
 import { setupDelete } from '../../composition/category';
 import { setup } from 'vue-class-component';
+import { ElLoading } from 'element-plus';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 
 @Options({
     name: 'category-table-component',
@@ -106,6 +114,18 @@ export default class CategoryTable extends mixins(MenuMixins) {
         return menuModule.categoryList;
     }
 
+    get totalItems(): number {
+        return menuModule.totalCategories;
+    }
+
+    get selectedPage(): number {
+        return menuModule.categoryQueryString?.page || DEFAULT_FIRST_PAGE;
+    }
+
+    set selectedPage(value: number) {
+        menuModule.categoryQueryString.page = value;
+    }
+
     isCanDelete(): boolean {
         return checkUserHasPermission(menuModule.userPermissionsCategory, [
             `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
@@ -116,6 +136,19 @@ export default class CategoryTable extends mixins(MenuMixins) {
         return checkUserHasPermission(menuModule.userPermissionsCategory, [
             `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async getCategoryList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await menuModule.getCategories();
+        loading.close();
+    }
+
+    async handlePaginate(): Promise<void> {
+        menuModule.setCategoryQueryString({ page: this.selectedPage });
+        this.getCategoryList();
     }
 
     async onClickButtonEdit(updateCategory: ICategoryUpdateBody): Promise<void> {

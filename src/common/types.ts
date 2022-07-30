@@ -34,6 +34,7 @@ export interface IGetListResponse<T> {
 export interface ISidebar {
     icon?: string;
     iconComponent?: Component;
+    iconLink?: string;
     name?: string;
     to?: string;
     active?: boolean;

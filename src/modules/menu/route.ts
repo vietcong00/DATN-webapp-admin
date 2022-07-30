@@ -16,6 +16,15 @@ export default [
                 component: FoodPage,
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.menu',
+                            link: '/menu',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`,
                         `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,

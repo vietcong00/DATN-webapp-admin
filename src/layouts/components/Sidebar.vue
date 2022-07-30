@@ -1,15 +1,28 @@
 <template>
     <!-- <sidebar> -->
-    <div class="sidebar" :class="isCollapse ? 'mini-sidebar' : ''">
+    <div class="sidebar">
         <div class="sidebar-inner">
-            <SidebarDesktop :isCollapse="isCollapse" />
-            <SidebarMobile />
-        </div>
-        <div class="sidebar-minimizer" :class="{ collapse: isCollapse }">
-            <a class="toggle_btn" @click="toggleSidebar">
-                <ArrowRightIcon class="arrow-icon" v-if="isCollapse" />
-                <ArrowLeftIcon class="arrow-icon" v-else />
-            </a>
+            <!--Logo-->
+            <div class="logo-container">
+                <div class="logo">
+                    <img
+                        class="logo-image logo-square"
+                        src="@/assets/images/logo/logo-square.png"
+                        height="40"
+                        alt=""
+                        v-if="!openSidebar"
+                    />
+                    <img
+                        class="logo-image"
+                        src="@/assets/images/logo/logo-horizontal.png"
+                        height="40"
+                        alt=""
+                        v-if="openSidebar"
+                    />
+                </div>
+            </div>
+            <hr class="horizontal-line" />
+            <SidebarDesktop />
         </div>
     </div>
     <!-- </sidebar> -->
@@ -17,8 +30,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import {
-    ArrowLeft as ArrowLeftIcon,
-    ArrowRight as ArrowRightIcon,
     User as UserIcon,
     House as HouseIcon,
     Clock as ClockIcon,
@@ -29,9 +40,10 @@ import {
     Key as KeyIcon,
     Setting as SettingIcon,
     QuestionFilled as QuestionIcon,
+    Back as BackIcon,
 } from '@element-plus/icons-vue';
 import SidebarDesktop from './SidebarDesktop.vue';
-import SidebarMobile from './SidebarMobile.vue';
+import { appModule } from '@/store/app';
 
 @Options({
     components: {
@@ -45,119 +57,47 @@ import SidebarMobile from './SidebarMobile.vue';
         KeyIcon,
         SettingIcon,
         QuestionIcon,
-        ArrowLeftIcon,
-        ArrowRightIcon,
         SidebarDesktop,
-        SidebarMobile,
+        BackIcon,
     },
 })
 export default class SideBar extends Vue {
-    isCollapse = false;
-
-    toggleSidebar(): void {
-        this.isCollapse = !this.isCollapse;
-        this.$emit('toggleSidebar', this.isCollapse);
+    get openSidebar(): boolean {
+        return appModule.openSidebar;
     }
 }
 </script>
 <style lang="scss" scoped>
 .sidebar {
-    background-color: #ffffff;
+    height: 100%;
+    background-color: unset;
     overflow: hidden;
-    border-right: 1px solid #e0e0e0;
-    bottom: 0;
-    left: 0;
-    margin-top: 0;
-    position: fixed;
-    top: 64px;
-    transition: unset;
-    width: 260px;
-    z-index: map-get($map: $zIndex, $key: sideBar);
+    border-radius: 16px;
     height: auto;
     @media only screen and (max-width: 991.98px) {
-        margin-left: -260px;
+        background-color: #fff;
+        box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
     }
 }
 
-.collapse {
-    display: flex !important;
-    .toggle_btn {
-        margin: 0px !important;
-    }
-}
-.arrow-icon {
-    height: 1em;
-    width: 1em;
-}
-
-.sidebar-inner {
+.logo {
     display: flex;
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* width */
-    &::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey;
-        border-radius: 10px;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: rgb(180, 179, 179);
-        border-radius: 10px;
-    }
-    flex-direction: column;
-    height: calc(97vh - 98px);
-    transition: all 0.2s ease-in-out 0s;
-}
-
-.sidebar-minimizer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    position: sticky;
+    padding: 15px;
+    margin-left: 3px;
     align-items: center;
-    position: -webkit-sticky;
-    width: inherit;
-    cursor: pointer;
-    border: 0;
-    overflow: hidden;
-    background: white;
+    .logo-square {
+        margin-left: -1px;
+    }
 }
 
-:deep(.el-drawer__body) {
-    margin-top: 84px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-@media only screen and (min-width: 991px) {
-    .toggle_btn {
-        margin-right: 5px;
-        color: #212121;
-        float: left;
-        font-size: 26px;
-        height: 46px;
-        padding: 0 10px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        &:hover {
-            background-color: #ededed;
-            border-radius: 50px;
-        }
-    }
-    .mini-sidebar {
-        width: 64px;
-        .sidebar-minimizer {
-            justify-content: center;
-        }
-    }
+.horizontal-line {
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0)
+    );
+    background-color: transparent;
+    margin: 0px !important;
 }
 </style>

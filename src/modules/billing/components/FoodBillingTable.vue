@@ -1,5 +1,9 @@
 <template>
-    <BaseTableLayout :data="foodBillingTable">
+    <BaseTableLayout
+        :data="foodBillingTable"
+        :isHighlightCurrentRow="true"
+        :totalItems="foodBillingTable.length"
+    >
         <template #table-columns>
             <el-table-column
                 prop="food.name"

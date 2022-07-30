@@ -15,6 +15,15 @@ export default [
                 component: RoleListPage,
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.role',
+                            link: '/role',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.ROLE}_${PermissionActions.READ}`,
                         `${PermissionResources.ROLE}_${PermissionActions.CREATE}`,

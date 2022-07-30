@@ -1,28 +1,60 @@
 <template>
     <el-menu
+        v-if="sidebars.length"
         :default-openeds="activeHighlightMenu"
-        :collapse="isCollapse"
+        :collapse="!openSidebar"
         :unique-opened="true"
-        :collapse-transition="false"
+        :collapse-transition="true"
     >
         <template
             :key="['d', sidebarIndex].join('-')"
             v-for="(sidebar, sidebarIndex) in sidebars"
         >
+            <el-menu-item
+                :index="['d', sidebarIndex, Date.now()].join('-')"
+                :class="{
+                    'active-menu': isActiveMenu(sidebar),
+                    'collapsed-menu-item': openSidebar,
+                }"
+                v-if="!sidebar.children && sidebar?.onClick && hasPermission(sidebar)"
+                @click="sidebar.onClick"
+            >
+                <div class="wrap-icon">
+                    <component
+                        :is="sidebar.iconComponent"
+                        class="module-icon"
+                        v-if="sidebar.iconComponent"
+                    />
+                    <img :src="sidebar.iconLink" v-else class="module-icon" />
+                </div>
+                <template #title>
+                    <span class="menu-title">{{ $t(sidebar.name) }}</span>
+                </template>
+            </el-menu-item>
             <router-link
                 :to="sidebar.to"
-                v-if="!sidebar.children && hasPermission(sidebar)"
+                v-else-if="!sidebar.children && sidebar.to && hasPermission(sidebar)"
             >
                 <el-menu-item
                     :index="['d', sidebarIndex, Date.now()].join('-')"
                     :class="{
                         'active-menu': isActiveMenu(sidebar),
-                        'collapsed-menu-item': isCollapse,
+                        'collapsed-menu-item': openSidebar,
                     }"
                 >
-                    <component :is="sidebar.iconComponent" class="module-icon" />
+                    <div class="wrap-icon">
+                        <component
+                            :is="sidebar.iconComponent"
+                            class="module-icon"
+                            v-if="sidebar.iconComponent"
+                        />
+                        <img :src="sidebar.iconLink" v-else class="module-icon" />
+                    </div>
                     <template #title>
-                        <span>{{ $t(sidebar.name) }}</span>
+                        <span class="menu-title">{{ $t(sidebar.name) }}</span>
+                        <el-tag v-if="sidebar?.badge && sidebar?.badge() > 0">{{
+                            sidebar.badge()
+                        }}</el-tag>
                     </template>
                 </el-menu-item>
             </router-link>
@@ -30,13 +62,20 @@
                 v-if="sidebar.children && hasPermission(sidebar)"
                 :index="['d', sidebarIndex].join('-')"
                 :class="{
-                    'active-menu': isActiveParentMenu(sidebar),
-                    'collapsed-menu-item': isCollapse,
+                    'active-parent-menu': isActiveParentMenu(sidebar),
+                    'collapsed-menu-item': openSidebar,
                 }"
             >
                 <template #title>
-                    <component :is="sidebar.iconComponent" class="module-icon" />
-                    <span>{{ $t(sidebar.name) }}</span>
+                    <div class="wrap-icon">
+                        <component
+                            :is="sidebar.iconComponent"
+                            class="module-icon"
+                            v-if="sidebar.iconComponent"
+                        />
+                        <img :src="sidebar.iconLink" v-else class="module-icon" />
+                    </div>
+                    <span class="menu-title">{{ $t(sidebar.name) }}</span>
                 </template>
                 <el-menu-item-group>
                     <router-link
@@ -47,10 +86,11 @@
                         <el-menu-item
                             :index="['d', sidebarIndex, itemIndex].join('-')"
                             v-if="hasPermission(item)"
+                            class="child-menu-item"
                             :class="isActiveSubMenu(item)"
                         >
-                            <component :is="item.iconComponent" class="module-icon" />
-                            <span>{{ $t(item.name) }}</span>
+                            <div class="dot-active">.</div>
+                            <li>{{ $t(item.name) }}</li>
                         </el-menu-item>
                     </router-link>
                 </el-menu-item-group>
@@ -61,7 +101,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { sidebars as initSidebar } from '../menu';
-import { ISidebar } from '@/common/types';
 import {
     ArrowLeft as ArrowLeftIcon,
     ArrowRight as ArrowRightIcon,
@@ -76,9 +115,11 @@ import {
     Setting as SettingIcon,
     QuestionFilled as QuestionIcon,
 } from '@element-plus/icons-vue';
+
 import { checkPermission } from '@/utils/commonFunction';
 import { authModule } from '@/modules/auth/store';
-import { Prop } from 'vue-property-decorator';
+import { appModule } from '@/store/app';
+import { ISidebar } from '@/common/types';
 
 @Options({
     components: {
@@ -97,7 +138,9 @@ import { Prop } from 'vue-property-decorator';
     },
 })
 export default class SideBarDesktop extends Vue {
-    @Prop({ default: false }) isCollapse!: boolean;
+    get openSidebar(): boolean {
+        return appModule.openSidebar;
+    }
 
     get sidebars(): ISidebar[] {
         return initSidebar;
@@ -114,24 +157,15 @@ export default class SideBarDesktop extends Vue {
         const mainMenu: string[] = [];
 
         Object.values(menuObj).forEach((itemSubMenu: string[], index: number) => {
-            if (itemSubMenu?.includes(path)) mainMenu.push(`d-${index}`);
+            if (itemSubMenu?.includes(path)) {
+                mainMenu.push(`d-${index}`);
+            }
         });
         return mainMenu;
     }
 
-    toggleSidebar(): void {
-        this.isCollapse = !this.isCollapse;
-        this.$emit('toggleSidebar', this.isCollapse);
-    }
-
     isActiveMenu(value: ISidebar): boolean {
-        return value.to === `/${this.$route.path.split('/')[1]}`;
-    }
-
-    isActiveSubMenu(value: ISidebar): string {
-        const router = this.$router.currentRoute?.value?.name as string;
-        if (value.pageName === router) return 'active-menu';
-        else return '';
+        return this.$route.name === value.pageName;
     }
 
     isActiveParentMenu(items: ISidebar): boolean | undefined {
@@ -139,6 +173,12 @@ export default class SideBarDesktop extends Vue {
             ?.map((item: ISidebar) => item.to)
             .includes(this.$route.path);
         return isActive;
+    }
+
+    isActiveSubMenu(value: ISidebar): string {
+        const router = this.$router.currentRoute?.value?.name as string;
+        if (value.pageName === router) return 'active-sub-menu';
+        else return '';
     }
 
     hasPermission(item: ISidebar): boolean {
@@ -154,11 +194,20 @@ export default class SideBarDesktop extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.module-icon {
-    height: 2em;
-    width: 2em;
-    margin-right: 5px;
-    padding-right: 5px;
+.wrap-icon {
+    width: 32px;
+    height: 32px;
+    padding: 8px;
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0.3125rem 0.625rem 0 rgb(0 0 0 / 12%);
+    margin-right: 12px;
+    .module-icon {
+        height: 16px;
+        width: 16px;
+        border-radius: 8px;
+    }
 }
 
 .sidebar-inner {
@@ -166,6 +215,9 @@ export default class SideBarDesktop extends Vue {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    flex-direction: column;
+    height: calc(97vh - 98px);
+    transition: all 0.2s ease-in-out 0s;
     /* width */
     &::-webkit-scrollbar {
         width: 10px;
@@ -182,13 +234,12 @@ export default class SideBarDesktop extends Vue {
         background: rgb(180, 179, 179);
         border-radius: 10px;
     }
-    flex-direction: column;
-    height: calc(97vh - 98px);
-    transition: all 0.2s ease-in-out 0s;
     .el-menu {
         border: none;
-        padding-top: 20px;
+        padding-top: 10px;
         height: 100%;
+        background-color: unset;
+
         a {
             color: #212121;
             text-decoration: none;
@@ -207,54 +258,60 @@ export default class SideBarDesktop extends Vue {
         }
         .el-sub-menu {
             text-align: left;
+            margin-right: 6px;
         }
         .el-menu-item,
         .el-sub-menu {
-            color: #212121;
             a {
                 padding-left: 25px;
             }
             &.active-menu {
-                background-color: #e6f6ff;
-                &.is-opened {
-                    background-color: transparent;
+                color: #344767 !important;
+                background-color: unset;
+                font-weight: 600;
+                border-radius: 0.5rem;
+                padding: 10px 5px;
+                .wrap-icon {
+                    background-color: var(--el-color-primary);
+                    .module-icon {
+                        filter: invert(1);
+                    }
                 }
+            }
+            &.active-parent-menu {
+                :deep(.el-sub-menu__title) {
+                    color: #344767;
+                    background-color: #fff !important;
+                    font-weight: 600;
+                    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+                    border-radius: 0.5rem;
+                    padding: 10px 5px;
+                }
+                .wrap-icon {
+                    background-color: var(--el-color-primary);
+                    .module-icon {
+                        filter: invert(1);
+                    }
+                }
+            }
+            &:hover {
+                background-color: unset;
             }
         }
 
-        .el-menu-item {
-            &.active-menu {
-                color: #212121;
-                background-color: #e6f6ff;
-            }
-        }
-        .el-menu-item {
-            &:hover {
-                color: #212121;
-                background-color: #ededed;
-            }
-        }
         .el-menu-item,
         .el-sub-menu__title {
             text-align: left;
-            height: 40px;
             line-height: 40px;
+            margin: 0px 6px;
             i {
                 font-size: 22px;
                 padding-right: 10px;
                 color: #212121;
             }
         }
-        :deep(.el-sub-menu__title) {
-            height: 40px;
-            line-height: 40px;
-            &:hover {
-                color: #212121;
-                background-color: #ededed;
-            }
-        }
         &.el-menu--collapse {
-            padding-top: 20px;
+            padding-top: 10px;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -265,8 +322,8 @@ export default class SideBarDesktop extends Vue {
         }
         ul {
             .el-menu-item {
-                color: #212121;
                 padding-left: 15px !important;
+                margin-left: 1px;
             }
         }
         :deep(.el-sub-menu__icon-arrow) {
@@ -275,6 +332,24 @@ export default class SideBarDesktop extends Vue {
         :deep(.is-opened .el-sub-menu__icon-arrow) {
             transform: rotate(0);
         }
+        @media only screen and (max-width: 991.98px) {
+            background-color: #fff;
+            box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+        }
+    }
+}
+
+.active-sub-menu.child-menu-item {
+    color: rgb(58, 65, 111) !important;
+    font-weight: 600;
+    li::marker {
+        content: '';
+    }
+    .dot-active {
+        font-size: 60px;
+        margin-bottom: 40px;
+        margin-left: -19px;
+        margin-right: 19px;
     }
 }
 
@@ -294,20 +369,62 @@ export default class SideBarDesktop extends Vue {
             &:not(:last-child) {
                 margin-bottom: 5px;
             }
+            li::marker {
+                content: '';
+            }
+            .dot-active {
+                display: none;
+            }
         }
         .el-menu-item-group {
+            a {
+                text-decoration: unset;
+            }
             :deep(.el-menu-item-group__title) {
                 display: none !important;
             }
         }
     }
 }
+
+.child-menu-item {
+    height: 35px !important;
+    color: rgba(58, 65, 111, 0.5) !important;
+    .dot-active {
+        font-size: 50px;
+        margin-bottom: 30px;
+        margin-left: -17px;
+        margin-right: 21px;
+    }
+}
+
+.el-menu-item {
+    padding-left: 15px !important;
+}
+.el-sub-menu {
+    padding-left: 5px !important;
+    :deep(.el-sub-menu__title) {
+        padding-left: 15px !important;
+        margin-left: 1px;
+        &:hover {
+            background-color: unset !important;
+        }
+    }
+}
+
+:deep(.el-menu--inline) {
+    background-color: unset !important;
+}
+
 :deep(.el-drawer__body) {
     margin-top: 84px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+:deep(.el-menu-item .el-menu-tooltip__trigger) {
+    padding-left: 15px;
+}
 .collapsed-menu-item {
     align-items: center;
     :deep(.el-tooltip__trigger) {
@@ -319,5 +436,8 @@ export default class SideBarDesktop extends Vue {
         margin: 0 !important;
         padding: 0 !important;
     }
+}
+.el-tag {
+    margin-left: 5px;
 }
 </style>

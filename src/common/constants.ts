@@ -10,6 +10,11 @@ export const INPUT_MONEY_MIN_VALUE = 0;
 // max size upload file 10 * 1024 * 1024 = 10485760
 export const MAX_SIZE_FILE = 10485760;
 
+export const SidebarWidth = {
+    expand: '230px',
+    collapse: '74px',
+};
+
 export const INTEGER_ALLOW_CODES = [
     // Character 0-9  in Numpad
     'Numpad0',
@@ -167,6 +172,10 @@ export const Order = {
     },
 };
 
+export interface IELColumnSort {
+    prop: string;
+    order: OrderDirection;
+}
 // eslint-disable-next-line no-useless-escape
 export const MIN_DATE_PICKER = '1800-01-01 00:00:00';
 

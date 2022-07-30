@@ -16,6 +16,15 @@ export default [
 
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.billing',
+                            link: '/billing',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.BILLING}_${PermissionActions.READ}`,
                         `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,

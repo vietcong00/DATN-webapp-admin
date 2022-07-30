@@ -95,4 +95,22 @@ export default {
         interviewAt: 'interview at',
         from: 'send from',
     },
+
+    filterForm: {
+        reset: 'Reset',
+        search: 'Search',
+        create: 'Create',
+    },
+
+    breadcrumb: {
+        home: 'Home',
+        dashboard: 'Dashboard',
+        user: 'User',
+        tableDiagram: 'Table Diagram',
+        booking: 'Booking',
+        menu: 'Menu',
+        billing: 'Billing',
+        closingRevenue: 'Closing Revenue',
+        role: 'Role',
+    },
 };

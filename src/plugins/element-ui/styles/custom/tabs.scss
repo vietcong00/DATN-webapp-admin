@@ -1,27 +1,33 @@
-@import '../../../../assets/styles/_variables.scss';
-
-.el-tabs__header {
-    margin: 0;
-    background-color: $--color-gray-200;
+.el-tabs--card > .el-tabs__header .el-tabs__nav {
+    border: none;
 }
+.el-tabs__nav {
+    display: flex;
+    .el-tabs__item {
+        border: none !important;
+        margin: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-.el-tabs--border-card {
-    .el-tabs__content {
-        padding: 15px 0px !important;
+        &:hover {
+            color: rgb(52, 71, 103);
+        }
     }
 }
-.el-table__header-wrapper {
-    .el-table__header {
-        width: 100% !important;
-    }
+
+.el-tabs__item.is-active {
+    border-radius: 1rem;
+    color: rgb(52, 71, 103) !important;
+    outline: 3px solid rgba(52, 71, 103, 0.02) !important;
+    background-color: #ffffff;
+    box-sizing: border-box;
 }
+
+.el-tabs--card > .el-tabs__header {
+    border: none;
+}
+
 .el-tabs__nav-scroll {
-    margin-left: 20px !important;
-    .el-tabs__nav > .el-tabs__active-bar {
-        background-color: rgb(255, 196, 0) !important;
-        height: 4px !important;
-    }
-    .el-tabs__nav > .el-tabs__item {
-        color: black !important;
-    }
+    padding: 5px 0;
 }

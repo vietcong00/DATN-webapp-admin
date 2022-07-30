@@ -1,5 +1,17 @@
 <template>
-    <div class="base-table-layout">
+    <div class="table-layout">
+        <div class="block pagination-container" v-if="totalPages > 1 && isShowPagination">
+            <el-pagination
+                :hide-on-single-page="false"
+                layout="prev, pager, next"
+                :page-size="pageSize"
+                :total="totalItems"
+                v-model:currentPage="currentPage"
+                popper-class="pagination-select"
+                @current-change="handlePaginate"
+            >
+            </el-pagination>
+        </div>
         <el-table
             header-row-class-name="table-header"
             :data="data"
@@ -9,28 +21,36 @@
             :border="border"
             :stripe="stripe"
             :cell-style="cellStyle"
-            @cell-click="handleCellClick"
-            :max-height="400"
+            :max-height="680"
+            @sort-change="sortChange"
+            @row-click="handleRowClick"
+            @selection-change="handleSelectionChange"
             fit
+            v-if="totalItems > 0"
+            ref="refTable"
         >
             <slot name="table-columns" />
         </el-table>
+        <BaseEmptyData v-else />
     </div>
 </template>
 
 <script lang="ts">
-import { Prop, Vue } from 'vue-property-decorator';
+import { IELColumnSort, LIMIT_PER_PAGE } from '@/common/constants';
+import { TableRefs } from 'element-plus/es/components/table/src/table/defaults';
+import { Model, Prop, Vue, Watch } from 'vue-property-decorator';
 
 export default class TableLayout extends Vue {
     @Prop({
         default: {
-            fontWeight: 600,
-            backgroundColor: '#f5f5f5',
-            padding: '8px',
+            fontWeight: 700,
+            fontSize: '14px',
+            cursor: 'pointer',
         },
     })
     readonly headerStyle!: Record<string, string>;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Prop({ default: null }) readonly data!: any;
     @Prop({
         default: '',
@@ -41,6 +61,7 @@ export default class TableLayout extends Vue {
     @Prop({ default: false }) readonly stripe!: boolean;
     @Prop({ default: null }) readonly cellStyle!: unknown;
     @Prop({ default: null }) readonly maxHeight!: string;
+    @Prop({ default: true }) readonly isShowPagination!: boolean;
     @Prop({
         default: {
             rowspan: 0,
@@ -48,12 +69,46 @@ export default class TableLayout extends Vue {
         },
     })
     readonly objectSpanMethod!: unknown;
+
+    @Prop({ default: 0 }) readonly totalItems!: number;
+    pageSize = LIMIT_PER_PAGE;
+
+    @Model('selectedPage', { type: Number }) currentPage!: number;
+
+    @Watch('totalPages')
+    onChangeData() {
+        if (this.$refs.refTable) {
+            (this.$refs.refTable as TableRefs).setScrollLeft(0);
+        }
+        this.currentPage = 1;
+    }
+
+    get totalPages() {
+        return Math.ceil(this.totalItems / this.pageSize);
+    }
+
+    sortChange(column: IELColumnSort): void {
+        this.$emit('sort-change', column);
+    }
+
+    handlePaginate(pageNumber: number): void {
+        (this.$refs.refTable as TableRefs).setScrollLeft(0);
+        this.$emit('handlePaginate', pageNumber);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleRowClick(row: any): void {
+        this.$emit('row-click', row);
+    }
+
+    handleSelectionChange(row: unknown): void {
+        this.$emit('selection-change', row);
+    }
 }
 </script>
 
 <style scoped lang="scss">
-.base-table-layout {
-    display: flex;
+.table-layout {
     align-items: center;
     min-height: 100%;
     overflow: hidden;
@@ -78,28 +133,10 @@ export default class TableLayout extends Vue {
         width: 100% !important;
     }
 }
-:deep(.table-header > th) {
-    background-color: $--color-gray-200 !important;
-}
-:deep(.el-table__body tr.hover-row > td.el-table__cell) {
-    background-color: #ffffff;
-}
-:deep(.hover-row > .el-table-fixed-column--left) {
-    background-color: #ffffff !important;
-}
-:deep(.hover-row > .el-table-fixed-column--right) {
-    background-color: #ffffff !important;
-}
-:deep(.el-table-fixed-column--left) {
-    background: #fafafa !important;
-}
-:deep(.el-table-fixed-column--right) {
-    background: #fafafa !important;
-}
-:deep(.el-table tr) {
-    background: transparent !important;
-}
-:deep(.el-table) {
-    background-color: transparent !important;
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 </style>

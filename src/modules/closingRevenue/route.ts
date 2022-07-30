@@ -16,6 +16,15 @@ export default [
 
                 meta: {
                     requiresAuth: true,
+                    breadcrumb: [
+                        {
+                            text: 'common.common.breadcrumb.home',
+                        },
+                        {
+                            text: 'common.common.breadcrumb.closingRevenue',
+                            link: '/closing-revenue',
+                        },
+                    ],
                     requiredPermissions: [
                         `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
                         `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,

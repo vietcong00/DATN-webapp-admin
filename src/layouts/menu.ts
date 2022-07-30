@@ -1,20 +1,10 @@
 import { PageName } from '@/common/constants';
 import { ISidebar } from '@/common/types';
-import {
-    User as UserIcon,
-    House as HouseIcon,
-    Printer as PrinterIcon,
-    Key as KeyIcon,
-    Money as MoneyIcon,
-    KnifeFork as KnifeForkIcon,
-    Dish as DishIcon,
-    Calendar as CalendarIcon,
-    Grid as GridIcon,
-} from '@element-plus/icons-vue';
+
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 // start dashboardGroup
 const dashboard: ISidebar = {
-    iconComponent: HouseIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.dashboard',
     active: true,
     to: '/dashboard',
@@ -24,7 +14,7 @@ const dashboard: ISidebar = {
 
 // start user group
 const userMenu: ISidebar = {
-    iconComponent: UserIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.user.title',
     to: '/user',
     active: false,
@@ -38,7 +28,7 @@ const userMenu: ISidebar = {
 };
 
 const billing: ISidebar = {
-    iconComponent: PrinterIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.billing.title',
     active: false,
     to: '/billing',
@@ -52,7 +42,7 @@ const billing: ISidebar = {
 };
 
 const roleMenu: ISidebar = {
-    iconComponent: KeyIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.role.title',
     active: false,
     to: '/role',
@@ -66,7 +56,7 @@ const roleMenu: ISidebar = {
 };
 
 const tableDiagram: ISidebar = {
-    iconComponent: GridIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.tableDiagram.title',
     active: false,
     to: '/table-diagram',
@@ -78,7 +68,7 @@ const tableDiagram: ISidebar = {
 };
 
 const booking: ISidebar = {
-    iconComponent: CalendarIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.booking.title',
     active: false,
     to: '/booking',
@@ -91,7 +81,7 @@ const booking: ISidebar = {
 };
 
 const menuMenu: ISidebar = {
-    iconComponent: DishIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.menu.title',
     active: false,
     children: [
@@ -123,7 +113,7 @@ const menuMenu: ISidebar = {
 };
 
 const closingRevenueMenu: ISidebar = {
-    iconComponent: MoneyIcon,
+    iconLink: require('@/assets/icons/sidebar/user.svg'),
     name: 'common.app.menu.closingRevenue.title',
     to: '/closing-revenue',
     active: false,
@@ -136,18 +126,6 @@ const closingRevenueMenu: ISidebar = {
     ],
 };
 
-const chef: ISidebar = {
-    iconComponent: KnifeForkIcon,
-    name: 'common.app.menu.chef.title',
-    active: false,
-    to: '/chef',
-    pageName: PageName.CHEF_PAGE,
-    requiredPermissions: [
-        `${PermissionResources.CHEF}_${PermissionActions.READ}`,
-        `${PermissionResources.CHEF}_${PermissionActions.UPDATE}`,
-    ],
-};
-
 export const sidebars = [
     dashboard,
     userMenu,
@@ -157,5 +135,4 @@ export const sidebars = [
     billing,
     closingRevenueMenu,
     roleMenu,
-    chef,
 ];

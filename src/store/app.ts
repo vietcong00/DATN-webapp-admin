@@ -5,13 +5,13 @@ import { SupportLanguage } from '@/common/constants';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'app' })
 class AppModule extends VuexModule {
-    isShowMobileSidebar = false;
+    openSidebar = true;
     isShowNetworkError = false;
     selectedLanguage = appService.getLang();
 
     @Action
-    toggleMobileSidebar(): void {
-        this.SET_IS_SHOW_MOBILE_SIDEBAR(!this.isShowMobileSidebar);
+    setOpenSidebar(value: boolean) {
+        this.MUTATE_SET_OPEN_SIDEBAR(value);
     }
 
     @Action
@@ -21,8 +21,8 @@ class AppModule extends VuexModule {
     // GETTERS
 
     @Mutation
-    SET_IS_SHOW_MOBILE_SIDEBAR(value: boolean): void {
-        this.isShowMobileSidebar = value;
+    MUTATE_SET_OPEN_SIDEBAR(value: boolean) {
+        this.openSidebar = value;
     }
 
     @Mutation

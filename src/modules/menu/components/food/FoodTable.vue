@@ -1,5 +1,11 @@
 <template>
-    <BaseTableLayout :data="foodList">
+    <BaseTableLayout
+        :data="foodList"
+        :isHighlightCurrentRow="true"
+        v-model:selectedPage="selectedPage"
+        :totalItems="totalItems"
+        @handlePaginate="handlePaginate"
+    >
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -90,6 +96,8 @@ import { checkUserHasPermission } from '@/utils/helper';
 import { IFood, IFoodUpdateBody } from '../../types';
 import { setupDelete } from '../../composition/food';
 import { setup } from 'vue-class-component';
+import { ElLoading } from 'element-plus';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 
 @Options({
     name: 'material-table-component',
@@ -104,6 +112,18 @@ export default class MaterialTable extends mixins(MenuMixins) {
 
     get foodList(): IFood[] {
         return menuModule.foodList;
+    }
+
+    get totalItems(): number {
+        return menuModule.totalFoods;
+    }
+
+    get selectedPage(): number {
+        return menuModule.foodQueryString?.page || DEFAULT_FIRST_PAGE;
+    }
+
+    set selectedPage(value: number) {
+        menuModule.foodQueryString.page = value;
     }
 
     created(): void {
@@ -129,6 +149,19 @@ export default class MaterialTable extends mixins(MenuMixins) {
 
     async onClickButtonDelete(id: number): Promise<void> {
         await this.deleteAction.deleteFood(id);
+    }
+
+    async getFoodList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await menuModule.getFoods();
+        loading.close();
+    }
+
+    async handlePaginate(): Promise<void> {
+        menuModule.setFoodQueryString({ page: this.selectedPage });
+        this.getFoodList();
     }
 }
 </script>

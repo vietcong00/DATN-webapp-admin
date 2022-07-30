@@ -1,5 +1,11 @@
 <template>
-    <BaseTableLayout :data="billingList">
+    <BaseTableLayout
+        :data="billingList"
+        :isHighlightCurrentRow="true"
+        v-model:selectedPage="selectedPage"
+        :totalItems="totalItems"
+        @handlePaginate="handlePaginate"
+    >
         <template #table-columns>
             <el-table-column
                 prop="customerName"
@@ -98,6 +104,8 @@ import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue'
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 import { UtilMixins } from '@/mixins/utilMixins';
+import { ElLoading } from 'element-plus';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 
 @Options({
     components: {
@@ -108,6 +116,18 @@ import { UtilMixins } from '@/mixins/utilMixins';
 export default class BillingTable extends mixins(UtilMixins) {
     get billingList(): IBilling[] {
         return billingModule.billingList;
+    }
+
+    get totalItems(): number {
+        return billingModule.totalBillings;
+    }
+
+    get selectedPage(): number {
+        return billingModule.billingQueryString?.page || DEFAULT_FIRST_PAGE;
+    }
+
+    set selectedPage(value: number) {
+        billingModule.billingQueryString.page = value;
     }
 
     get isCanDelete(): boolean {
@@ -139,6 +159,21 @@ export default class BillingTable extends mixins(UtilMixins) {
                 return 'danger';
         }
     }
+
+    async getBillingList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await billingModule.getBillingList();
+        loading.close();
+    }
+
+    async handlePaginate(): Promise<void> {
+        billingModule.setBillingQueryString({
+            page: this.selectedPage,
+        });
+        this.getBillingList();
+    }
 }
 </script>
 
@@ -148,24 +183,9 @@ export default class BillingTable extends mixins(UtilMixins) {
     justify-content: space-around;
     flex-wrap: nowrap;
 }
-.group-left {
-    justify-content: space-between;
-}
+
 .action-icon {
     height: 1em;
     width: 1em;
-}
-
-.billing-image {
-    text-decoration: underline;
-}
-
-.description {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    -webkit-box-orient: vertical;
 }
 </style>

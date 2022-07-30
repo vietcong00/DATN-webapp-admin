@@ -1,25 +1,12 @@
 <template>
-    <div>
-        <BaseListPageHeader
-            @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('billing.billing.title')"
-            :totalItems="totalItems"
-            :createButtonText="$t('billing.billing.button.create')"
-            :hasSortBox="true"
-            v-model:page="selectedPage"
-            v-model:keyword="keyword"
-            :isShowCreateButton="false"
-            @onPaginate="handlePaginate"
-            @search="handleFilter"
-        >
-            <template #sort-box-content>
-                <BillingSort />
-            </template>
-        </BaseListPageHeader>
-        <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <BillingTable />
-        <BillingPopup />
+    <div class="content-wrapper filter-wrapper">
+        <FilterForm />
     </div>
+
+    <div class="content-wrapper">
+        <BillingTable />
+    </div>
+    <BillingPopup />
 </template>
 
 <script lang="ts">
@@ -42,10 +29,6 @@ import { checkUserHasPermission } from '@/utils/helper';
 export default class BillingPage extends mixins(UtilMixins) {
     isShowSearchBox = true;
     isToggleFilterForm = true;
-
-    get totalItems(): number {
-        return billingModule.totalBillings;
-    }
 
     // check permission
     get isCanCreate(): boolean {
@@ -110,3 +93,16 @@ export default class BillingPage extends mixins(UtilMixins) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.content-wrapper {
+    margin: 20px 25px;
+    padding: 30px 25px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.filter-wrapper {
+    margin-top: 0;
+}
+</style>

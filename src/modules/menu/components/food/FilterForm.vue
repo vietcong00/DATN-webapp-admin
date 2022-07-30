@@ -4,6 +4,8 @@
         @search="handleFilter"
         @reset="resetFilter"
         @keyup.enter="handleFilter"
+        :isShowCreateButton="isCanCreate"
+        @create="onClickButtonCreate"
     >
         <template #filter-title>
             <h5 class="filter-title">{{ $t('common.app.filterForm.search') }}</h5>
@@ -35,9 +37,18 @@ import { menuModule } from '../../store';
 import { Prop, mixins } from 'vue-property-decorator';
 import { MenuMixins } from '../../mixins';
 import { IQueryStringFood } from '../../types';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
 
 export default class FilterForm extends mixins(MenuMixins) {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
+
+    // check permission
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(menuModule.userPermissionsFood, [
+            `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
+        ]);
+    }
 
     filterForm = {
         page: DEFAULT_FIRST_PAGE,
@@ -71,6 +82,10 @@ export default class FilterForm extends mixins(MenuMixins) {
         await menuModule.getFoods();
         loading.close();
     }
+
+    onClickButtonCreate(): void {
+        menuModule.setIsShowFoodFormPopUp(true);
+    }
 }
 </script>
 
@@ -79,8 +94,8 @@ export default class FilterForm extends mixins(MenuMixins) {
     font-weight: bold;
     margin-bottom: 8px;
 }
-:deep(.form-group) {
-    margin-bottom: 0 !important;
+.form-group {
+    margin-bottom: 10px !important;
 }
 :deep(label) {
     font-size: 13px;
