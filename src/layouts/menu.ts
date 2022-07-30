@@ -112,17 +112,17 @@ const menuMenu: ISidebar = {
     ],
 };
 
-const closingRevenueMenu: ISidebar = {
+const reportRevenueMenu: ISidebar = {
     iconLink: require('@/assets/icons/sidebar/user.svg'),
-    name: 'common.app.menu.closingRevenue.title',
-    to: '/closing-revenue',
+    name: 'common.app.menu.reportRevenue.title',
+    to: '/report-revenue',
     active: false,
-    pageName: PageName.REPORT_CLOSING_REVENUE_PAGE,
+    pageName: PageName.REPORT_REPORT_REVENUE_PAGE,
     requiredPermissions: [
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
+        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.READ}`,
+        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.CREATE}`,
+        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.UPDATE}`,
+        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.DELETE}`,
     ],
 };
 
@@ -133,6 +133,6 @@ export const sidebars = [
     booking,
     menuMenu,
     billing,
-    closingRevenueMenu,
+    reportRevenueMenu,
     roleMenu,
 ];

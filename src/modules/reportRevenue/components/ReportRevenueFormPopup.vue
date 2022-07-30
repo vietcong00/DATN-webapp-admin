@@ -1,17 +1,17 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowClosingRevenueFormPopUp"
+        v-model="isShowReportRevenueFormPopUp"
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="closing-revenue-form-popup"
+        custom-class="report-revenue-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('closingRevenue.closingRevenue.createTitle')
-                        : $t('closingRevenue.closingRevenue.updateTitle')
+                        ? $t('reportRevenue.reportRevenue.createTitle')
+                        : $t('reportRevenue.reportRevenue.updateTitle')
                 }}
             </h3>
         </template>
@@ -21,7 +21,7 @@
                     class="readonly-input-text"
                     :value="parseDateTime(new Date(), YYYY_MM_DD_HYPHEN_HH_MM_COLON)"
                     :isReadonly="true"
-                    :label="$t('closingRevenue.closingRevenue.closingRevenueForm.date')"
+                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.date')"
                 />
             </div>
             <div class="col-md-4">
@@ -30,7 +30,7 @@
                     :value="fullNameShiftLeader"
                     :isReadonly="true"
                     :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.shiftLeader')
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.shiftLeader')
                     "
                 />
             </div>
@@ -40,15 +40,13 @@
                     :filterable="true"
                     :options="shiftOptions"
                     :is-required="true"
-                    :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.shiftWork')
-                    "
+                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.shiftWork')"
                     :error="translateYupError(form.errors.shift)"
                 />
             </div>
             <div class="col-md-6">
                 <h3>
-                    {{ $t('closingRevenue.closingRevenue.closingRevenueForm.input') }}
+                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.input') }}
                 </h3>
                 <BaseInputNumber
                     name="cashAtBeginningOfShift"
@@ -56,12 +54,12 @@
                     v-model:value="form.cashAtBeginningOfShift"
                     :label="
                         $t(
-                            'closingRevenue.closingRevenue.closingRevenueForm.cashAtBeginningOfShift',
+                            'reportRevenue.reportRevenue.reportRevenueForm.cashAtBeginningOfShift',
                         )
                     "
                     :placeholder="
                         $t(
-                            'closingRevenue.closingRevenue.placeholder.cashAtBeginningOfShift',
+                            'reportRevenue.reportRevenue.placeholder.cashAtBeginningOfShift',
                         )
                     "
                     :error="translateYupError(form.errors.cashAtBeginningOfShift)"
@@ -72,16 +70,14 @@
                     class="readonly-input-text"
                     :value="parseMoney(form.billingRevenue)"
                     :label="
-                        $t(
-                            'closingRevenue.closingRevenue.closingRevenueForm.billingRevenue',
-                        )
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.billingRevenue')
                     "
                     :error="translateYupError(form.errors.billingRevenue)"
                 />
             </div>
             <div class="col-md-6">
                 <h3>
-                    {{ $t('closingRevenue.closingRevenue.closingRevenueForm.output') }}
+                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.output') }}
                 </h3>
                 <BaseInputNumber
                     name="cashAtEndingOfShift"
@@ -89,13 +85,11 @@
                     v-model:value="form.cashAtEndingOfShift"
                     :label="
                         $t(
-                            'closingRevenue.closingRevenue.closingRevenueForm.cashAtEndingOfShift',
+                            'reportRevenue.reportRevenue.reportRevenueForm.cashAtEndingOfShift',
                         )
                     "
                     :placeholder="
-                        $t(
-                            'closingRevenue.closingRevenue.placeholder.cashAtEndingOfShift',
-                        )
+                        $t('reportRevenue.reportRevenue.placeholder.cashAtEndingOfShift')
                     "
                     :error="translateYupError(form.errors.cashAtEndingOfShift)"
                 />
@@ -104,21 +98,17 @@
                     is-required="true"
                     v-model:value="form.bankingRevenue"
                     :label="
-                        $t(
-                            'closingRevenue.closingRevenue.closingRevenueForm.bankingRevenue',
-                        )
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.bankingRevenue')
                     "
                     :placeholder="
-                        $t('closingRevenue.closingRevenue.placeholder.bankingRevenue')
+                        $t('reportRevenue.reportRevenue.placeholder.bankingRevenue')
                     "
                     :error="translateYupError(form.errors.bankingRevenue)"
                 />
             </div>
             <div class="col-md-6">
                 <h3>
-                    {{
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.totalInput')
-                    }}
+                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.totalInput') }}
                 </h3>
                 <BaseInputText
                     name="totalInput"
@@ -126,7 +116,7 @@
                     :isReadonly="true"
                     :value="parseMoney(calculateTotalInput)"
                     :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.totalInput')
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.totalInput')
                     "
                     :error="translateYupError(form.errors.totalInput)"
                 />
@@ -138,7 +128,7 @@
                     :value="parseMoney(calculateDifference)"
                     :label="
                         $t(
-                            'closingRevenue.closingRevenue.closingRevenueForm.differenceRevenue',
+                            'reportRevenue.reportRevenue.reportRevenueForm.differenceRevenue',
                         )
                     "
                     :error="translateYupError(form.errors.differenceRevenue)"
@@ -146,9 +136,7 @@
             </div>
             <div class="col-md-6">
                 <h3>
-                    {{
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.totalOutput')
-                    }}
+                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.totalOutput') }}
                 </h3>
                 <BaseInputText
                     name="totalOutput"
@@ -156,14 +144,14 @@
                     :isReadonly="true"
                     :value="parseMoney(calculateTotalOutput)"
                     :label="
-                        $t('closingRevenue.closingRevenue.closingRevenueForm.totalOutput')
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.totalOutput')
                     "
                     :error="translateYupError(form.errors.totalOutput)"
                 />
                 <BaseInputText
                     v-model:value="form.note"
                     :error="translateYupError(form.errors.note)"
-                    :label="$t('closingRevenue.closingRevenue.closingRevenueForm.note')"
+                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.note')"
                 />
             </div>
         </div>
@@ -174,7 +162,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="onClickCancel">
-                            {{ $t('closingRevenue.closingRevenue.button.cancel') }}
+                            {{ $t('reportRevenue.reportRevenue.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -182,11 +170,11 @@
                     >
                         <el-button
                             :disabled="isDisabledSaveButton"
-                            v-show="checkIsShiftLeaderOfClosingRevenue"
+                            v-show="checkIsShiftLeaderOfReportRevenue"
                             type="primary"
                             @click="onClickSaveButton()"
                         >
-                            {{ $t('closingRevenue.closingRevenue.button.submit') }}
+                            {{ $t('reportRevenue.reportRevenue.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -196,26 +184,26 @@
 </template>
 
 <script lang="ts">
-import { initData } from '../composition/closingRevenue';
+import { initData } from '../composition/reportRevenue';
 import { setup } from 'vue-class-component';
-import { closingRevenueModule } from '../store';
+import { reportRevenueModule } from '../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { ISelectOptions } from '@/common/types';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { SHIFT_OPTIONS } from '../constants';
 import { appService } from '@/utils/app';
 
-export default class ClosingRevenueFormPopup extends UtilMixins {
+export default class ReportRevenueFormPopup extends UtilMixins {
     get shiftOptions(): ISelectOptions[] {
         return parseLanguageSelectOptions(SHIFT_OPTIONS);
     }
 
-    get checkIsShiftLeaderOfClosingRevenue(): boolean {
-        if (!closingRevenueModule.selectedClosingRevenue?.shiftLeaderId) {
+    get checkIsShiftLeaderOfReportRevenue(): boolean {
+        if (!reportRevenueModule.selectedReportRevenue?.shiftLeaderId) {
             return true;
         }
         if (
-            closingRevenueModule.selectedClosingRevenue?.shiftLeaderId ===
+            reportRevenueModule.selectedReportRevenue?.shiftLeaderId ===
             appService.getUser().id
         ) {
             return true;
@@ -226,20 +214,20 @@ export default class ClosingRevenueFormPopup extends UtilMixins {
     form = setup(() => initData());
 
     get isDisabledSaveButton(): boolean {
-        return closingRevenueModule.isDisabledSaveButton;
+        return reportRevenueModule.isDisabledSaveButton;
     }
 
-    get isShowClosingRevenueFormPopUp(): boolean {
-        return closingRevenueModule.isShowClosingRevenueFormPopUp || false;
+    get isShowReportRevenueFormPopUp(): boolean {
+        return reportRevenueModule.isShowReportRevenueFormPopUp || false;
     }
 
-    set isShowClosingRevenueFormPopUp(val: boolean) {
-        closingRevenueModule.setIsShowClosingRevenueFormPopUp(val);
+    set isShowReportRevenueFormPopUp(val: boolean) {
+        reportRevenueModule.setIsShowReportRevenueFormPopUp(val);
     }
 
     get fullNameShiftLeader(): string | undefined {
-        return closingRevenueModule.selectedClosingRevenue?.shiftLeaderId
-            ? closingRevenueModule.selectedClosingRevenue?.shiftLeader?.fullName
+        return reportRevenueModule.selectedReportRevenue?.shiftLeaderId
+            ? reportRevenueModule.selectedReportRevenue?.shiftLeader?.fullName
             : appService.getUser().fullName;
     }
 
@@ -264,19 +252,19 @@ export default class ClosingRevenueFormPopup extends UtilMixins {
     }
 
     onClickCancel(): void {
-        closingRevenueModule.setIsShowClosingRevenueFormPopUp(false);
+        reportRevenueModule.setIsShowReportRevenueFormPopUp(false);
     }
 
     async closePopup(): Promise<void> {
-        closingRevenueModule.setIsShowClosingRevenueFormPopUp(false);
-        closingRevenueModule.setSelectedClosingRevenue(null);
+        reportRevenueModule.setIsShowReportRevenueFormPopUp(false);
+        reportRevenueModule.setSelectedReportRevenue(null);
         (this.form.resetForm as () => void)();
     }
 
     async onClickSaveButton(): Promise<void> {
-        closingRevenueModule.setIsDisabledSaveButton(true);
+        reportRevenueModule.setIsDisabledSaveButton(true);
         await this.form.onSubmit();
-        closingRevenueModule.setIsDisabledSaveButton(false);
+        reportRevenueModule.setIsDisabledSaveButton(false);
     }
 }
 </script>

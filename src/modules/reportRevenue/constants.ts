@@ -6,7 +6,7 @@ import {
     INPUT_MONEY_MIN_VALUE,
 } from '@/common/constants';
 
-export const ClosingRevenueSortOptions = [
+export const ReportRevenueSortOptions = [
     {
         label: 'billing.billing.filterForm.createdAt',
         value: 'createdAt',
@@ -19,16 +19,16 @@ export const ClosingRevenueSortOptions = [
 
 export const SHIFT_OPTIONS = [
     {
-        label: 'closingRevenue.closingRevenue.shiftWork.morningShift',
+        label: 'reportRevenue.reportRevenue.shiftWork.morningShift',
         value: SHIFT.MORNING_SHIFT,
     },
     {
-        label: 'closingRevenue.closingRevenue.shiftWork.afternoonShift',
+        label: 'reportRevenue.reportRevenue.shiftWork.afternoonShift',
         value: SHIFT.AFTERNOON_SHIFT,
     },
 ];
 
-export const validateClosingRevenueSchema = yup.object({
+export const validateReportRevenueSchema = yup.object({
     shift: yup
         .string()
         .max(INPUT_TEXT_MAX_LENGTH)

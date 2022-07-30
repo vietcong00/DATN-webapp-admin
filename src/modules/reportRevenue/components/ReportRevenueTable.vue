@@ -1,6 +1,6 @@
 <template>
     <BaseTableLayout
-        :data="closingRevenueList"
+        :data="reportRevenueList"
         :isHighlightCurrentRow="true"
         v-model:selectedPage="selectedPage"
         :totalItems="totalItems"
@@ -9,7 +9,7 @@
         <template #table-columns>
             <el-table-column
                 prop="date"
-                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.date')"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.date')"
                 align="center"
                 min-width="150"
             >
@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column
                 width="150"
-                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.shiftWork')"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.shiftWork')"
             >
                 <template #default="scope">
                     <div
@@ -32,24 +32,20 @@
                         )}`"
                     >
                         {{
-                            $t(
-                                `closingRevenue.closingRevenue.shiftWork.${scope.row.shift}`,
-                            )
+                            $t(`reportRevenue.reportRevenue.shiftWork.${scope.row.shift}`)
                         }}
                     </div>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="shiftLeader.fullName"
-                :label="
-                    $t('closingRevenue.closingRevenue.closingRevenueTable.shiftLeader')
-                "
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.shiftLeader')"
                 width="150"
             />
             <el-table-column
                 prop="billingRevenue"
                 :label="
-                    $t('closingRevenue.closingRevenue.closingRevenueTable.billingRevenue')
+                    $t('reportRevenue.reportRevenue.reportRevenueTable.billingRevenue')
                 "
                 width="150"
             >
@@ -61,7 +57,7 @@
                 prop="cashAtBeginningOfShift"
                 :label="
                     $t(
-                        'closingRevenue.closingRevenue.closingRevenueTable.cashAtBeginningOfShift',
+                        'reportRevenue.reportRevenue.reportRevenueTable.cashAtBeginningOfShift',
                     )
                 "
                 width="300"
@@ -74,7 +70,7 @@
                 prop="cashAtEndingOfShift"
                 :label="
                     $t(
-                        'closingRevenue.closingRevenue.closingRevenueTable.cashAtEndingOfShift',
+                        'reportRevenue.reportRevenue.reportRevenueTable.cashAtEndingOfShift',
                     )
                 "
                 width="300"
@@ -86,7 +82,7 @@
             <el-table-column
                 prop="bankingRevenue"
                 :label="
-                    $t('closingRevenue.closingRevenue.closingRevenueTable.bankingRevenue')
+                    $t('reportRevenue.reportRevenue.reportRevenueTable.bankingRevenue')
                 "
                 width="250"
             >
@@ -97,9 +93,7 @@
             <el-table-column
                 prop="differenceRevenue"
                 :label="
-                    $t(
-                        'closingRevenue.closingRevenue.closingRevenueTable.differenceRevenue',
-                    )
+                    $t('reportRevenue.reportRevenue.reportRevenueTable.differenceRevenue')
                 "
                 width="250"
             >
@@ -115,20 +109,20 @@
             </el-table-column>
             <el-table-column
                 prop="note"
-                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.note')"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.note')"
                 width="150"
             />
             <el-table-column
                 fixed="right"
                 width="150"
                 align="center"
-                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.action')"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.action')"
             >
                 <template #default="scope">
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('closingRevenue.closingRevenue.tooltip.edit')"
+                            :content="$t('reportRevenue.reportRevenue.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate"
                         >
@@ -142,7 +136,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('closingRevenue.closingRevenue.tooltip.delete')"
+                            :content="$t('reportRevenue.reportRevenue.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete"
                         >
@@ -164,13 +158,13 @@
 <script lang="ts">
 import { Options, setup } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
-import { setupDelete } from '../composition/closingRevenue';
+import { setupDelete } from '../composition/reportRevenue';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 import { UtilMixins } from '@/mixins/utilMixins';
-import { closingRevenueModule } from '../store';
-import { IClosingRevenue, IClosingRevenueUpdateBody, SHIFT } from '../types';
+import { reportRevenueModule } from '../store';
+import { IReportRevenue, IReportRevenueUpdateBody, SHIFT } from '../types';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 
@@ -180,46 +174,46 @@ import { DEFAULT_FIRST_PAGE } from '@/common/constants';
         EditIcon,
     },
 })
-export default class ClosingRevenueTable extends mixins(UtilMixins) {
+export default class ReportRevenueTable extends mixins(UtilMixins) {
     deleteAction = setup(() => setupDelete());
 
-    get closingRevenueList(): IClosingRevenue[] {
-        return closingRevenueModule.closingRevenueList;
+    get reportRevenueList(): IReportRevenue[] {
+        return reportRevenueModule.reportRevenueList;
     }
 
     get totalItems(): number {
-        return closingRevenueModule.totalClosingRevenueList;
+        return reportRevenueModule.totalReportRevenueList;
     }
 
     get selectedPage(): number {
-        return closingRevenueModule.closingRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
+        return reportRevenueModule.reportRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        closingRevenueModule.closingRevenueQueryString.page = value;
+        reportRevenueModule.reportRevenueQueryString.page = value;
     }
 
     get isCanDelete(): boolean {
-        return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
+        return checkUserHasPermission(reportRevenueModule.userPermissions, [
+            `${PermissionResources.REPORT_REVENUE}_${PermissionActions.DELETE}`,
         ]);
     }
 
     get isCanUpdate(): boolean {
-        return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(reportRevenueModule.userPermissions, [
+            `${PermissionResources.REPORT_REVENUE}_${PermissionActions.UPDATE}`,
         ]);
     }
 
     async onClickButtonEdit(
-        updateClosingRevenue: IClosingRevenueUpdateBody,
+        updateReportRevenue: IReportRevenueUpdateBody,
     ): Promise<void> {
-        closingRevenueModule.setSelectedClosingRevenue(updateClosingRevenue);
-        closingRevenueModule.setIsShowClosingRevenueFormPopUp(true);
+        reportRevenueModule.setSelectedReportRevenue(updateReportRevenue);
+        reportRevenueModule.setIsShowReportRevenueFormPopUp(true);
     }
 
     async onClickButtonDelete(id: number): Promise<void> {
-        await this.deleteAction.deleteClosingRevenue(id);
+        await this.deleteAction.deleteReportRevenue(id);
     }
 
     differenceRevenueBadge(difference: number): string {
@@ -240,19 +234,19 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
         }
     }
 
-    async getClosingRevenueList(): Promise<void> {
+    async getReportRevenueList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await closingRevenueModule.getClosingRevenueList();
+        await reportRevenueModule.getReportRevenueList();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        closingRevenueModule.setClosingRevenueQueryString({
+        reportRevenueModule.setReportRevenueQueryString({
             page: this.selectedPage,
         });
-        this.getClosingRevenueList();
+        this.getReportRevenueList();
     }
 }
 </script>

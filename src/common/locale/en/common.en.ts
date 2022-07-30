@@ -110,7 +110,7 @@ export default {
         booking: 'Booking',
         menu: 'Menu',
         billing: 'Billing',
-        closingRevenue: 'Closing Revenue',
+        reportRevenue: 'Report Revenue',
         role: 'Role',
     },
 };

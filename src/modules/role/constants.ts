@@ -9,7 +9,7 @@ export enum PermissionResources {
     MENU_FOOD = 'food',
     MENU_CATEGORY = 'category',
     BILLING = 'billing',
-    CLOSING_REVENUE = 'closing_revenue',
+    REPORT_REVENUE = 'report_revenue',
     ROLE = 'role',
     CHEF = 'chef',
 }

@@ -120,7 +120,7 @@ export default {
                 [ModuleName.MENU_FOOD]: 'Food',
                 [ModuleName.MENU_CATEGORY]: 'Category',
                 [ModuleName.BILLING]: 'Billing',
-                [ModuleName.CLOSING_REVENUE]: 'Closing Revenue',
+                [ModuleName.REPORT_REVENUE]: 'Report Revenue',
                 [ModuleName.ROLE]: 'Role',
             },
         },

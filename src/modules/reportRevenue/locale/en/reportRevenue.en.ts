@@ -1,8 +1,8 @@
 export default {
-    pageName: 'Closing Revenue',
-    createTitle: 'Create new Closing Revenue',
-    updateTitle: 'Update Closing Revenue',
-    closingRevenueTable: {
+    pageName: 'Report Revenue',
+    createTitle: 'Create new Report Revenue',
+    updateTitle: 'Update Report Revenue',
+    reportRevenueTable: {
         date: 'Date',
         shiftWork: 'Shift',
         shiftLeader: 'Shift Leader',
@@ -14,7 +14,7 @@ export default {
         note: 'Note',
         action: 'Actions',
     },
-    closingRevenueForm: {
+    reportRevenueForm: {
         date: 'Date',
         shiftWork: 'Shift',
         shiftLeader: 'Shift Leader',

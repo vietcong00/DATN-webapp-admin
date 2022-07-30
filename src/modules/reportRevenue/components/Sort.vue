@@ -1,5 +1,5 @@
 <template>
-    <BaseSort :sort-options="closingRevenueSortOptions" @handleSort="handleSort" />
+    <BaseSort :sort-options="reportRevenueSortOptions" @handleSort="handleSort" />
 </template>
 
 <script lang="ts">
@@ -8,24 +8,24 @@ import { ISelectOptions } from '@/common/types';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import { ClosingRevenueSortOptions } from '../constants';
-import { closingRevenueModule } from '../store';
+import { ReportRevenueSortOptions } from '../constants';
+import { reportRevenueModule } from '../store';
 
 @Options({})
-export default class ClosingRevenueSort extends Vue {
-    get closingRevenueSortOptions(): ISelectOptions[] {
-        return parseLanguageSelectOptions(ClosingRevenueSortOptions);
+export default class ReportRevenueSort extends Vue {
+    get reportRevenueSortOptions(): ISelectOptions[] {
+        return parseLanguageSelectOptions(ReportRevenueSortOptions);
     }
 
     async handleSort(orderBy: string, orderDirection: OrderDirection): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        closingRevenueModule.setClosingRevenueQueryString({
+        reportRevenueModule.setReportRevenueQueryString({
             orderBy,
             orderDirection,
         });
-        await closingRevenueModule.getClosingRevenueList();
+        await reportRevenueModule.getReportRevenueList();
         loading.close();
     }
 }

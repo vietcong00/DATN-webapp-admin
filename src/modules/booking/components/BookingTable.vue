@@ -267,6 +267,7 @@ export default class BookingTable extends mixins(BookingMixins) {
     statusBadge(status: BookingStatus): string {
         switch (status) {
             case BookingStatus.WAITING:
+            case BookingStatus.WAITING_FOR_APPROVE:
                 return 'info';
             case BookingStatus.DONE:
                 return 'success';

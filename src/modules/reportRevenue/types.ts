@@ -6,7 +6,7 @@ export enum SHIFT {
     AFTERNOON_SHIFT = 'afternoonShift',
 }
 
-export interface IClosingRevenue {
+export interface IReportRevenue {
     id: number;
     shift: SHIFT;
     shiftLeaderId: number;
@@ -19,7 +19,7 @@ export interface IClosingRevenue {
     note: string;
 }
 
-export interface IClosingRevenueUpdateBody {
+export interface IReportRevenueUpdateBody {
     id: number | undefined;
     shift: SHIFT | undefined;
     shiftLeaderId: number | undefined;
@@ -31,7 +31,7 @@ export interface IClosingRevenueUpdateBody {
     note: string | undefined;
 }
 
-export interface IQueryStringClosingRevenue extends IQueryString {
+export interface IQueryStringReportRevenue extends IQueryString {
     keyword?: string;
     payerIds?: number[];
     paymentDateRange?: string[] | null;

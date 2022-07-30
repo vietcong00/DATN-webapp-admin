@@ -3,6 +3,7 @@ import yup from '@/plugins/yup/index';
 
 export enum BookingStatus {
     WAITING = 'waiting',
+    WAITING_FOR_APPROVE = 'waiting_for_approve',
     CANCELED = 'canceled',
     DONE = 'done',
 }

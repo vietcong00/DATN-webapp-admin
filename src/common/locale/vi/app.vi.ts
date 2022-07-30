@@ -42,7 +42,7 @@ export default {
         promotion: {
             title: 'Khuyến mại',
         },
-        closingRevenue: {
+        reportRevenue: {
             title: 'Chôt doanh thu',
         },
         chef: {

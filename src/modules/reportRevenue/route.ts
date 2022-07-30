@@ -1,4 +1,4 @@
-import ClosingRevenuePage from './pages/ClosingRevenuePage.vue';
+import ReportRevenuePage from './pages/ReportRevenuePage.vue';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { RouteRecordRaw } from 'vue-router';
 import { PageName } from '@/common/constants';
@@ -6,13 +6,13 @@ import { PermissionActions, PermissionResources } from '../role/constants';
 
 export default [
     {
-        path: '/closing-revenue',
+        path: '/report-revenue',
         component: MainLayout,
         children: [
             {
                 path: '',
-                name: PageName.REPORT_CLOSING_REVENUE_PAGE,
-                component: ClosingRevenuePage,
+                name: PageName.REPORT_REPORT_REVENUE_PAGE,
+                component: ReportRevenuePage,
 
                 meta: {
                     requiresAuth: true,
@@ -21,15 +21,15 @@ export default [
                             text: 'common.common.breadcrumb.home',
                         },
                         {
-                            text: 'common.common.breadcrumb.closingRevenue',
-                            link: '/closing-revenue',
+                            text: 'common.common.breadcrumb.reportRevenue',
+                            link: '/report-revenue',
                         },
                     ],
                     requiredPermissions: [
-                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
-                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.READ}`,
+                        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.REPORT_REVENUE}_${PermissionActions.DELETE}`,
                     ],
                 },
             },

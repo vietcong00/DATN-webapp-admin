@@ -2,7 +2,7 @@ export default {
     pageName: 'Chốt doanh thu',
     createTitle: 'Tạo mới Chốt doanh thu',
     updateTitle: 'Chỉnh sửa Chốt doanh thu',
-    closingRevenueTable: {
+    reportRevenueTable: {
         date: 'Ngày',
         shiftWork: 'Ca',
         shiftLeader: 'Trưởng ca',
@@ -14,7 +14,7 @@ export default {
         note: 'Ghi chú',
         action: 'Hành động',
     },
-    closingRevenueForm: {
+    reportRevenueForm: {
         date: 'Ngày',
         shiftWork: 'Ca',
         shiftLeader: 'Trưởng ca',

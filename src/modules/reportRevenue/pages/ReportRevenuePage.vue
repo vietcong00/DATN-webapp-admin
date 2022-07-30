@@ -4,60 +4,60 @@
     </div>
 
     <div class="content-wrapper">
-        <ClosingRevenueTable />
+        <ReportRevenueTable />
     </div>
-    <ClosingRevenuePopup />
+    <ReportRevenuePopup />
 </template>
 
 <script lang="ts">
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins } from 'vue-property-decorator';
 import { Options } from 'vue-class-component';
-import ClosingRevenueTable from '../components/ClosingRevenueTable.vue';
-import ClosingRevenueSort from '../components/Sort.vue';
-import ClosingRevenuePopup from '../components/ClosingRevenueFormPopup.vue';
+import ReportRevenueTable from '../components/ReportRevenueTable.vue';
+import ReportRevenueSort from '../components/Sort.vue';
+import ReportRevenuePopup from '../components/ReportRevenueFormPopup.vue';
 import FilterForm from '../components/FilterForm.vue';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { closingRevenueModule } from '../store';
+import { reportRevenueModule } from '../store';
 
 @Options({
     components: {
         FilterForm,
-        ClosingRevenueTable,
-        ClosingRevenueSort,
-        ClosingRevenuePopup,
+        ReportRevenueTable,
+        ReportRevenueSort,
+        ReportRevenuePopup,
     },
 })
-export default class ClosingRevenuesPage extends mixins(UtilMixins) {
+export default class ReportRevenuesPage extends mixins(UtilMixins) {
     isShowSearchBox = true;
     isToggleFilterForm = true;
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
+        return checkUserHasPermission(reportRevenueModule.userPermissions, [
+            `${PermissionResources.REPORT_REVENUE}_${PermissionActions.CREATE}`,
         ]);
     }
 
     get keyword(): string {
-        return closingRevenueModule.closingRevenueQueryString?.keyword || '';
+        return reportRevenueModule.reportRevenueQueryString?.keyword || '';
     }
 
     set keyword(value: string) {
-        closingRevenueModule.closingRevenueQueryString.keyword = value;
+        reportRevenueModule.reportRevenueQueryString.keyword = value;
     }
 
     created(): void {
-        closingRevenueModule.clearQueryString();
+        reportRevenueModule.clearQueryString();
         this.fetchData();
     }
 
     async fetchData(): Promise<void> {
         const loading = ElLoading.service({});
-        Promise.all([closingRevenueModule.getClosingRevenueList()]);
+        Promise.all([reportRevenueModule.getReportRevenueList()]);
         loading.close();
     }
 
@@ -65,25 +65,25 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
         this.isToggleFilterForm = !this.isToggleFilterForm;
     }
 
-    async getClosingRevenueList(): Promise<void> {
+    async getReportRevenueList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await closingRevenueModule.getClosingRevenueList();
+        await reportRevenueModule.getReportRevenueList();
         loading.close();
     }
 
     async handleFilter(): Promise<void> {
-        closingRevenueModule.setClosingRevenueQueryString({
+        reportRevenueModule.setReportRevenueQueryString({
             page: DEFAULT_FIRST_PAGE,
             limit: LIMIT_PER_PAGE,
             keyword: this.keyword?.trim(),
         });
-        await this.getClosingRevenueList();
+        await this.getReportRevenueList();
     }
 
     onClickButtonCreate(): void {
-        closingRevenueModule.setIsShowClosingRevenueFormPopUp(true);
+        reportRevenueModule.setIsShowReportRevenueFormPopUp(true);
     }
 }
 </script>

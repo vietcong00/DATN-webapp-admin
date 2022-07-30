@@ -152,7 +152,7 @@ export enum PageName {
     PAYMENT_PAGE = 'PaymentPage',
     RECEIPT_PAGE = 'ReceiptPage',
     PROMOTION_PAGE = 'PromotionPage',
-    REPORT_CLOSING_REVENUE_PAGE = 'ReportClosingRevenuePage',
+    REPORT_REPORT_REVENUE_PAGE = 'ReportReportRevenuePage',
     CHEF_PAGE = 'chefPage',
 }
 
@@ -207,7 +207,7 @@ export enum ModuleName {
     STORE_CHECK_INVENTORY = 'storeCheckInventory',
     STORE_INVENTORY_DETAIL = 'storeInventoryDetail',
     BILLING = 'billing',
-    CLOSING_REVENUE = 'closingRevenue',
+    REPORT_REVENUE = 'reportRevenue',
     ROLE = 'role',
     CHEF = 'chef',
 }

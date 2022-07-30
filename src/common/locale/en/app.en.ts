@@ -42,8 +42,8 @@ export default {
         promotion: {
             title: 'Promotion',
         },
-        closingRevenue: {
-            title: 'Closing revenue',
+        reportRevenue: {
+            title: 'Report revenue',
         },
         chef: {
             title: 'Chef',

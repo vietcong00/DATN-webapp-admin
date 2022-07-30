@@ -1,10 +1,10 @@
-import { appService } from './../../../utils/app';
-import { closingRevenueModule } from './../store';
+import { appService } from '../../../utils/app';
+import { reportRevenueModule } from '../store';
 import { useField, useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
-import { validateClosingRevenueSchema } from '../constants';
+import { validateReportRevenueSchema } from '../constants';
 import { IBodyResponse } from '@/common/types';
 import {
     showConfirmPopUpFunction,
@@ -12,8 +12,8 @@ import {
     showSuccessNotificationFunction,
 } from '@/utils/helper';
 import i18n from '@/plugins/vue-i18n';
-import { IClosingRevenue, IClosingRevenueUpdateBody } from '../types';
-import { closingRevenueService } from '../services/closing-revenue.api.services';
+import { IReportRevenue, IReportRevenueUpdateBody } from '../types';
+import { reportRevenueService } from '../services/report-revenue.api.services';
 
 export function initData() {
     const { t } = useI18n();
@@ -29,7 +29,7 @@ export function initData() {
     };
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
-        validationSchema: validateClosingRevenueSchema,
+        validationSchema: validateReportRevenueSchema,
     });
 
     const onSubmit = handleSubmit(async (values) => {
@@ -41,38 +41,38 @@ export function initData() {
             bankingRevenue: values.bankingRevenue,
             differenceRevenue: values.differenceRevenue,
             note: values.note,
-        } as IClosingRevenueUpdateBody;
-        const closingRevenueId = closingRevenueModule.selectedClosingRevenue?.id;
+        } as IReportRevenueUpdateBody;
+        const reportRevenueId = reportRevenueModule.selectedReportRevenue?.id;
         const loading = ElLoading.service({
-            target: '.closing-revenue-form',
+            target: '.report-revenue-form',
         });
-        const response = await closingRevenueService.update(
-            closingRevenueId as number,
+        const response = await reportRevenueService.update(
+            reportRevenueId as number,
             createBody,
         );
 
         loading.close();
         if (response.success) {
             showSuccessNotificationFunction(
-                t('menu.closingRevenue.message.update.success'),
+                t('menu.reportRevenue.message.update.success'),
             );
-            closingRevenueModule.setIsShowClosingRevenueFormPopUp(false);
-            closingRevenueModule.setClosingRevenueQueryString({
+            reportRevenueModule.setIsShowReportRevenueFormPopUp(false);
+            reportRevenueModule.setReportRevenueQueryString({
                 page: DEFAULT_FIRST_PAGE,
             });
             const loading = ElLoading.service({
                 target: '.content',
             });
-            await closingRevenueModule.getClosingRevenueList();
+            await reportRevenueModule.getReportRevenueList();
             loading.close();
         } else {
             showErrorNotificationFunction(response.message as string);
             if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                closingRevenueModule.setIsShowClosingRevenueFormPopUp(false);
+                reportRevenueModule.setIsShowReportRevenueFormPopUp(false);
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await closingRevenueModule.getClosingRevenueList();
+                await reportRevenueModule.getReportRevenueList();
                 loading.close();
             }
         }
@@ -87,20 +87,20 @@ export function initData() {
     const { value: billingRevenue } = useField('billingRevenue');
 
     const openPopup = async () => {
-        const loading = ElLoading.service({ target: '.closing-revenue-form-popup' });
-        const closingRevenueDetail = (await closingRevenueService.getDetail(
-            closingRevenueModule.selectedClosingRevenue?.id || 0,
-        )) as IBodyResponse<IClosingRevenue>;
+        const loading = ElLoading.service({ target: '.report-revenue-form-popup' });
+        const reportRevenueDetail = (await reportRevenueService.getDetail(
+            reportRevenueModule.selectedReportRevenue?.id || 0,
+        )) as IBodyResponse<IReportRevenue>;
         loading.close();
         resetForm({
             values: {
-                shift: closingRevenueDetail.data?.shift,
-                cashAtBeginningOfShift: closingRevenueDetail.data?.cashAtBeginningOfShift,
-                cashAtEndingOfShift: closingRevenueDetail.data?.cashAtEndingOfShift,
-                bankingRevenue: closingRevenueDetail.data?.bankingRevenue,
-                differenceRevenue: closingRevenueDetail.data?.differenceRevenue,
-                note: closingRevenueDetail.data?.note,
-                billingRevenue: closingRevenueDetail.data?.billingRevenue | 0,
+                shift: reportRevenueDetail.data?.shift,
+                cashAtBeginningOfShift: reportRevenueDetail.data?.cashAtBeginningOfShift,
+                cashAtEndingOfShift: reportRevenueDetail.data?.cashAtEndingOfShift,
+                bankingRevenue: reportRevenueDetail.data?.bankingRevenue,
+                differenceRevenue: reportRevenueDetail.data?.differenceRevenue,
+                note: reportRevenueDetail.data?.note,
+                billingRevenue: reportRevenueDetail.data?.billingRevenue | 0,
             },
         });
     };
@@ -122,29 +122,29 @@ export function initData() {
 }
 
 export const setupDelete = () => {
-    const deleteClosingRevenue = async (id: number) => {
+    const deleteReportRevenue = async (id: number) => {
         const isConfirm = await showConfirmPopUpFunction(
-            i18n.global.t('menu.closingRevenue.message.delete.confirmAsk') as string,
-            i18n.global.t('menu.closingRevenue.message.delete.title') as string,
+            i18n.global.t('menu.reportRevenue.message.delete.confirmAsk') as string,
+            i18n.global.t('menu.reportRevenue.message.delete.title') as string,
             {},
         );
         if (isConfirm) {
             const loading = ElLoading.service({
                 target: '.content',
             });
-            const response = await closingRevenueService.delete(id);
+            const response = await reportRevenueService.delete(id);
             loading.close();
             if (response.success) {
                 showSuccessNotificationFunction(
-                    i18n.global.t('menu.closingRevenue.message.delete.success') as string,
+                    i18n.global.t('menu.reportRevenue.message.delete.success') as string,
                 );
-                closingRevenueModule.setClosingRevenueQueryString({
+                reportRevenueModule.setReportRevenueQueryString({
                     page: DEFAULT_FIRST_PAGE,
                 });
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await closingRevenueModule.getClosingRevenueList();
+                await reportRevenueModule.getReportRevenueList();
                 loading.close();
             } else {
                 showErrorNotificationFunction(response.message);
@@ -152,12 +152,12 @@ export const setupDelete = () => {
                     const loading = ElLoading.service({
                         target: '.content',
                     });
-                    await closingRevenueModule.getClosingRevenueList();
+                    await reportRevenueModule.getReportRevenueList();
                     loading.close();
                 }
             }
         }
     };
 
-    return { deleteClosingRevenue };
+    return { deleteReportRevenue };
 };
