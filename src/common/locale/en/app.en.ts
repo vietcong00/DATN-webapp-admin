@@ -1,17 +1,8 @@
 export default {
-    appName: 'ttlab-tims',
-    baseComponent: {
-        pagination: {
-            rowPerPage: 'row',
-        },
-    },
     menu: {
         dashboard: 'Dashboard',
         user: {
-            title: 'Human',
-            userManagement: 'User',
-            contractManagement: 'Contract',
-            teamManagement: 'Team',
+            title: 'User',
         },
         billing: {
             title: 'Billing',
@@ -19,9 +10,6 @@ export default {
         role: {
             subtitle: 'Role',
             title: 'Role',
-        },
-        permission: {
-            title: 'Permission',
         },
         tableDiagram: {
             title: 'Table Diagram',
@@ -34,24 +22,12 @@ export default {
             food: 'Food',
             category: 'Category',
         },
-        payment: {
-            title: 'Payment',
-            atRestaurant: 'Orders at the Restaurant',
-            takeout: 'Takeout orders',
-        },
-        promotion: {
-            title: 'Promotion',
-        },
         reportRevenue: {
             title: 'Report revenue',
-        },
-        chef: {
-            title: 'Chef',
         },
     },
     menuAccount: {
         myProfile: 'My profile',
-        settings: 'Settings',
         logout: 'Logout',
     },
     menuLanguage: {
@@ -69,9 +45,15 @@ export default {
     cPanel: {
         page: 'Page',
     },
+    tooltip: {
+        edit: 'Edit',
+        detail: 'Detail',
+        delete: 'Delete',
+        addRole: 'Add role',
+    },
     filterForm: {
         search: 'Search',
-        searchBy: 'Search',
+        searchBy: 'Search by',
         keyword: 'Keyword',
         reset: 'Reset',
     },
@@ -84,29 +66,9 @@ export default {
             submitButton: 'Save',
         },
     },
-    tooltip: {
-        edit: 'Edit',
-        detail: 'Detail',
-        delete: 'Delete',
-        addRole: 'Add role',
-    },
     pageNotFound: 'Oops! Page not found!',
     backToHome: 'Back to Homepage',
-    action: {
-        create: 'Create',
-        update: 'Update',
-        edit: 'Edit',
-        remove: 'Remove',
-        delete: 'Delete',
-    },
     notification: 'Notification',
-    confirmSaveBox: {
-        save: 'Save',
-        dontSave: "Don't Save",
-    },
-    other: {
-        action: 'Action',
-    },
     acceptStatus: {
         APPROVE: 'Approve',
         CHECKED_AGAIN: 'Checked Again',

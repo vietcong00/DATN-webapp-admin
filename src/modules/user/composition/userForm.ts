@@ -29,20 +29,12 @@ export function initForm(
         email: '',
         phoneNumber: '',
         birthday: null,
-        citizenIdIssuedAt: null,
         gender: null,
-        idCardIssuePlace: '',
         roleId: null,
         position: '',
         address: '',
-        hometownAddress: '',
         avatarId: null,
-        socialInsurance: '',
-        bank: '',
         provinceId: null,
-        bankAccount: '',
-        citizenId: null,
-        taxCode: '',
         note: '',
     };
     const isCreate = computed(() => !userModule.selectedUser?.id);
@@ -51,20 +43,12 @@ export function initForm(
     const { value: phoneNumber } = useField('phoneNumber');
     const { value: birthday } = useField('birthday');
     const { value: address } = useField('address');
-    const { value: hometownAddress } = useField('hometownAddress');
-    const { value: idCardIssuePlace } = useField('idCardIssuePlace');
     const { value: gender } = useField('gender');
     const { value: roleId } = useField('roleId');
     const { value: position } = useField('position');
     const { value: avatarId } = useField('avatarId');
     const { value: note } = useField('note');
-    const { value: socialInsurance } = useField('socialInsurance');
-    const { value: taxCode } = useField('taxCode');
-    const { value: bank } = useField('bank');
     const { value: provinceId } = useField('provinceId');
-    const { value: bankAccount } = useField('bankAccount');
-    const { value: citizenId } = useField('citizenId');
-    const { value: citizenIdIssuedAt } = useField('citizenIdIssuedAt');
 
     const openPopup = async () => {
         setErrors({});
@@ -78,9 +62,6 @@ export function initForm(
                     ...userResponse?.data,
                     birthday: userResponse?.data?.birthday
                         ? moment(userResponse?.data?.birthday).fmDayString()
-                        : null,
-                    citizenIdIssuedAt: userResponse?.data?.citizenIdIssuedAt
-                        ? moment(userResponse?.data?.citizenIdIssuedAt).fmDayString()
                         : null,
                 } as IUser,
             });
@@ -97,20 +78,12 @@ export function initForm(
         phoneNumber,
         birthday,
         address,
-        hometownAddress,
-        idCardIssuePlace,
         avatarId,
         gender,
         roleId,
         provinceId,
-        citizenId,
-        taxCode,
         note,
-        citizenIdIssuedAt,
-        bank,
-        bankAccount,
         position,
-        socialInsurance,
         errors,
         openPopup,
         validate,
@@ -128,25 +101,13 @@ export function parseDataToSubmit(form: Record<string, string | number | IUser>)
                   .utc()
                   .fmFullTimeString()
             : null,
-        citizenIdIssuedAt: form.citizenIdIssuedAt
-            ? moment(form.citizenIdIssuedAt as string)
-                  .utc()
-                  .fmFullTimeString()
-            : null,
         address: trim(form.address as string),
-        hometownAddress: trim(form.hometownAddress as string),
-        idCardIssuePlace: form.idCardIssuePlace as string,
         avatarId: form.avatarId as number,
         gender: form.gender as UserGender,
         roleId: form.roleId as number,
         provinceId: form.provinceId as number,
         position: form.position as string,
         note: trim(form.note as string),
-        socialInsurance: trim(form.socialInsurance as string) || null,
-        taxCode: trim(form.taxCode as string) || null,
-        bank: trim(form.bank as string),
-        bankAccount: trim(form.bankAccount as string),
-        citizenId: trim(form.citizenId as string),
     } as IUser;
 }
 

@@ -99,17 +99,6 @@ export const MAX_LENGTH_DAYS_OF_MONTH = 31;
 export const DEFAULT_ROWS_TEXTAREA = 3;
 
 export const MAX_LENGTH_MONTH = 12;
-export const MAX_CITIZEN_ID_LENGTH = 12;
-export const MIN_CITIZEN_ID_LENGTH = 9;
-
-export const MAX_BANK_ACCOUNT_LENGTH = 14;
-export const MIN_BANK_ACCOUNT_LENGTH = 8;
-
-export const MAX_SOCIAL_INSURANCE_LENGTH = 13;
-export const MIN_SOCIAL_INSURANCE_LENGTH = 10;
-
-export const MAX_TAX_CODE_LENGTH = 13;
-export const MIN_TAX_CODE_LENGTH = 10;
 
 export const MAX_PHONE_NUMBER_LENGTH = 11;
 export const MIN_PHONE_NUMBER_LENGTH = 10;

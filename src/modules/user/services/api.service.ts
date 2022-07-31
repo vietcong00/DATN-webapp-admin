@@ -1,13 +1,8 @@
 import service from '@/plugins/axios';
 import { BaseService } from '@/utils/api';
-import { IBodyResponse, IBulkImportResponse } from '@common/types';
+import { IBodyResponse } from '@common/types';
 import { AxiosPromise } from 'axios';
-import {
-    IGeneralSetting,
-    IGetGeneralSettingQuery,
-    IImportUsers,
-    IUserPosition,
-} from '../types';
+import { IGeneralSetting, IGetGeneralSettingQuery, IUserPosition } from '../types';
 
 class UserApiService extends BaseService {
     updateStatus<P>(id: number, data: P): AxiosPromise {
@@ -16,10 +11,6 @@ class UserApiService extends BaseService {
             `${this.detailUrl}/${id}/status`,
             data,
         );
-    }
-
-    importUsers(data: IImportUsers): Promise<IBodyResponse<IBulkImportResponse>> {
-        return this.client.post(`${this.detailUrl}/bulk-create`, data);
     }
 }
 

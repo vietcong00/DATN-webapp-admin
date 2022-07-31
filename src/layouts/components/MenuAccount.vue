@@ -15,9 +15,6 @@
                     <el-dropdown-item @click="onClickProfileButton">
                         {{ $t('common.app.menuAccount.myProfile') }}
                     </el-dropdown-item>
-                    <el-dropdown-item @click="onClickSettings">
-                        {{ $t('common.app.menuAccount.settings') }}
-                    </el-dropdown-item>
                     <el-dropdown-item @click="logout">
                         {{ $t('common.app.menuAccount.logout') }}
                     </el-dropdown-item>

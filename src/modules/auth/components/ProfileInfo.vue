@@ -99,88 +99,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Bank Account -->
-                    <div class="col-lg-6 col-xl-6 col-md-12">
-                        <div class="row-item border row">
-                            <div class="item-label col-5 fw-bold text-start">
-                                {{ $t('auth.profile.fields.bankAccount') }}
-                            </div>
-                            <div class="item-value col-7">
-                                {{ userProfile.bankAccount }}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Bank -->
-                    <div class="col-lg-6 col-xl-6 col-md-12">
-                        <div class="row-item border row">
-                            <div class="item-label col-5 fw-bold text-start">
-                                {{ $t('auth.profile.fields.bank') }}
-                            </div>
-                            <div class="item-value col-7">{{ userProfile.bank }}</div>
-                        </div>
-                    </div>
-                    <!-- Social Insurance -->
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-lg-6 col-xl-6 col-md-12">
-                                <div class="row-item border row">
-                                    <div class="item-label col-5 fw-bold text-start">
-                                        {{ $t('auth.profile.fields.socialInsurance') }}
-                                    </div>
-                                    <div class="item-value col-7">
-                                        {{ userProfile.socialInsurance }}
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Tax Code -->
-                            <div class="col-lg-6 col-xl-6 col-md-12">
-                                <div class="row-item border row">
-                                    <div class="item-label col-5 fw-bold text-start">
-                                        {{ $t('auth.profile.fields.taxCode') }}
-                                    </div>
-                                    <div class="item-value col-7">
-                                        {{ userProfile.taxCode }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- CitizenCard -->
-                    <div class="col-12">
-                        <div class="row-item border row">
-                            <div class="item-label-long col-4 fw-bold text-start">
-                                {{ $t('auth.profile.fields.citizenCard') }}
-                            </div>
-                            <div class="layout-item-value-long">
-                                <div class="item-value-long text-start col-12">
-                                    {{
-                                        formatCitizenInformation(
-                                            $t('auth.profile.fields.citizenId'),
-                                            userProfile.citizenId || '',
-                                        )
-                                    }}
-                                </div>
-                                <div class="item-value-long text-start col-12">
-                                    {{
-                                        formatCitizenInformation(
-                                            $t('auth.profile.fields.citizenIdIssuedAt'),
-                                            formatDate(
-                                                userProfile.citizenIdIssuedAt || '',
-                                            ),
-                                        )
-                                    }}
-                                </div>
-                                <div class="item-value-long text-start col-12">
-                                    {{
-                                        formatCitizenInformation(
-                                            $t('auth.profile.fields.idCardIssuePlace'),
-                                            userProfile.idCardIssuePlace || '',
-                                        )
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Address -->
                     <div class="col-12">
                         <div class="row-item border row">
@@ -190,19 +108,6 @@
                             <div class="layout-item-value-long">
                                 <div class="item-value-long col-12 text-start">
                                     {{ userProfile.address }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Hometown Address -->
-                    <div class="col-12">
-                        <div class="row-item border row">
-                            <div class="item-label-long col-5 fw-bold text-start">
-                                {{ $t('auth.profile.fields.hometownAddress') }}
-                            </div>
-                            <div class="layout-item-value-long">
-                                <div class="item-value-long col-12 text-start">
-                                    {{ userProfile.hometownAddress }}
                                 </div>
                             </div>
                         </div>

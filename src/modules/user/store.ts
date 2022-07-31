@@ -3,7 +3,6 @@ import {
     IUser,
     IQueryStringUser,
     IUserFilterForm,
-    IImportUser,
     IUserPosition,
 } from '@/modules/user/types';
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
@@ -23,7 +22,6 @@ import { commonService } from '@/common/services/api.services';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
 import { capitalize } from 'lodash';
-import { trimObject } from '@/utils/helper';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -53,7 +51,6 @@ class UserModule extends VuexModule {
     isOpenImportUserFilePopup = false;
     isOpenUploadFingerFilePopup = false;
 
-    importUsers: IImportUser[] = [];
     isOpenImportUserResultPopUp = false;
 
     // GETTERS
@@ -221,12 +218,6 @@ class UserModule extends VuexModule {
     }
 
     @Action
-    setImportUsers(importUsers: IImportUser[]) {
-        trimObject(importUsers);
-        this.MUTATE_IMPORT_USERS(importUsers);
-    }
-
-    @Action
     setIsOpenImportUserResultPopup(value: boolean) {
         this.MUTATE_IS_OPEN_IMPORT_USER_RESULT_POP_UP(value);
     }
@@ -316,16 +307,6 @@ class UserModule extends VuexModule {
     @Mutation
     MUTATE_AVATAR_URL(url: string) {
         this.avatarUrl = url;
-    }
-
-    @Mutation
-    MUTATE_IMPORT_USERS(importUsers: IImportUser[]) {
-        this.importUsers = importUsers.map((importUser, index) => {
-            return {
-                ...importUser,
-                index,
-            };
-        });
     }
 
     @Mutation

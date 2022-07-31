@@ -104,85 +104,7 @@
                             :error="translateYupError(form.errors.position)"
                         />
                     </div>
-                    <!-- Social Insurance -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputNumber
-                            name="socialInsurance"
-                            v-model:value="form.socialInsurance"
-                            :label="$t('user.form.socialInsurance.label')"
-                            :placeholder="$t('user.form.socialInsurance.placeholder')"
-                            :error="translateYupError(form.errors.socialInsurance)"
-                        />
-                    </div>
-                    <!-- Bank Account -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputNumber
-                            name="bankAccount"
-                            is-required="true"
-                            v-model:value="form.bankAccount"
-                            :label="$t('user.form.bankAccount.label')"
-                            :placeholder="$t('user.form.bankAccount.placeholder')"
-                            :error="translateYupError(form.errors.bankAccount)"
-                        />
-                    </div>
-                    <!-- Bank -->
-                    <div class="col-12 col-lg-4">
-                        <BaseSingleSelect
-                            v-model:value="form.bank"
-                            is-required="true"
-                            :filterable="true"
-                            :options="banksOptions"
-                            :label="$t('user.form.bank.label')"
-                            :placeholder="$t('user.form.bank.placeholder')"
-                            name="bank"
-                            :error="translateYupError(form.errors.bank)"
-                        />
-                    </div>
-                    <!-- Tax Code -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputNumber
-                            name="taxCode"
-                            v-model:value="form.taxCode"
-                            :label="$t('user.form.taxCode.label')"
-                            :placeholder="$t('user.form.taxCode.placeholder')"
-                            :error="translateYupError(form.errors.taxCode)"
-                        />
-                    </div>
-                    <!-- Citizen Id -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputNumber
-                            name="citizenId"
-                            is-required="true"
-                            v-model:value="form.citizenId"
-                            :label="$t('user.form.citizenId.label')"
-                            :placeholder="$t('user.form.citizenId.placeholder')"
-                            :error="translateYupError(form.errors.citizenId)"
-                        />
-                    </div>
-                    <!-- Citizen Issues At -->
-                    <div class="col-12 col-lg-4">
-                        <BaseDatePicker
-                            name="citizenIdIssuedAt"
-                            is-required="true"
-                            v-model:value="form.citizenIdIssuedAt"
-                            :maxDate="new Date()"
-                            :minDate="MIN_DATE_PICKER"
-                            :label="$t('user.form.citizenIdIssuedAt.label')"
-                            :placeholder="$t('user.form.citizenIdIssuedAt.placeholder')"
-                            :error="translateYupError(form.errors.citizenIdIssuedAt)"
-                        />
-                    </div>
-                    <!-- Citizen Issues place -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputText
-                            v-model:value="form.idCardIssuePlace"
-                            is-required="true"
-                            :label="$t('user.form.idCardIssuePlace.label')"
-                            :placeholder="$t('user.form.idCardIssuePlace.placeholder')"
-                            name="idCardIssuePlace"
-                            :error="translateYupError(form.errors.idCardIssuePlace)"
-                        />
-                    </div>
+
                     <!-- Province -->
                     <div class="col-12 col-lg-4">
                         <BaseSingleSelect
@@ -196,23 +118,13 @@
                         />
                     </div>
                     <!-- Address -->
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12">
                         <BaseInputText
                             v-model:value="form.address"
                             :label="$t('user.form.address.label')"
                             :placeholder="$t('user.form.address.placeholder')"
                             name="address"
                             :error="translateYupError(form.errors.address)"
-                        />
-                    </div>
-                    <!-- Hometown Address -->
-                    <div class="col-12 col-lg-4">
-                        <BaseInputText
-                            v-model:value="form.hometownAddress"
-                            :label="$t('user.form.hometownAddress.label')"
-                            :placeholder="$t('user.form.hometownAddress.placeholder')"
-                            name="hometownAddress"
-                            :error="translateYupError(form.errors.hometownAddress)"
                         />
                     </div>
                 </div>

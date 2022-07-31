@@ -33,19 +33,11 @@ export interface IUserProfile {
     gender: string | null;
     fullName: string;
     position: IUserPosition | null | string;
-    idCardIssuePlace: string | null;
     lastLoginAt: string | null;
     phoneNumber: string | null;
-    hometownAddress: string | null;
     avatarUrl: string | null;
     avatarId: number | null;
-    taxCode: string | null;
-    bankAccount: string | null;
-    bank: string | null;
-    citizenId: string | null;
     provinceId: number | null;
-    citizenIdIssuedAt: string | null;
-    socialInsurance: string | null;
     isSuperAdmin: boolean;
 }
 

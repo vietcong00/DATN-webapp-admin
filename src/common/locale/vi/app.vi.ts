@@ -1,17 +1,8 @@
 export default {
-    appName: 'ttlab-tims',
-    baseComponent: {
-        pagination: {
-            rowPerPage: 'dòng',
-        },
-    },
     menu: {
         dashboard: 'Trang chủ',
         user: {
             title: 'Quản trị nhân sự',
-            userManagement: 'Quản lý người dùng',
-            contractManagement: 'Quản lý hợp đồng',
-            teamManagement: 'Quản lý nhóm',
         },
         billing: {
             title: 'Quản lý hóa đơn',
@@ -19,9 +10,6 @@ export default {
         role: {
             subtitle: 'Vai trò',
             title: 'Quản lý vai trò',
-        },
-        permission: {
-            title: 'Quản lý quyền hạn',
         },
         tableDiagram: {
             title: 'Sơ đồ bàn',
@@ -34,24 +22,12 @@ export default {
             food: 'Món ăn',
             category: 'Danh mục',
         },
-        payment: {
-            title: 'Thanh toán',
-            atRestaurant: 'Đơn tại quán',
-            takeout: 'Đơn mang về',
-        },
-        promotion: {
-            title: 'Khuyến mại',
-        },
         reportRevenue: {
-            title: 'Chôt doanh thu',
-        },
-        chef: {
-            title: 'Đầu bếp',
+            title: 'Báo cáo doanh thu',
         },
     },
     menuAccount: {
         myProfile: 'Hồ sơ của tôi',
-        settings: 'Cài đặt',
         logout: 'Đăng xuất',
     },
     menuLanguage: {
@@ -66,14 +42,14 @@ export default {
         confirm: 'Xác nhận',
         save: 'Lưu',
     },
+    cPanel: {
+        page: 'Page',
+    },
     tooltip: {
         edit: 'Chỉnh sửa',
         detail: 'Chi tiết',
         delete: 'Xóa',
         addRole: 'Thêm vai trò',
-    },
-    cPanel: {
-        page: 'Trang',
     },
     filterForm: {
         search: 'Tìm kiếm',
@@ -92,18 +68,7 @@ export default {
     },
     pageNotFound: 'Oops! Không tìm thấy trang!',
     backToHome: 'Trờ về trang chủ',
-    action: {
-        create: 'Tạo',
-        update: 'Sửa',
-        edit: 'Sửa',
-        remove: 'Xóa',
-        delete: 'Xóa',
-    },
     notification: 'Thông báo',
-    confirmSaveBox: {
-        save: 'Lưu',
-        dontSave: 'Không lưu',
-    },
     acceptStatus: {
         APPROVE: 'Chấp nhận',
         CHECKED_AGAIN: 'Đã kiểm tra lại',

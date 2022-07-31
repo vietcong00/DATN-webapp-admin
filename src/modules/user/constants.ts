@@ -1,14 +1,6 @@
 import {
     INPUT_NUMBER_MAX_VALUE,
     INPUT_TEXT_MAX_LENGTH,
-    MAX_BANK_ACCOUNT_LENGTH,
-    MAX_CITIZEN_ID_LENGTH,
-    MAX_SOCIAL_INSURANCE_LENGTH,
-    MAX_TAX_CODE_LENGTH,
-    MIN_BANK_ACCOUNT_LENGTH,
-    MIN_CITIZEN_ID_LENGTH,
-    MIN_SOCIAL_INSURANCE_LENGTH,
-    MIN_TAX_CODE_LENGTH,
     REGEX,
     TEXTAREA_MAX_LENGTH,
 } from './../../common/constants';
@@ -151,20 +143,7 @@ export const userSchema = yup.object({
         .optional()
         .required(),
     birthday: yup.string().matches(REGEX.YYYY_MM_DD_HYPHEN).nullable(),
-    citizenIdIssuedAt: yup
-        .string()
-        .matches(REGEX.YYYY_MM_DD_HYPHEN)
-        .nullable()
-        .optional()
-        .required(),
     address: yup.string().nullable().trim().max(TEXTAREA_MAX_LENGTH).optional(),
-    hometownAddress: yup.string().nullable().trim().max(TEXTAREA_MAX_LENGTH).optional(),
-    idCardIssuePlace: yup
-        .string()
-        .trim()
-        .max(INPUT_TEXT_MAX_LENGTH)
-        .nullable()
-        .required(),
     gender: yup
         .string()
         .max(INPUT_TEXT_MAX_LENGTH)
@@ -181,36 +160,5 @@ export const userSchema = yup.object({
     avatarId: yup.number().positive().max(INPUT_NUMBER_MAX_VALUE).optional().nullable(),
     position: yup.string().max(INPUT_TEXT_MAX_LENGTH).required(),
     note: yup.string().trim().nullable().max(TEXTAREA_MAX_LENGTH).optional(),
-    socialInsurance: yup
-        .string()
-        .trim()
-        .max(MAX_SOCIAL_INSURANCE_LENGTH)
-        .nullable()
-        .transform((o, c) => (o === '' ? null : c))
-        .min(MIN_SOCIAL_INSURANCE_LENGTH)
-        .optional(),
-    taxCode: yup
-        .string()
-        .trim()
-        .max(MAX_TAX_CODE_LENGTH)
-        .nullable()
-        .transform((o, c) => (o === '' ? null : c))
-        .min(MIN_TAX_CODE_LENGTH)
-        .optional(),
-    bankAccount: yup
-        .string()
-        .trim()
-        .max(MAX_BANK_ACCOUNT_LENGTH)
-        .min(MIN_BANK_ACCOUNT_LENGTH)
-        .nullable()
-        .required(),
-    bank: yup.string().max(INPUT_TEXT_MAX_LENGTH).nullable().required(),
     provinceId: yup.number().positive().nullable().required().label('province'),
-    citizenId: yup
-        .string()
-        .trim()
-        .max(MAX_CITIZEN_ID_LENGTH)
-        .min(MIN_CITIZEN_ID_LENGTH)
-        .nullable()
-        .required(),
 });

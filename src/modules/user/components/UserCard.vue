@@ -160,11 +160,9 @@ export default class UserCard extends Vue {
             phoneNumber: this.user.phoneNumber,
             birthday: this.user.birthday,
             gender: this.user.gender,
-            idCardIssuePlace: this.user.idCardIssuePlace,
             roleId: this.user.roleId as number,
             position: this.user.position,
             address: this.user.address,
-            hometownAddress: this.user.hometownAddress,
             avatarId: null,
         } as IUser);
         userModule.setIsShowUserFormPopup(true);

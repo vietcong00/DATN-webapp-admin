@@ -28,18 +28,10 @@ const initUser: IUserProfile = {
     position: null,
     lastLoginAt: null,
     phoneNumber: null,
-    hometownAddress: null,
     status: null,
     avatarUrl: null,
     avatarId: null,
-    taxCode: '',
-    bankAccount: '',
-    bank: '',
     provinceId: null,
-    citizenIdIssuedAt: null,
-    citizenId: '',
-    socialInsurance: '',
-    idCardIssuePlace: '',
     isSuperAdmin: false,
 };
 
