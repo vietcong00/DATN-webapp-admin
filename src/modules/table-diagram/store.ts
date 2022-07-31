@@ -25,6 +25,7 @@ class TableDiagramModule extends VuexModule {
     tableSelected: ITable | null = null;
 
     isShowModalTableDetail = false;
+    isShowBookingsOfTablePopup = false;
     canChosenTable = false;
 
     tableQueryString: IQueryStringTable = initQueryString;
@@ -45,16 +46,16 @@ class TableDiagramModule extends VuexModule {
     }
 
     @Mutation
-    UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data: boolean) {
-        this.isShowModalTableDetail = data;
-    }
-
-    @Mutation
     MUTATE_EVENT_QUERY_STRING(query: IQueryStringTable) {
         this.tableQueryString = {
             ...this.tableQueryString,
             ...query,
         };
+    }
+
+    @Mutation
+    MUTATE_IS_SHOW_BOOKINGS_OF_TABLE_POPUP(data: boolean) {
+        this.isShowBookingsOfTablePopup = data;
     }
 
     // ACTION
@@ -65,8 +66,8 @@ class TableDiagramModule extends VuexModule {
     }
 
     @Action
-    updateCheckShowModalTableDetail(data: boolean) {
-        this.UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data);
+    setIsShowBookingsOfTablePopup(data: boolean) {
+        this.MUTATE_IS_SHOW_BOOKINGS_OF_TABLE_POPUP(data);
     }
 
     @Action

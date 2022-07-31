@@ -183,7 +183,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IBooking } from '../types';
+import { IBooking, IBookingUpdate } from '../types';
 import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
 import { bookingService } from '@/modules/table-diagram/services/api.service';
@@ -259,9 +259,9 @@ export default class BookingTable extends mixins(BookingMixins) {
         }
     }
 
-    openModal(booking: IBooking): void {
+    openModal(booking: IBookingUpdate): void {
         bookingModule.setSelectedBooking(booking);
-        bookingModule.updateCheckShowModalChosenTable(true);
+        bookingModule.setIsShowSetupTableOfBookingPopup(true);
     }
 
     statusBadge(status: BookingStatus): string {

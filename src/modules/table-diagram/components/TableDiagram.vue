@@ -113,7 +113,9 @@ export default class TableDiagramPage extends Vue {
     created(): void {
         tableDiagramModule.clearQueryString();
         tableDiagramModule.setTableSelected(null);
-        bookingModule.setSelectedBooking(null);
+        if (!bookingModule.isShowSetupTableOfBookingPopup) {
+            bookingModule.setSelectedBooking(null);
+        }
         this.getTableList();
     }
 

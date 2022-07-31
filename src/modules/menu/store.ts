@@ -49,7 +49,6 @@ class MenuModule extends VuexModule {
     selectedFood: IFoodUpdateBody | null = null;
     selectedCategory: ICategoryUpdateBody | null = null;
 
-    isShowModalChosenTable = false;
     isShowModalTableDetail = false;
     idBookingSelected = -1;
     arrivalTimeSelected = -1;

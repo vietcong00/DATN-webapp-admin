@@ -84,25 +84,6 @@
                             </BaseTableLayout>
                         </slot>
                     </div>
-
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            <el-button
-                                type="info"
-                                plain
-                                class="modal-button"
-                                @click="sendData(TableStatus.READY)"
-                                ><div class="text-btn">Đã sử dụng xong</div></el-button
-                            >
-                            <el-button
-                                type="danger"
-                                plain
-                                class="modal-button"
-                                @click="sendData(TableStatus.USED)"
-                                ><div class="text-btn">Bắt đầu sử dụng</div></el-button
-                            >
-                        </slot>
-                    </div>
                 </div>
             </div>
         </div>
@@ -113,20 +94,9 @@
 import { mixins, Options } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
 import { CloseBold as CloseBoldIcon } from '@element-plus/icons-vue';
-import { tableService } from '../services/api.service';
-import { HttpStatus } from '@/common/constants';
-import {
-    showSuccessNotificationFunction,
-    showErrorNotificationFunction,
-} from '@/utils/helper';
-import { ElLoading } from 'element-plus';
 import { IBooking } from '@/modules/booking/types';
 import { bookingModule } from '@/modules/booking/store';
 import { UtilMixins } from '@/mixins/utilMixins';
-import { TableStatus } from '../constants';
-import { billingService } from '@/modules/billing/services/api.services';
-import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
-import moment from 'moment';
 @Options({
     name: 'modal-table-detail-booking',
     components: { CloseBoldIcon },
@@ -137,48 +107,8 @@ export default class ModalTableDetailBooking extends mixins(UtilMixins) {
     }
 
     closeModal(): void {
-        tableDiagramModule.updateCheckShowModalTableDetail(false);
-    }
-
-    async sendData(status: TableStatus): Promise<void> {
-        let createBillingResponse;
-        if (status === TableStatus.USED) {
-            createBillingResponse = await billingService.create({
-                tableId: tableDiagramModule.tableSelected?.id || '',
-                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
-                billingStatus: BillingStatus.EATING,
-            } as IBillingCreate);
-
-            if (!createBillingResponse?.success) {
-                showErrorNotificationFunction(createBillingResponse?.message as string);
-                return;
-            }
-        }
-        const loading = ElLoading.service({
-            target: '.content',
-        });
-        const response = await tableService.update(
-            tableDiagramModule.tableSelected?.id as number,
-            {
-                status,
-            },
-        );
-        loading.close();
-        if (response.success) {
-            showSuccessNotificationFunction('Thay đổi trạng thái bàn thành công');
-            await tableDiagramModule.getTables();
-            loading.close();
-            this.closeModal();
-        } else {
-            showErrorNotificationFunction(response.message);
-            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                const loading = ElLoading.service({
-                    target: '.content',
-                });
-                await tableDiagramModule.getTables();
-                loading.close();
-            }
-        }
+        tableDiagramModule.setIsShowBookingsOfTablePopup(false);
+        tableDiagramModule.setTableSelected(null);
     }
 }
 </script>

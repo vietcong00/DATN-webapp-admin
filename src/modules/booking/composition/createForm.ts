@@ -39,7 +39,7 @@ export function initData() {
             phone: values.phone,
             numberPeople: values.numberPeople,
             arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
-            idTable: tableDiagramModule.tableSelected?.id,
+            tableId: tableDiagramModule.tableSelected?.id,
         } as IBookingCreate;
         let response;
         const bookingId = bookingModule.selectedBooking?.id;

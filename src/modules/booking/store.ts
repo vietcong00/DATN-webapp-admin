@@ -1,4 +1,3 @@
-import { tableDiagramModule } from './../table-diagram/store';
 import { bookingService } from './../table-diagram/services/api.service';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
@@ -24,7 +23,7 @@ const initQueryString = {
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: null,
     status: null,
-    idTable: null,
+    tableId: null,
     arrivalTimeRange: null,
 };
 
@@ -38,7 +37,7 @@ class BookingModule extends VuexModule {
 
     selectedBooking: IBookingUpdate | null = null;
 
-    isShowModalChosenTable = false;
+    isShowSetupTableOfBookingPopup = false;
     isShowModalTableDetail = false;
 
     bookingQueryString: IQueryStringBooking = initQueryString;
@@ -46,14 +45,6 @@ class BookingModule extends VuexModule {
 
     isShowBookingFormPopUp = false;
     isDisabledSaveButton = false;
-
-    get checkShowModalChosenTable() {
-        return this.isShowModalChosenTable;
-    }
-
-    get checkShowModalTableDetail() {
-        return this.isShowModalTableDetail;
-    }
 
     // GETTERS
     get userPermissions(): string[] {
@@ -71,8 +62,8 @@ class BookingModule extends VuexModule {
     }
 
     @Mutation
-    UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data: boolean) {
-        this.isShowModalChosenTable = data;
+    MUTATE_IS_SHOW_SETUP_TABLE_OF_BOOKING(data: boolean) {
+        this.isShowSetupTableOfBookingPopup = data;
     }
 
     @Mutation
@@ -124,8 +115,8 @@ class BookingModule extends VuexModule {
     // ACTION
 
     @Action
-    updateCheckShowModalChosenTable(data: boolean) {
-        this.UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data);
+    setIsShowSetupTableOfBookingPopup(data: boolean) {
+        this.MUTATE_IS_SHOW_SETUP_TABLE_OF_BOOKING(data);
     }
 
     @Action
@@ -201,9 +192,9 @@ class BookingModule extends VuexModule {
     }
 
     @Action
-    async getBookingTables() {
+    async getBookingsOfTable(tableId: number) {
         this.MUTATE_BOOKING_TABLE_QUERY_STRING({
-            idTable: tableDiagramModule.tableSelected?.id,
+            tableId,
             status: [BookingStatus.WAITING],
         });
         const response = (await bookingService.getList({

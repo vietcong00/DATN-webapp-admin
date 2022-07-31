@@ -1,5 +1,12 @@
 <template>
     <div class="table-item" :class="table.id === tableSelected?.id ? 'selected' : ''">
+        <div class="table-action" v-if="table?.bookingCount" @click="getBookingsOfTable">
+            <div class="booking-action">
+                <el-button type="warning" circle>
+                    {{ table?.bookingCount ?? 0 }}
+                </el-button>
+            </div>
+        </div>
         <div :class="table.status">
             <div
                 class="table-layout"
@@ -8,6 +15,7 @@
                     table.numberSeat < selectedBooking?.numberPeople ? 'not-enough' : ''
                 "
             >
+                <div class="table-description">{{ table.name }}</div>
                 <img
                     class="table-img"
                     :src="
@@ -17,7 +25,6 @@
                     "
                     alt=""
                 />
-                <div class="table-description">{{ table.name }}</div>
                 <div class="table-description">
                     {{
                         $t('tableDiagram.table.tableList.numberSeat', {
@@ -28,6 +35,24 @@
             </div>
             <ModalTableDetailBooking v-if="isShowModalTableDetail" />
         </div>
+        <div v-if="!isShowSetupTableOfBookingPopup">
+            <el-button
+                type="danger mt-3"
+                plain
+                round
+                v-if="table.status === TableStatus.USED"
+                @click="updateStatusTable(table.id, TableStatus.READY)"
+                >Kết thức</el-button
+            >
+            <el-button
+                type="success mt-3"
+                plain
+                round
+                v-else
+                @click="updateStatusTable(table.id, TableStatus.USED)"
+                >Phục vụ</el-button
+            >
+        </div>
     </div>
 </template>
 
@@ -36,11 +61,20 @@ import { Options, Vue } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
 import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
 import { ElLoading, ElMessageBox } from 'element-plus';
-import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus } from '../constants';
+import { TableStatus } from '../constants';
 import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
 import { ITable } from '../types';
 import { IBookingUpdate } from '@/modules/booking/types';
+import { HttpStatus } from '@/common/constants';
+import { billingService } from '@/modules/billing/services/api.services';
+import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
+import { tableService } from '@/modules/booking/services/api.service';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import moment from 'moment';
 
 @Options({
     name: 'table',
@@ -51,6 +85,8 @@ import { IBookingUpdate } from '@/modules/booking/types';
 export default class TablesRestaurants extends Vue {
     @Prop({}) table!: ITable;
 
+    TableStatus = TableStatus;
+
     get tableSelected(): ITable | null {
         return tableDiagramModule.tableSelected;
     }
@@ -59,8 +95,8 @@ export default class TablesRestaurants extends Vue {
         return tableDiagramModule.isShowModalTableDetail;
     }
 
-    get isShowModalChosenTable(): boolean {
-        return bookingModule.isShowModalChosenTable;
+    get isShowSetupTableOfBookingPopup(): boolean {
+        return bookingModule.isShowSetupTableOfBookingPopup;
     }
 
     get isShowBookingFormPopUp(): boolean {
@@ -90,43 +126,17 @@ export default class TablesRestaurants extends Vue {
         }
     }
 
-    async selectTable(): Promise<void> {
+    selectTable(): void {
         tableDiagramModule.setTableSelected(this.table);
+    }
+
+    async getBookingsOfTable(): Promise<void> {
         const loading = ElLoading.service({
             target: '.table-detail-booking-table-data',
         });
-        await bookingModule.getBookingTables();
+        await bookingModule.getBookingsOfTable(this.table.id);
+        tableDiagramModule.setIsShowBookingsOfTablePopup(true);
         loading.close();
-        let success = false;
-        if (this.isShowModalChosenTable || this.isShowBookingFormPopUp) {
-            if (
-                this.checkNumberSeat(
-                    this.selectedBooking?.numberPeople || 0,
-                    this.table.numberSeat,
-                )
-            ) {
-                success = true;
-                if (this.table.status === TableStatus.USED) {
-                    if (
-                        Math.abs(
-                            new Date().getTime() -
-                                new Date(
-                                    this.selectedBooking?.arrivalTime as Date,
-                                ).getTime(),
-                        ) < LIMIT_ARRIVAL_TIME_BOOKING
-                    ) {
-                        const textWarning = `Bàn bạn vừa chọn đang được sử dụng. Vui lòng chọn bàn khác!`;
-                        ElMessageBox.alert(textWarning, 'Warning', {
-                            confirmButtonText: 'OK',
-                        });
-                        success = false;
-                    }
-                }
-            }
-        } else {
-            tableDiagramModule.updateCheckShowModalTableDetail(true);
-        }
-        tableDiagramModule.setCanChosenTable(success);
     }
 
     checkNumberSeat(numberPeople: number, numberSeat: number): boolean {
@@ -139,6 +149,43 @@ export default class TablesRestaurants extends Vue {
         }
         return true;
     }
+
+    async updateStatusTable(tableId: number, status: TableStatus): Promise<void> {
+        let createBillingResponse;
+        if (status === TableStatus.USED) {
+            createBillingResponse = await billingService.create({
+                tableId,
+                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
+                billingStatus: BillingStatus.EATING,
+            } as IBillingCreate);
+
+            if (!createBillingResponse?.success) {
+                showErrorNotificationFunction(createBillingResponse?.message as string);
+                return;
+            }
+        }
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        const response = await tableService.update(tableId, {
+            status,
+        });
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction('Thay đổi trạng thái bàn thành công');
+            await tableDiagramModule.getTables();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await tableDiagramModule.getTables();
+                loading.close();
+            }
+        }
+    }
 }
 </script>
 
@@ -149,6 +196,7 @@ export default class TablesRestaurants extends Vue {
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
+    position: relative;
     .table-img {
         width: 50px;
         height: 50px;
@@ -166,6 +214,31 @@ export default class TablesRestaurants extends Vue {
     }
     .table-layout {
         padding: 10px;
+    }
+
+    .table-action {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        button {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+        .booking-action {
+            cursor: pointer;
+            button {
+                width: 24px;
+                height: 24px;
+                min-height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
     }
 }
 
@@ -185,12 +258,12 @@ export default class TablesRestaurants extends Vue {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.booked {
-    background: #ebff78;
-    border-radius: 10px;
-    border: 1px solid #c2c2c2;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
+// .booked {
+//     background: #ebff78;
+//     border-radius: 10px;
+//     border: 1px solid #c2c2c2;
+//     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+// }
 
 .used {
     background: #9eb3fa;
