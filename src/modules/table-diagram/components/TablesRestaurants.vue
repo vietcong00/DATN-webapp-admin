@@ -11,13 +11,20 @@
                 <img
                     class="table-img"
                     :src="
-                        require(`../../../assets/images/table/table-${getImgLink(
+                        require(`../../../assets/icons/table-diagram/table-${getImgLink(
                             table?.numberSeat,
-                        )}.png`)
+                        )}.svg`)
                     "
                     alt=""
                 />
-                <div class="table-name">{{ table.name }}</div>
+                <div class="table-description">{{ table.name }}</div>
+                <div class="table-description">
+                    {{
+                        $t('tableDiagram.table.tableList.numberSeat', {
+                            numberSeat: table?.numberSeat,
+                        })
+                    }}
+                </div>
             </div>
             <ModalTableDetailBooking v-if="isShowModalTableDetail" />
         </div>
@@ -138,7 +145,7 @@ export default class TablesRestaurants extends Vue {
 <style lang="scss" scoped>
 .table-item {
     width: 15%;
-    margin: 30px;
+    margin: 15px;
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
@@ -146,13 +153,14 @@ export default class TablesRestaurants extends Vue {
         width: 50px;
         height: 50px;
     }
-    .table-name {
+    .table-description {
+        margin: 5px 0px;
         color: #000000;
         font-weight: 200;
     }
     &:hover {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        .table-name {
+        .table-description {
             font-weight: 700;
         }
     }

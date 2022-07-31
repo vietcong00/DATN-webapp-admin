@@ -15,4 +15,8 @@ export default {
     endDate: 'End date',
     quantity: 'Participant quantity',
     budget: 'Budget',
+
+    tableList: {
+        numberSeat: '{numberSeat} Chỗ',
+    },
 };

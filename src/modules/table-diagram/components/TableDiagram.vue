@@ -19,15 +19,76 @@
             <div class="note-text">Đang chọn</div>
         </div>
     </div>
-    <img class="img-item" src="../../../assets/images/table/door.png" />
-    <div class="list-table">
-        <tables-restaurants
-            v-for="(table, index) in tableList"
-            :key="index"
-            :table="table"
-        />
-    </div>
-    <img class="img-item" src="../../../assets/images/table/cash-machine.png" />
+    <el-scrollbar>
+        <div class="d-flex justify-content-around">
+            <div style="width: 1100px">
+                <div class="mt-4 d-flex justify-content-around align-items-center">
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/glass-door-icon.svg"
+                    />
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                </div>
+                <div class="d-flex flex-row justify-content-around">
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-2.svg"
+                        />
+
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                    </div>
+                    <div class="p-10 list-table">
+                        <tables-restaurants
+                            v-for="(table, index) in tableList"
+                            :key="index"
+                            :table="table"
+                        />
+                    </div>
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-1.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-4.svg"
+                        />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-around">
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/cash-machine.svg"
+                    />
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/kitchen-room.svg"
+                    />
+                </div>
+            </div>
+        </div>
+    </el-scrollbar>
 </template>
 
 <script lang="ts">
@@ -73,6 +134,12 @@ export default class TableDiagramPage extends Vue {
     margin: 20px auto;
 }
 
+.decorations {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+}
+
 .list-note-diagram {
     display: flex;
     flex-direction: row;
@@ -110,12 +177,13 @@ export default class TableDiagramPage extends Vue {
 
 .list-table {
     width: 100%;
-    margin-top: 10px;
+    margin: 50px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-top: 1px solid #bebebe;
-    border-bottom: 1px solid #bebebe;
+    background-color: #e9e9e9;
+    border: 1px solid #b3b3b3;
+    border-radius: 10px;
 }
 </style>

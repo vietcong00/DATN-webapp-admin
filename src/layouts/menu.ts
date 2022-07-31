@@ -4,7 +4,7 @@ import { ISidebar } from '@/common/types';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 // start dashboardGroup
 const dashboard: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/chart-pie.svg'),
     name: 'common.app.menu.dashboard',
     active: true,
     to: '/dashboard',
@@ -28,7 +28,7 @@ const userMenu: ISidebar = {
 };
 
 const billing: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/bill-icon.svg'),
     name: 'common.app.menu.billing.title',
     active: false,
     to: '/billing',
@@ -42,7 +42,7 @@ const billing: ISidebar = {
 };
 
 const roleMenu: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/user-key-icon.svg'),
     name: 'common.app.menu.role.title',
     active: false,
     to: '/role',
@@ -56,7 +56,7 @@ const roleMenu: ISidebar = {
 };
 
 const tableDiagram: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/dinner-table.svg'),
     name: 'common.app.menu.tableDiagram.title',
     active: false,
     to: '/table-diagram',
@@ -68,7 +68,7 @@ const tableDiagram: ISidebar = {
 };
 
 const booking: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/booking.svg'),
     name: 'common.app.menu.booking.title',
     active: false,
     to: '/booking',
@@ -81,7 +81,7 @@ const booking: ISidebar = {
 };
 
 const menuMenu: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/dish-icon.svg'),
     name: 'common.app.menu.menu.title',
     active: false,
     children: [
@@ -113,7 +113,7 @@ const menuMenu: ISidebar = {
 };
 
 const reportRevenueMenu: ISidebar = {
-    iconLink: require('@/assets/icons/sidebar/user.svg'),
+    iconLink: require('@/assets/icons/sidebar/economy-grow-icon.svg'),
     name: 'common.app.menu.reportRevenue.title',
     to: '/report-revenue',
     active: false,
