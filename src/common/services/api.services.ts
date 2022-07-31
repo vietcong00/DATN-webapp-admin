@@ -2,7 +2,6 @@ import service from '@/plugins/axios';
 import { BaseService } from '@/utils/api';
 import {
     IContractTypeQueryDropDown,
-    IBank,
     IBodyResponse,
     IGetListResponse,
     IDropdownRoleItem,
@@ -37,10 +36,6 @@ class CommonApiService extends BaseService {
         return this.client.get(path, {
             params: query,
         });
-    }
-
-    getDropdownBanks(): Promise<IBodyResponse<IGetListResponse<IBank>>> {
-        return this.client.get(this.baseUrl + '/bank');
     }
 
     getDropdownCategories(): Promise<IBodyResponse<IGetListResponse<ICategory>>> {

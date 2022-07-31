@@ -179,12 +179,6 @@ export type MessageBoxData = 'confirm' | 'close' | 'cancel';
 
 export type INotificationType = '' | 'success' | 'info' | 'warning' | 'error';
 
-export interface IBank {
-    id: number;
-    code: string;
-    name: string;
-}
-
 export interface ITableRowSelect {
     row: string | number | boolean;
     column: string | number;
