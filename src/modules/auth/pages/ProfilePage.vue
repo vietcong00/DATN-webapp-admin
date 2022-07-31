@@ -57,7 +57,7 @@ export default class ProfilePage extends mixins(UtilMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await Promise.all([authModule.getBanks(), authModule.getProvinceList()]);
+        await Promise.all([authModule.getProvinceList()]);
         loading.close();
     }
 

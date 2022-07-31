@@ -7,7 +7,6 @@ import {
 } from '@/modules/user/types';
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import {
-    IBank,
     IBodyResponse,
     IGetListResponse,
     IOrder,
@@ -92,19 +91,6 @@ class UserModule extends VuexModule {
     @Action
     async setUserPositionList(userPositionList: IUserPosition[]) {
         this.MUTATE_SET_USER_POSITION_LIST(userPositionList);
-    }
-
-    @Action
-    async getBanks(): Promise<IBodyResponse<IGetListResponse<IBank>>> {
-        const response = await commonService.getDropdownBanks();
-        if (response?.success) {
-            const bankOptions = (response?.data?.items || []).map((option: IBank) => ({
-                label: `[${option.code}] ${option.name}`,
-                value: option.code,
-            }));
-            this.MUTATE_BANKS(bankOptions);
-        }
-        return response;
     }
 
     @Action

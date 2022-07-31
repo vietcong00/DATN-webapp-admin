@@ -79,11 +79,10 @@ export default class UserListPage extends mixins(UtilMixins) {
             target: '.content',
         });
         Promise.all([
-            (userModule.getBanks(),
             userModule.getProvinceList(),
             userModule.getUsers(),
             userModule.getRoleOptions(),
-            this.getPositions()),
+            this.getPositions(),
         ]);
         loading.close();
     }

@@ -16,7 +16,7 @@ import { PageName } from '@/common/constants';
 import i18n from '@/plugins/vue-i18n';
 import { showAlertMessageFunction } from '@/utils/helper';
 import { IProvince, IUser, IUserPosition } from '../user/types';
-import { ISelectOptions, IBodyResponse, IBank, IGetListResponse } from '@/common/types';
+import { ISelectOptions, IBodyResponse, IGetListResponse } from '@/common/types';
 
 const initUser: IUserProfile = {
     id: NaN,
@@ -121,18 +121,6 @@ class AuthModule extends VuexModule {
             this.MUTATE_USER_PROFILE({ ...initUser });
         }
         return profile;
-    }
-
-    @Action
-    async getBanks() {
-        const response = await commonService.getDropdownBanks();
-        if (response.success) {
-            const tempArr = response.data.items.map((option: IBank) => ({
-                label: `[${option.code}] ${option.name}`,
-                value: option.code,
-            }));
-            this.MUTATE_BANKS(tempArr);
-        }
     }
 
     @Action
