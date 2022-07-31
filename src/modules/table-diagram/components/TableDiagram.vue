@@ -1,26 +1,15 @@
 <template>
-    <div class="list-note-diagram">
-        <div class="note-item">
-            <div class="note-color booked"></div>
-            <div class="note-text">Đã được đặt bàn</div>
-        </div>
-        <div class="note-item">
-            <div class="note-color used"></div>
-            <div class="note-text">Đang được sử dụng</div>
-        </div>
-        <div class="note-item">
-            <div class="note-color not-enough booked"></div>
-            <div class="note-color not-enough used"></div>
+    <BaseSingleSelect
+        v-model:value="floor"
+        :options="FloorOptions"
+        :label="$t('tableDiagram.table.floorOptions.label')"
+        :placeholder="$t('tableDiagram.table.floorOptions.placeholder')"
+        @change="changeFloor"
+        style="width: 25%"
+    />
 
-            <div class="note-text">Không đủ chỗ</div>
-        </div>
-        <div class="note-item">
-            <div class="note-color selected"></div>
-            <div class="note-text">Đang chọn</div>
-        </div>
-    </div>
     <el-scrollbar>
-        <div class="d-flex justify-content-around">
+        <div class="d-flex justify-content-around" v-if="floor === FloorRestaurant.FIRST">
             <div style="width: 1100px">
                 <div class="mt-4 d-flex justify-content-around align-items-center">
                     <img
@@ -54,7 +43,7 @@
                         />
                     </div>
                     <div class="p-10 list-table">
-                        <tables-restaurants
+                        <TablesRestaurants
                             v-for="(table, index) in tableList"
                             :key="index"
                             :table="table"
@@ -79,42 +68,211 @@
                 <div class="d-flex justify-content-around">
                     <img
                         class="img-item"
-                        src="../../../assets/icons/table-diagram/cash-machine.svg"
+                        src="../../../assets/icons/table-diagram/kitchen-room.svg"
                     />
                     <img
                         class="img-item"
-                        src="../../../assets/icons/table-diagram/kitchen-room.svg"
+                        src="../../../assets/icons/table-diagram/cash-machine.svg"
+                    />
+
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/stair-climbing-icon.svg"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="d-flex justify-content-around"
+            v-if="floor === FloorRestaurant.SECOND"
+        >
+            <div style="width: 1100px">
+                <div class="mt-4 d-flex justify-content-around align-items-center">
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/balcony-icon.svg"
+                    />
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/balcony-icon.svg"
+                    />
+                </div>
+                <div class="d-flex flex-row justify-content-around">
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                    </div>
+                    <div class="p-10 list-table">
+                        <TablesRestaurants
+                            v-for="(table, index) in tableList"
+                            :key="index"
+                            :table="table"
+                        />
+                    </div>
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-1.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-4.svg"
+                        />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-around">
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/plant-2.svg"
+                    />
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/plant-5.svg"
+                    />
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/stair-climbing-icon.svg"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-around" v-if="floor === FloorRestaurant.THIRD">
+            <div style="width: 1100px">
+                <div class="mt-4 d-flex justify-content-around align-items-center">
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                </div>
+                <div class="d-flex flex-row justify-content-around">
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-4.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-2.svg"
+                        />
+                    </div>
+                    <div class="p-10 list-table">
+                        <TablesRestaurants
+                            v-for="(table, index) in tableList"
+                            :key="index"
+                            :table="table"
+                        />
+                    </div>
+                    <div class="p-1 d-flex flex-column justify-content-around">
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-3.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/window-icon.svg"
+                        />
+                        <img
+                            class="decorations"
+                            src="../../../assets/icons/table-diagram/plant-5.svg"
+                        />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-around">
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+                    <img
+                        class="decorations"
+                        src="../../../assets/icons/table-diagram/window-icon.svg"
+                    />
+
+                    <img
+                        class="img-item"
+                        src="../../../assets/icons/table-diagram/stair-climbing-icon.svg"
                     />
                 </div>
             </div>
         </div>
     </el-scrollbar>
+    <BookingListOfTablePopup />
 </template>
 
 <script lang="ts">
+import { ISelectOptions } from '@/common/types';
 import { bookingModule } from '@/modules/booking/store';
+import { parseLanguageSelectOptions } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import TablesRestaurants from '../components/TablesRestaurants.vue';
+import { FloorOptions, FloorRestaurant } from '../constants';
+import { TableMixins } from '../mixins';
 import { tableDiagramModule } from '../store';
 import { ITable } from '../types';
+import BookingListOfTablePopup from './BookingListOfTablePopup.vue';
 
 @Options({
     name: 'table-diagram-component',
     components: {
         TablesRestaurants,
+        BookingListOfTablePopup,
     },
 })
-export default class TableDiagramPage extends Vue {
+export default class TableDiagramPage extends mixins(TableMixins) {
     get tableList(): ITable[] {
         return tableDiagramModule.tableList || [];
     }
 
+    get FloorOptions(): ISelectOptions[] {
+        return parseLanguageSelectOptions(FloorOptions);
+    }
+
+    get Floor(): FloorRestaurant {
+        return tableDiagramModule.tableQueryString.floor || FloorRestaurant.FIRST;
+    }
+
     created(): void {
         tableDiagramModule.clearQueryString();
-        tableDiagramModule.setTableSelected(null);
-        if (!bookingModule.isShowSetupTableOfBookingPopup) {
+        if (
+            !(
+                bookingModule.isShowSetupTableOfBookingPopup ||
+                bookingModule.isShowBookingFormPopUp
+            )
+        ) {
             bookingModule.setSelectedBooking(null);
+            tableDiagramModule.setTableSelected(null);
         }
         this.getTableList();
     }
@@ -125,6 +283,14 @@ export default class TableDiagramPage extends Vue {
         });
         await tableDiagramModule.getTables();
         loading.close();
+    }
+
+    floor = FloorRestaurant.FIRST;
+    async changeFloor(): Promise<void> {
+        tableDiagramModule.setTableQueryString({
+            floor: this.floor,
+        });
+        await this.getTableList();
     }
 }
 </script>

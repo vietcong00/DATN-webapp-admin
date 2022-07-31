@@ -15,6 +15,27 @@ export enum TableStatus {
     READY = 'ready',
 }
 
+export enum FloorRestaurant {
+    FIRST = 'first',
+    SECOND = 'second',
+    THIRD = 'third',
+}
+
+export const FloorOptions = [
+    {
+        label: 'tableDiagram.table.floorOptions.first',
+        value: FloorRestaurant.FIRST,
+    },
+    {
+        label: 'tableDiagram.table.floorOptions.second',
+        value: FloorRestaurant.SECOND,
+    },
+    {
+        label: 'tableDiagram.table.floorOptions.third',
+        value: FloorRestaurant.THIRD,
+    },
+];
+
 export const SortOptions = [
     {
         label: 'event.list.filterForm.sort.createdAt',

@@ -8,7 +8,7 @@ import {
 import { ElLoading, ElMessageBox } from 'element-plus';
 import { mixins } from 'vue-property-decorator';
 import { bookingModule } from '../booking/store';
-import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus } from './constants';
+import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus, FloorRestaurant } from './constants';
 import { tableService } from './services/api.service';
 import { tableDiagramModule } from './store';
 import { bookingService } from '../booking/services/api.service';
@@ -17,7 +17,7 @@ import moment from 'moment';
 export class TableMixins extends mixins(UtilMixins) {
     // Common variable
     TableStatus = TableStatus;
-
+    FloorRestaurant = FloorRestaurant;
     // Common function
     async updateTableStatus(table: ITable, status: TableStatus): Promise<void> {
         if (status === TableStatus.USED) {

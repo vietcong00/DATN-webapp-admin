@@ -124,7 +124,9 @@
                                     :title="
                                         $t('booking.booking.message.complete.confirmAsk')
                                     "
-                                    @confirm="changeStatus(scope.row, BookingStatus.DONE)"
+                                    @confirm.stop="
+                                        changeStatus(scope.row, BookingStatus.DONE)
+                                    "
                                 >
                                     <template #reference>
                                         <div>
@@ -148,7 +150,7 @@
                                     :title="
                                         $t('booking.booking.message.canceled.confirmAsk')
                                     "
-                                    @confirm="
+                                    @confirm.stop="
                                         changeStatus(scope.row, BookingStatus.CANCELED)
                                     "
                                 >
@@ -165,7 +167,7 @@
                             :class="
                                 !scope.row.tablesRestaurant ? 'need-select-table' : ''
                             "
-                            @click="openModal(scope.row)"
+                            @click="updateBooking(scope.row)"
                             v-if="scope.row.status == BookingStatus.WAITING"
                         >
                             <img
@@ -183,7 +185,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IBooking, IBookingUpdate } from '../types';
+import { IBooking } from '../types';
 import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
 import { bookingService } from '@/modules/table-diagram/services/api.service';
@@ -259,11 +261,6 @@ export default class BookingTable extends mixins(BookingMixins) {
         }
     }
 
-    openModal(booking: IBookingUpdate): void {
-        bookingModule.setSelectedBooking(booking);
-        bookingModule.setIsShowSetupTableOfBookingPopup(true);
-    }
-
     statusBadge(status: BookingStatus): string {
         switch (status) {
             case BookingStatus.WAITING:
@@ -287,6 +284,11 @@ export default class BookingTable extends mixins(BookingMixins) {
         });
         await bookingModule.getBookings();
         loading.close();
+    }
+
+    updateBooking(booking: IBooking): void {
+        bookingModule.setIsShowBookingFormPopUp(true);
+        bookingModule.setSelectedBooking(booking);
     }
 }
 </script>

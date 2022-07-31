@@ -22,7 +22,7 @@
                     v-model:value="form.nameCustomer"
                     :is-required="true"
                     :placeholder="$t('booking.booking.placeholder.nameCustomer')"
-                    :label="$t('booking.booking.nameCustomer')"
+                    :label="$t('booking.booking.bookingDialog.nameCustomer')"
                     :error="translateYupError(form.errors.nameCustomer)"
                 />
             </div>
@@ -31,7 +31,7 @@
                     v-model:value="form.phone"
                     :error="translateYupError(form.errors.phone)"
                     :is-required="true"
-                    :label="$t('booking.booking.phone')"
+                    :label="$t('booking.booking.bookingDialog.phone')"
                     :placeholder="$t('booking.booking.placeholder.phone')"
                 />
             </div>
@@ -39,7 +39,7 @@
                 <BaseInputNumber
                     v-model:value="form.numberPeople"
                     :placeholder="$t('booking.booking.placeholder.numberPeople')"
-                    :label="$t('booking.booking.numberPeople')"
+                    :label="$t('booking.booking.bookingDialog.numberPeople')"
                     :error="translateYupError(form.errors.numberPeople)"
                     @change="setNumberPeople"
                 />
@@ -48,7 +48,7 @@
                 <BaseDatePicker
                     v-model:value="form.arrivalTime"
                     :placeholder="$t('booking.booking.placeholder.arrivalTime')"
-                    :label="$t('booking.booking.arrivalTime')"
+                    :label="$t('booking.booking.bookingDialog.arrivalTime')"
                     :error="translateYupError(form.errors.arrivalTime)"
                     :is-required="true"
                     :min-date="new Date()"
@@ -95,6 +95,7 @@ import { bookingModule } from '../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
 import TableDiagram from '../../table-diagram/components/TableDiagram.vue';
+import { tableDiagramModule } from '@/modules/table-diagram/store';
 @Options({
     name: 'booking-form-popup',
     components: {
@@ -119,6 +120,7 @@ export default class BookingFormPopUp extends mixins(UtilMixins) {
     async closePopup(): Promise<void> {
         bookingModule.setIsShowBookingFormPopUp(false);
         bookingModule.setSelectedBooking(null);
+        tableDiagramModule.setTableSelected(null);
         (this.form.resetForm as () => void)();
     }
 

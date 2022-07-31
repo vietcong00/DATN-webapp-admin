@@ -2,6 +2,16 @@ export default {
     bookingDialog: {
         titleCreate: 'Create new booking',
         titleUpdate: 'Update booking',
+        nameCustomer: 'Name Customer',
+        phone: 'Phone',
+        arrivalTime: 'Arrival Time',
+        numberPeople: 'Number People',
+        placeholder: {
+            nameCustomer: 'Enter Name Customer',
+            phone: 'Enter Phone',
+            arrivalTime: 'Select Arrival Time',
+            numberPeople: 'Enter Number People',
+        },
     },
     button: {
         cancel: 'Cancel',

@@ -92,7 +92,6 @@ export function initData() {
             const bookingDetail = (await bookingService.getDetail(
                 bookingModule.selectedBooking?.id || 0,
             )) as IBodyResponse<IBooking>;
-            loading.close();
             resetForm({
                 values: {
                     nameCustomer: bookingDetail.data?.nameCustomer,
@@ -101,6 +100,8 @@ export function initData() {
                     arrivalTime: moment(bookingDetail.data?.arrivalTime).fmDayString(),
                 },
             });
+            tableDiagramModule.setTableSelected(bookingDetail.data.tablesRestaurant);
+            loading.close();
         } else {
             resetForm({
                 values: initValues,

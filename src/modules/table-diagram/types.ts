@@ -1,10 +1,11 @@
+import { FloorRestaurant } from './constants';
 import { IQueryString } from '@/common/types';
 export interface ITable {
     id: number;
     name: string;
     status: string;
     numberSeat: number;
-    idRestaurant: number;
+    floor: FloorRestaurant;
 }
 
 export interface IGetTables {
@@ -20,4 +21,5 @@ export interface IPatchQueryTable {
 }
 export interface IQueryStringTable extends IQueryString {
     keyword?: string | null;
+    floor?: FloorRestaurant;
 }

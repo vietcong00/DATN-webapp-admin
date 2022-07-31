@@ -1,22 +1,24 @@
 export default {
-    eventDialog: {
-        titleCreate: 'Create new event',
-        titleUpdate: 'Update event',
+    bookingsOfTablePopup: {
+        title: 'Booking List of table',
+        customerName: 'Customer name',
+        customerPhone: 'Customer phone',
+        arrivalTime: 'Arrival time',
     },
     button: {
-        cancel: 'Cancel',
-        submit: 'Submit',
+        startServe: 'Start serve',
+        endServe: 'End serve',
     },
-    title: 'Event name',
-    desc: 'Description',
-    imageUrl: 'Link images',
-    status: 'Status',
-    startDate: 'Start date',
-    endDate: 'End date',
-    quantity: 'Participant quantity',
-    budget: 'Budget',
 
     tableList: {
         numberSeat: '{numberSeat} Seat',
+    },
+
+    floorOptions: {
+        label: 'Floor',
+        placeholder: 'Select floor',
+        first: 'First floor',
+        second: 'Second floor',
+        third: 'Third floor',
     },
 };

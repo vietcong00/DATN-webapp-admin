@@ -33,25 +33,26 @@
                     }}
                 </div>
             </div>
-            <ModalTableDetailBooking v-if="isShowModalTableDetail" />
         </div>
-        <div v-if="!isShowSetupTableOfBookingPopup">
+        <div v-if="!(isShowSetupTableOfBookingPopup || isShowBookingFormPopUp)">
             <el-button
                 type="danger mt-3"
                 plain
                 round
                 v-if="table.status === TableStatus.USED"
                 @click="updateStatusTable(table.id, TableStatus.READY)"
-                >Kết thức</el-button
             >
+                {{ $t('tableDiagram.table.button.endServe') }}
+            </el-button>
             <el-button
                 type="success mt-3"
                 plain
                 round
                 v-else
                 @click="updateStatusTable(table.id, TableStatus.USED)"
-                >Phục vụ</el-button
             >
+                {{ $t('tableDiagram.table.button.startServe') }}
+            </el-button>
         </div>
     </div>
 </template>
@@ -59,7 +60,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
-import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
 import { ElLoading, ElMessageBox } from 'element-plus';
 import { TableStatus } from '../constants';
 import { Prop } from 'vue-property-decorator';
@@ -78,9 +78,7 @@ import moment from 'moment';
 
 @Options({
     name: 'table',
-    components: {
-        ModalTableDetailBooking,
-    },
+    components: {},
 })
 export default class TablesRestaurants extends Vue {
     @Prop({}) table!: ITable;
@@ -89,10 +87,6 @@ export default class TablesRestaurants extends Vue {
 
     get tableSelected(): ITable | null {
         return tableDiagramModule.tableSelected;
-    }
-
-    get isShowModalTableDetail(): boolean {
-        return tableDiagramModule.isShowModalTableDetail;
     }
 
     get isShowSetupTableOfBookingPopup(): boolean {
@@ -134,8 +128,8 @@ export default class TablesRestaurants extends Vue {
         const loading = ElLoading.service({
             target: '.table-detail-booking-table-data',
         });
-        await bookingModule.getBookingsOfTable(this.table.id);
         tableDiagramModule.setIsShowBookingsOfTablePopup(true);
+        await bookingModule.getBookingsOfTable(this.table.id);
         loading.close();
     }
 
@@ -257,13 +251,6 @@ export default class TablesRestaurants extends Vue {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-
-// .booked {
-//     background: #ebff78;
-//     border-radius: 10px;
-//     border: 1px solid #c2c2c2;
-//     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-// }
 
 .used {
     background: #9eb3fa;

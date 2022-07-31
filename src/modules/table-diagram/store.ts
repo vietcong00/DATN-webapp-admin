@@ -1,22 +1,23 @@
+import { FloorRestaurant } from './constants';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
 import { tableService } from './services/api.service';
 import { ITable, IQueryStringTable } from './types';
 import {
     DEFAULT_FIRST_PAGE,
-    LIMIT_PER_PAGE,
     DEFAULT_ORDER_DIRECTION,
+    DEFAULT_MAX_SIZE_PER_PAGE,
 } from '@/common/constants';
 import { IBodyResponse, IGetListResponse } from '@/common/types';
 import { DEFAULT_ORDER_BY } from '../user/constants';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
-    limit: LIMIT_PER_PAGE,
+    limit: DEFAULT_MAX_SIZE_PER_PAGE,
     orderBy: DEFAULT_ORDER_BY,
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: null,
-    idRestaurant: null,
+    floor: FloorRestaurant.FIRST,
 };
 
 @Module({ dynamic: true, namespaced: true, store, name: 'table-restaurant' })

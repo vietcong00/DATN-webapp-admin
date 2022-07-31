@@ -1,25 +1,6 @@
 import { BookingStatus } from './constants';
 import { IQueryString } from '@/common/types';
-
-export interface ITable {
-    id: number;
-    name: string;
-    status: string;
-    numberSeat: number;
-    idRestaurant: number;
-}
-
-export interface IGetTables {
-    tables: Array<ITable>;
-    totalProduct: number;
-}
-
-export interface IPatchQueryTable {
-    status: string;
-    nameCustomer?: string;
-    phone?: string;
-    arrivalTime?: string;
-}
+import { ITable } from '../table-diagram/types';
 
 export interface IBooking {
     id: number;
@@ -28,6 +9,7 @@ export interface IBooking {
     arrivalTime: Date;
     status: string;
     tablesRestaurant: ITable;
+    tableId: number;
     numberPeople: number;
 }
 
