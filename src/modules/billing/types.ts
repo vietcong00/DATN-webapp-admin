@@ -1,3 +1,4 @@
+import { IFood } from './../menu/types';
 import { ITable } from './../table-diagram/types';
 import { IUser } from './../user/types';
 import { IQueryString } from '@/common/types';
@@ -67,12 +68,10 @@ export interface IQueryStringBilling extends IQueryString {
 export interface IFoodBilling {
     id: number;
     foodId: number;
+    food: IFood;
     billingId: number;
-    selectedCount: number;
-    processingCount: number;
-    doneCount: number;
-    canceledCount: number;
-    reasonCanceled: ReasonCanceled;
+    singlePrice: number;
+    quantity: number;
     note: string;
 }
 

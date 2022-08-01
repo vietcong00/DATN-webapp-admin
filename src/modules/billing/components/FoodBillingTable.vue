@@ -15,29 +15,29 @@
             </el-table-column>
             <el-table-column
                 prop="food.price"
-                width="170"
+                width="150"
                 :label="$t('billing.billing.foodBillingTable.price')"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.food?.price) }}
+                    {{ parseMoney(scope.row.singlePrice) }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="quantity"
-                width="200"
+                width="150"
                 :label="$t('billing.billing.foodBillingTable.quantity')"
             >
                 <template #default="scope">
-                    {{ scope.row.doneCount }}
+                    {{ scope.row.quantity }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="total"
-                width="200"
+                width="150"
                 :label="$t('billing.billing.foodBillingTable.total')"
             >
                 <template #default="scope">
-                    {{ parseMoney((scope.row.doneCount * scope.row.food?.price) | 0) }}
+                    {{ parseMoney((scope.row.quantity * scope.row.food?.price) | 0) }}
                 </template>
             </el-table-column>
         </template>

@@ -72,7 +72,7 @@ export default {
         },
 
         update: {
-            success: 'Cập nhậtđoen đặt bàn thành công!',
+            success: 'Cập nhật đơn đặt bàn thành công!',
         },
 
         complete: {

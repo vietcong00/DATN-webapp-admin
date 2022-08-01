@@ -69,8 +69,10 @@ export default {
     pageNotFound: 'Oops! Không tìm thấy trang!',
     backToHome: 'Trờ về trang chủ',
     notification: 'Thông báo',
+    noData: 'Không có dữ liệu!',
     acceptStatus: {
         APPROVE: 'Chấp nhận',
+        JUST_CREATE: 'Vừa được khởi tạo',
         CHECKED_AGAIN: 'Đã kiểm tra lại',
         REQUEST_CHECK_AGAIN: 'Yêu cầu kiểm tra lại',
         WAITING_APPROVE: 'Chờ chấp nhận',

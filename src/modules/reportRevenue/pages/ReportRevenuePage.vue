@@ -14,7 +14,6 @@ import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins } from 'vue-property-decorator';
 import { Options } from 'vue-class-component';
 import ReportRevenueTable from '../components/ReportRevenueTable.vue';
-import ReportRevenueSort from '../components/Sort.vue';
 import ReportRevenuePopup from '../components/ReportRevenueFormPopup.vue';
 import FilterForm from '../components/FilterForm.vue';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
@@ -27,7 +26,6 @@ import { reportRevenueModule } from '../store';
     components: {
         FilterForm,
         ReportRevenueTable,
-        ReportRevenueSort,
         ReportRevenuePopup,
     },
 })

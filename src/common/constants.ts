@@ -12,7 +12,7 @@ export const MAX_SIZE_FILE = 10485760;
 
 export const SidebarWidth = {
     expand: '230px',
-    collapse: '74px',
+    collapse: '80px',
 };
 
 export const INTEGER_ALLOW_CODES = [
@@ -317,6 +317,7 @@ export const MAX_FILE_SIZE_IN_BYTE = 2097152; // 2MB = 2097152B
 
 export enum AcceptStatus {
     APPROVE = 'APPROVE',
+    JUST_CREATE = 'JUST_CREATE',
     WAITING_APPROVE = 'WAITING_APPROVE',
     REQUEST_CHECK_AGAIN = 'REQUEST_CHECK_AGAIN',
     CHECKED_AGAIN = 'CHECKED_AGAIN',

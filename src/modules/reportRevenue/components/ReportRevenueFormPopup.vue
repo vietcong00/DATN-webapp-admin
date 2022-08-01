@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        width="50%"
+        width="80%"
         v-model="isShowReportRevenueFormPopUp"
         @closed="closePopup"
         @open="form.openPopup"
@@ -16,15 +16,15 @@
             </h3>
         </template>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <BaseInputText
                     class="readonly-input-text"
-                    :value="parseDateTime(new Date(), YYYY_MM_DD_HYPHEN_HH_MM_COLON)"
+                    :value="parseDateTime(selectedReportRevenue.date, YYYY_MM_DD_HYPHEN)"
                     :isReadonly="true"
                     :label="$t('reportRevenue.reportRevenue.reportRevenueForm.date')"
                 />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <BaseInputText
                     class="readonly-input-text"
                     :value="fullNameShiftLeader"
@@ -34,14 +34,28 @@
                     "
                 />
             </div>
-            <div class="col-md-4">
-                <BaseSingleSelect
-                    v-model:value="form.shift"
-                    :filterable="true"
-                    :options="shiftOptions"
-                    :is-required="true"
-                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.shiftWork')"
-                    :error="translateYupError(form.errors.shift)"
+            <div class="col-md-3">
+                <BaseInputText
+                    class="readonly-input-text"
+                    :value="
+                        $t(
+                            `reportRevenue.reportRevenue.shiftWork.${selectedReportRevenue.shift}`,
+                        )
+                    "
+                    :isReadonly="true"
+                    :label="
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.shiftLeader')
+                    "
+                />
+            </div>
+            <div class="col-md-3">
+                <BaseInputText
+                    class="readonly-input-text"
+                    :value="selectedReportRevenue.billingCount"
+                    :isReadonly="true"
+                    :label="
+                        $t('reportRevenue.reportRevenue.reportRevenueForm.billingCount')
+                    "
                 />
             </div>
             <div class="col-md-6">
@@ -51,6 +65,8 @@
                 <BaseInputNumber
                     name="cashAtBeginningOfShift"
                     is-required="true"
+                    :class="isApproved ? 'readonly-input-text' : ''"
+                    :isReadonly="isApproved"
                     v-model:value="form.cashAtBeginningOfShift"
                     :label="
                         $t(
@@ -58,9 +74,11 @@
                         )
                     "
                     :placeholder="
-                        $t(
-                            'reportRevenue.reportRevenue.placeholder.cashAtBeginningOfShift',
-                        )
+                        !isApproved
+                            ? $t(
+                                  'reportRevenue.reportRevenue.placeholder.cashAtBeginningOfShift',
+                              )
+                            : ''
                     "
                     :error="translateYupError(form.errors.cashAtBeginningOfShift)"
                 />
@@ -83,13 +101,19 @@
                     name="cashAtEndingOfShift"
                     is-required="true"
                     v-model:value="form.cashAtEndingOfShift"
+                    :class="isApproved ? 'readonly-input-text' : ''"
+                    :isReadonly="isApproved"
                     :label="
                         $t(
                             'reportRevenue.reportRevenue.reportRevenueForm.cashAtEndingOfShift',
                         )
                     "
                     :placeholder="
-                        $t('reportRevenue.reportRevenue.placeholder.cashAtEndingOfShift')
+                        !isApproved
+                            ? $t(
+                                  'reportRevenue.reportRevenue.placeholder.cashAtEndingOfShift',
+                              )
+                            : ''
                     "
                     :error="translateYupError(form.errors.cashAtEndingOfShift)"
                 />
@@ -97,11 +121,15 @@
                     name="bankingRevenue"
                     is-required="true"
                     v-model:value="form.bankingRevenue"
+                    :class="isApproved ? 'readonly-input-text' : ''"
+                    :isReadonly="isApproved"
                     :label="
                         $t('reportRevenue.reportRevenue.reportRevenueForm.bankingRevenue')
                     "
                     :placeholder="
-                        $t('reportRevenue.reportRevenue.placeholder.bankingRevenue')
+                        !isApproved
+                            ? $t('reportRevenue.reportRevenue.placeholder.bankingRevenue')
+                            : ''
                     "
                     :error="translateYupError(form.errors.bankingRevenue)"
                 />
@@ -150,6 +178,8 @@
                 />
                 <BaseInputText
                     v-model:value="form.note"
+                    :class="isApproved ? 'readonly-input-text' : ''"
+                    :isReadonly="isApproved"
                     :error="translateYupError(form.errors.note)"
                     :label="$t('reportRevenue.reportRevenue.reportRevenueForm.note')"
                 />
@@ -192,8 +222,14 @@ import { ISelectOptions } from '@/common/types';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { SHIFT_OPTIONS } from '../constants';
 import { appService } from '@/utils/app';
+import { IReportRevenueUpdateBody } from '../types';
+import { AcceptStatus } from '@/common/constants';
 
 export default class ReportRevenueFormPopup extends UtilMixins {
+    get selectedReportRevenue(): IReportRevenueUpdateBody | null {
+        return reportRevenueModule.selectedReportRevenue;
+    }
+
     get shiftOptions(): ISelectOptions[] {
         return parseLanguageSelectOptions(SHIFT_OPTIONS);
     }
@@ -211,6 +247,10 @@ export default class ReportRevenueFormPopup extends UtilMixins {
         return false;
     }
 
+    get isApproved(): boolean {
+        return this.selectedReportRevenue?.status === AcceptStatus.APPROVE;
+    }
+
     form = setup(() => initData());
 
     get isDisabledSaveButton(): boolean {
@@ -226,8 +266,8 @@ export default class ReportRevenueFormPopup extends UtilMixins {
     }
 
     get fullNameShiftLeader(): string | undefined {
-        return reportRevenueModule.selectedReportRevenue?.shiftLeaderId
-            ? reportRevenueModule.selectedReportRevenue?.shiftLeader?.fullName
+        return this.selectedReportRevenue?.shiftLeaderId
+            ? this.selectedReportRevenue?.shiftLeader?.fullName
             : appService.getUser().fullName;
     }
 

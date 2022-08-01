@@ -1,9 +1,9 @@
 <template>
     <div class="row mx-4">
-        <h3 class="justify-content-start d-flex main-info-title p-0">
-            {{ $t(`auth.profile.title.mainInfo`) }}
+        <h3 class="justify-content-start d-flex personal-info-title p-0">
+            {{ $t(`auth.profile.title.personalInfo`) }}
         </h3>
-        <div class="main-info">
+        <div class="more-info mt-10">
             <div style="padding: 0px 12px">
                 <div class="row">
                     <div class="col-lg-6 col-xl-6 col-md-12">
@@ -44,17 +44,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mx-4">
-        <h3 class="justify-content-start d-flex personal-info-title p-0">
-            {{ $t(`auth.profile.title.personalInfo`) }}
-        </h3>
-        <div class="more-info mt-10">
-            <div style="padding: 0px 12px">
-                <div class="row">
                     <!-- Birthday -->
                     <div class="col-lg-6 col-xl-6 col-md-12">
                         <div class="row-item border row">

@@ -6,10 +6,12 @@
                 <div class="login-inner">
                     <img
                         class="m-auto d-block"
-                        height="50"
-                        src="@/assets/images/logo/logo-horizontal.png"
+                        height="100"
+                        src="@/assets/images/logo/logo-horizontal.svg"
                     />
-
+                    <h3 class="mt-5" style="font-weight: 600">
+                        Login with your Google Account
+                    </h3>
                     <el-button class="v-btn--text" @click="getGoogleLoginLink">
                         <img
                             :alt="$t('auth.login.google.googleLoginText')"
@@ -57,8 +59,8 @@ export default class LoginPage extends Vue {
 
 <style lang="scss" scoped>
 .login-page {
-    background-image: url('~@/assets/images/login-bg.jpg');
     background-color: #f5f5f5;
+    background-image: url('~@/assets/images/login-bg.jpg');
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -66,6 +68,7 @@ export default class LoginPage extends Vue {
     background-size: cover;
     position: relative;
     justify-content: center;
+
     &:after {
         content: '';
         position: absolute;
@@ -80,14 +83,11 @@ export default class LoginPage extends Vue {
     align-self: center;
     position: relative;
     z-index: map-get($map: $zIndex, $key: loginInner);
-    width: 300px;
+    width: 500px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     padding: 25px;
     border-radius: 8px;
     background-color: #ffffff;
-    @media (min-width: 768px) {
-        width: 400px;
-    }
 }
 
 .login-inner {

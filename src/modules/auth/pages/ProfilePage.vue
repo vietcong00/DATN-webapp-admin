@@ -1,16 +1,8 @@
 <template>
     <div class="pb-3">
-        <div class="avatar-layout d-flex justify-content-between">
-            <div class="d-flex mt-3">
-                <div class="justify-content-start d-flex">
-                    <BaseAvatar :imageUrl="imageUrl" />
-                </div>
-                <div class="justify-content-start d-flex align-self-center m-4">
-                    <h3 class="text-full-name">{{ userName }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="update-btn-layout-wrapper row">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <BaseAvatar class="mt-3 mb-3" :imageUrl="imageUrl" />
+            <h3 class="text-full-name">{{ userName }}</h3>
             <div class="update-btn-layout">
                 <el-button class="update-btn" @click="openEditProfilePopup">{{
                     $t(`auth.profile.buttons.updateProfile`)
@@ -87,7 +79,6 @@ export default class ProfilePage extends mixins(UtilMixins) {
     }
 }
 .text-full-name {
-    margin-bottom: 0px;
     word-break: break-all;
     text-align: start;
 }

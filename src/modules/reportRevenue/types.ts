@@ -1,3 +1,4 @@
+import { AcceptStatus } from './../../common/constants';
 import { IUser } from '@/modules/user/types';
 import { IQueryString } from '@/common/types';
 
@@ -16,6 +17,9 @@ export interface IReportRevenue {
     cashAtEndingOfShift: number;
     bankingRevenue: number;
     differenceRevenue: number;
+    date: string;
+    billingCount: number;
+    status: AcceptStatus;
     note: string;
 }
 
@@ -28,6 +32,9 @@ export interface IReportRevenueUpdateBody {
     cashAtEndingOfShift: number | undefined;
     bankingRevenue: number | undefined;
     differenceRevenue: number | undefined;
+    date: string | undefined;
+    billingCount: number | undefined;
+    status: AcceptStatus | undefined;
     note: string | undefined;
 }
 

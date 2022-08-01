@@ -10,6 +10,7 @@ import {
 } from '@/utils/helper';
 import { Vue } from 'vue-class-component';
 import {
+    AcceptStatus,
     DATE_TIME_FORMAT,
     DEFAULT_MIN_DATE,
     INPUT_TEXT_MAX_LENGTH,
@@ -35,6 +36,7 @@ export class UtilMixins extends Vue {
     PaymentMethodOptions = PaymentMethodOptions;
     BillingStatusOptions = BillingStatusOptions;
     TableStatus = TableStatus;
+    AcceptStatus = AcceptStatus;
     // Common function
     async showConfirmPopup(
         message: string,

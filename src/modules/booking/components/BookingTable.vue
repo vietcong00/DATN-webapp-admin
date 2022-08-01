@@ -83,16 +83,15 @@
             <el-table-column
                 prop="idCategory"
                 :label="$t('booking.booking.bookingTable.header.status')"
-                width="150"
+                width="180"
             >
                 <template #default="scope">
                     <div
-                        class="booking__table__status"
                         :class="`badge status-field badge-md bg-${statusBadge(
                             scope.row.status,
                         )}`"
                     >
-                        {{ scope.row.status }}
+                        {{ $t(`booking.booking.status.${scope.row.status}`) }}
                     </div>
                 </template>
             </el-table-column>
@@ -100,19 +99,52 @@
                 align="center"
                 prop="id"
                 :label="$t('booking.booking.bookingTable.header.actions')"
-                width="120"
+                width="170"
                 fixed="right"
             >
                 <template #default="scope">
-                    <div class="booking__table__action">
-                        <div class="status-btn-group">
-                            <div
-                                class="booking-done action-button"
-                                v-if="
-                                    scope.row.status == BookingStatus.WAITING &&
-                                    scope.row.tablesRestaurant
-                                "
-                            >
+                    <div class="booking-table-action">
+                        <el-tooltip
+                            effect="dark"
+                            :content="$t('booking.booking.tooltip.confirm')"
+                            placement="top"
+                            v-if="scope.row.status == BookingStatus.WAITING_FOR_APPROVE"
+                        >
+                            <div class="booking-approve action-button">
+                                <el-popconfirm
+                                    :confirm-button-text="
+                                        $t('booking.booking.message.button.confirm')
+                                    "
+                                    :cancel-button-text="
+                                        $t('booking.booking.message.button.cancel')
+                                    "
+                                    icon-color="green"
+                                    :title="
+                                        $t('booking.booking.message.approve.confirmAsk')
+                                    "
+                                    @confirm.stop="
+                                        changeStatus(scope.row, BookingStatus.WAITING)
+                                    "
+                                >
+                                    <template #reference>
+                                        <SelectIcon class="icon-class" />
+                                    </template>
+                                </el-popconfirm>
+                            </div>
+                        </el-tooltip>
+
+                        <el-tooltip
+                            effect="dark"
+                            :content="$t('booking.booking.tooltip.done')"
+                            placement="top"
+                            v-if="
+                                (scope.row.status == BookingStatus.WAITING ||
+                                    scope.row.status ==
+                                        BookingStatus.WAITING_FOR_APPROVE) &&
+                                scope.row.tablesRestaurant
+                            "
+                        >
+                            <div class="booking-done action-button">
                                 <el-popconfirm
                                     :confirm-button-text="
                                         $t('booking.booking.message.button.confirm')
@@ -129,16 +161,22 @@
                                     "
                                 >
                                     <template #reference>
-                                        <div>
-                                            <SelectIcon class="icon-class" />
-                                        </div>
+                                        <MapLocationIcon class="icon-class" />
                                     </template>
                                 </el-popconfirm>
                             </div>
-                            <div
-                                class="booking-canceled action-button"
-                                v-if="scope.row.status == BookingStatus.WAITING"
-                            >
+                        </el-tooltip>
+
+                        <el-tooltip
+                            effect="dark"
+                            :content="$t('booking.booking.tooltip.canceled')"
+                            placement="top"
+                            v-if="
+                                scope.row.status == BookingStatus.WAITING ||
+                                scope.row.status == BookingStatus.WAITING_FOR_APPROVE
+                            "
+                        >
+                            <div class="booking-canceled action-button">
                                 <el-popconfirm
                                     :confirm-button-text="
                                         $t('booking.booking.message.button.confirm')
@@ -155,26 +193,27 @@
                                     "
                                 >
                                     <template #reference>
-                                        <div>
-                                            <CloseBoldIcon class="icon-class" />
-                                        </div>
+                                        <DeleteLocationIcon class="icon-class" />
                                     </template>
                                 </el-popconfirm>
                             </div>
-                        </div>
-                        <div
-                            class="booking-change-table action-button"
-                            :class="
-                                !scope.row.tablesRestaurant ? 'need-select-table' : ''
+                        </el-tooltip>
+                        <el-tooltip
+                            effect="dark"
+                            :content="$t('booking.booking.tooltip.edit')"
+                            placement="top"
+                            v-if="
+                                scope.row.status == BookingStatus.WAITING ||
+                                scope.row.status == BookingStatus.WAITING_FOR_APPROVE
                             "
-                            @click="updateBooking(scope.row)"
-                            v-if="scope.row.status == BookingStatus.WAITING"
                         >
-                            <img
-                                class="icon-select-table"
-                                :src="require('@/assets/icons/dinner-table.svg')"
-                            />
-                        </div>
+                            <div
+                                class="booking-change-table action-button"
+                                @click="updateBooking(scope.row)"
+                            >
+                                <EditIcon class="icon-class" />
+                            </div>
+                        </el-tooltip>
                     </div>
                 </template>
             </el-table-column>
@@ -201,7 +240,9 @@ import {
 import i18n from '@/plugins/vue-i18n';
 import {
     Select as SelectIcon,
-    CloseBold as CloseBoldIcon,
+    Edit as EditIcon,
+    MapLocation as MapLocationIcon,
+    DeleteLocation as DeleteLocationIcon,
 } from '@element-plus/icons-vue';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
@@ -209,7 +250,9 @@ import { DEFAULT_FIRST_PAGE } from '@/common/constants';
     name: 'booking-table-component',
     components: {
         SelectIcon,
-        CloseBoldIcon,
+        EditIcon,
+        MapLocationIcon,
+        DeleteLocationIcon,
     },
 })
 export default class BookingTable extends mixins(BookingMixins) {
@@ -301,50 +344,37 @@ export default class BookingTable extends mixins(BookingMixins) {
     align-items: center;
     justify-content: space-between;
 }
-.booking__table__action {
+.booking-table-action {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
-    margin: 0 18%;
-    .status-btn-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        width: 100%;
-        .booking-done:hover {
-            color: green;
-            border: 2px solid rgb(3, 180, 3);
-        }
 
-        .booking-canceled:hover {
-            color: red;
-            border: 2px solid rgb(235, 0, 0);
-        }
+    .booking-approve:hover {
+        color: green;
+        border: 2px solid rgb(3, 180, 3);
     }
 
-    .need-select-table {
-        border: 2px solid rgb(255, 21, 21);
-        border-radius: 5px;
+    .booking-done:hover {
+        color: green;
+        border: 2px solid rgb(3, 180, 3);
     }
 
-    .booking-change-table {
-        margin: 2px;
-        padding: 5px;
-        &:hover {
-            border: 2px solid rgb(21, 239, 255);
-        }
+    .booking-canceled:hover {
+        color: red;
+        border: 2px solid rgb(235, 0, 0);
+    }
 
-        .icon-select-table {
-            height: 20px;
-        }
+    .booking-change-table:hover {
+        color: rgb(0, 183, 196);
+        border: 2px solid rgb(21, 239, 255);
     }
 }
 
 .icon-class {
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
 }
 
 .action-button {

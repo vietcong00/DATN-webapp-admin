@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        width="50%"
+        width="80%"
         v-model="isShowBillingFormPopUp"
         @closed="closePopup"
         @open="form.openPopup"

@@ -1,22 +1,14 @@
 <template>
-    <div class="page-content-custom">
-        <BaseListPageHeader
-            :pageTitle="$t('role.list.pageName.listPage')"
-            :hasFilterForm="false"
-            :isShowSearchBox="false"
-        >
-        </BaseListPageHeader>
-        <div class="layout-container">
-            <div class="row row-content">
-                <!-- Sub right side bar -->
-                <div class="col-3">
-                    <RoleList />
-                </div>
-                <!-- Main-content -->
-                <div class="col-9">
-                    <div class="layout-information-role">
-                        <RoleForm />
-                    </div>
+    <div class="content-wrapper">
+        <div class="row row-content">
+            <!-- Sub right side bar -->
+            <div class="col-3">
+                <RoleList />
+            </div>
+            <!-- Main-content -->
+            <div class="col-9">
+                <div class="layout-information-role">
+                    <RoleForm />
                 </div>
             </div>
         </div>

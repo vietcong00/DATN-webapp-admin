@@ -56,6 +56,7 @@ export default {
         done: 'Done',
         canceled: 'Canceled',
         waiting: 'Waiting',
+        waiting_for_approve: 'Waiting for Approve',
     },
 
     placeholder: {
@@ -70,9 +71,10 @@ export default {
     },
 
     tooltip: {
-        editStatus: 'Edit status',
         edit: 'Edit',
-        delete: 'Delete',
+        confirm: "Confirm customer's booking",
+        done: 'Customer has arrived',
+        canceled: 'Customer cancels booking',
     },
 
     message: {
@@ -83,6 +85,10 @@ export default {
 
         update: {
             success: 'Update booking successfully!',
+        },
+
+        approve: {
+            confirmAsk: 'Are you sure you want to approve this booking?',
         },
 
         complete: {

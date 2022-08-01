@@ -57,9 +57,6 @@ export default {
         keyword: 'Keyword',
         reset: 'Reset',
     },
-    sort: {
-        title: 'Sort By',
-    },
     formPageHeader: {
         button: {
             resetButton: 'Reset',
@@ -69,8 +66,10 @@ export default {
     pageNotFound: 'Oops! Page not found!',
     backToHome: 'Back to Homepage',
     notification: 'Notification',
+    noData: 'Empty!',
     acceptStatus: {
         APPROVE: 'Approve',
+        JUST_CREATE: 'Just Create',
         CHECKED_AGAIN: 'Checked Again',
         REQUEST_CHECK_AGAIN: 'Request Check Again',
         WAITING_APPROVE: 'Waiting Approve',

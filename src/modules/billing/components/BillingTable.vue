@@ -9,10 +9,12 @@
         <template #table-columns>
             <el-table-column
                 prop="customerName"
+                min-width="200"
                 :label="$t('billing.billing.billingTable.customerName')"
             />
             <el-table-column
                 prop="table"
+                min-width="100"
                 :label="$t('billing.billing.billingTable.table')"
             >
                 <template #default="scope">
@@ -23,6 +25,7 @@
             </el-table-column>
             <el-table-column
                 prop="paymentTotal"
+                min-width="180"
                 :label="$t('billing.billing.billingTable.paymentTotal')"
             >
                 <template #default="scope">
@@ -35,7 +38,7 @@
                 prop="payDate"
                 :label="$t('billing.billing.billingTable.paymentTime')"
                 align="center"
-                min-width="120"
+                min-width="180"
             >
                 <template #default="scope">
                     {{
@@ -49,8 +52,9 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="200"
+                min-width="200"
                 :label="$t('billing.billing.billingTable.billingStatus')"
+                align="center"
             >
                 <template #default="scope">
                     <div

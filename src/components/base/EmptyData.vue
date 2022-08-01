@@ -17,7 +17,7 @@ export default class EmptyData extends Vue {
     }
 
     get noDataText(): string {
-        return this.$t('common.noData');
+        return this.$t('common.app.noData');
     }
 }
 </script>

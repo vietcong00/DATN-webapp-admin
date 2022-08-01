@@ -102,6 +102,7 @@ export default {
             updateRole: 'Cập nhật quyền',
             convertMaterial: 'Chuyển đổi nguyên liệu',
             approve: 'Phê duyệt',
+            approveStatus: 'Phê duyệt trạng thái',
             login: 'Người dùng có thể đăng nhập',
             action: 'Hành động',
             allow: 'Được phép',

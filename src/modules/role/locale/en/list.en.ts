@@ -103,6 +103,7 @@ export default {
             updateStatus: 'Update status',
             updateRole: 'Update role',
             convertMaterial: 'Convert material',
+            approveStatus: 'Approve status',
             approve: 'Approve',
             login: 'User can login',
             action: 'Action',

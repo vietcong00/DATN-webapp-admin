@@ -5,19 +5,19 @@
             <!--Logo-->
             <div class="logo-container">
                 <div class="logo">
-                    <img
+                    <!-- <img
                         class="logo-image logo-square"
-                        src="@/assets/images/logo/logo-square.png"
+                        src="@/assets/images/logo/logo-horizontal.svg"
                         height="40"
                         alt=""
                         v-if="!openSidebar"
-                    />
+                    /> -->
                     <img
                         class="logo-image"
-                        src="@/assets/images/logo/logo-horizontal.png"
+                        :class="openSidebar ? 'logo-center' : 'logo-left'"
+                        src="@/assets/images/logo/logo-horizontal.svg"
                         height="40"
                         alt=""
-                        v-if="openSidebar"
                     />
                 </div>
             </div>
@@ -83,10 +83,15 @@ export default class SideBar extends Vue {
 .logo {
     display: flex;
     padding: 15px;
-    margin-left: 3px;
     align-items: center;
     .logo-square {
         margin-left: -1px;
+    }
+    .logo-center {
+        margin-left: 65px;
+    }
+    .logo-left {
+        margin-left: -13px;
     }
 }
 

@@ -16,7 +16,7 @@
                 <template #default="scope">
                     {{
                         scope.row.createdAt
-                            ? parseDateTime(scope.row.createdAt, YYYY_MM_DD_HYPHEN)
+                            ? parseDateTime(scope.row.date, YYYY_MM_DD_HYPHEN)
                             : ''
                     }}
                 </template>
@@ -43,11 +43,20 @@
                 width="150"
             />
             <el-table-column
+                prop="billingCount"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.billingCount')"
+                width="180"
+            >
+                <template #default="scope">
+                    {{ scope.row.billingCount }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 prop="billingRevenue"
                 :label="
                     $t('reportRevenue.reportRevenue.reportRevenueTable.billingRevenue')
                 "
-                width="150"
+                width="180"
             >
                 <template #default="scope">
                     {{ parseMoney(scope.row.billingRevenue) }}
@@ -113,8 +122,24 @@
                 width="150"
             />
             <el-table-column
-                fixed="right"
+                prop="status"
                 width="150"
+                fixed="right"
+                align="center"
+                :label="$t('reportRevenue.reportRevenue.reportRevenueTable.status')"
+            >
+                <template #default="scope">
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :canApprove="isCanApproveStatus"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
+                </template>
+            </el-table-column>
+            <el-table-column
+                fixed="right"
+                width="100"
                 align="center"
                 :label="$t('reportRevenue.reportRevenue.reportRevenueTable.action')"
             >
@@ -134,20 +159,6 @@
                                 <EditIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('reportRevenue.reportRevenue.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
                     </div>
                 </template>
             </el-table-column>
@@ -161,17 +172,26 @@ import { mixins } from 'vue-property-decorator';
 import { setupDelete } from '../composition/reportRevenue';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { reportRevenueModule } from '../store';
 import { IReportRevenue, IReportRevenueUpdateBody, SHIFT } from '../types';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
+import { reportRevenueService } from '../services/report-revenue.api.services';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
+import { IEmitStatus } from '@/common/types';
+import i18n from '@/plugins/vue-i18n';
 
 @Options({
     components: {
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
 export default class ReportRevenueTable extends mixins(UtilMixins) {
@@ -202,6 +222,12 @@ export default class ReportRevenueTable extends mixins(UtilMixins) {
     get isCanUpdate(): boolean {
         return checkUserHasPermission(reportRevenueModule.userPermissions, [
             `${PermissionResources.REPORT_REVENUE}_${PermissionActions.UPDATE}`,
+        ]);
+    }
+
+    isCanApproveStatus(): boolean {
+        return checkUserHasPermission(reportRevenueModule.userPermissions, [
+            `${PermissionResources.REPORT_REVENUE}_${PermissionActions.APPROVE_STATUS}`,
         ]);
     }
 
@@ -247,6 +273,32 @@ export default class ReportRevenueTable extends mixins(UtilMixins) {
             page: this.selectedPage,
         });
         this.getReportRevenueList();
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await reportRevenueService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.checkInventory.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await reportRevenueModule.getReportRevenueList();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            await reportRevenueModule.getReportRevenueList();
+            loading.close();
+        }
     }
 }
 </script>

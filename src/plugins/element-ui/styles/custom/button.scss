@@ -1,127 +1,127 @@
 @import '../../../../assets/styles/variables';
 
 .el-button {
-    border-color: $--border-color-base !important;
+    border-color: $--border-color-base;
+    border-radius: 8px;
 
     &:hover {
-        background-color: $--color-white !important;
-        border-color: $--border-color-base !important;
-        color: $--color-text-regular !important;
+        background-color: $--color-white;
+        border-color: $--border-color-base;
+        color: $--color-text-regular;
     }
 
     &:focus {
-        background-color: $--color-white !important;
-        border-color: $--border-color-base !important;
-        color: $--color-text-regular !important;
+        background-color: $--color-white;
+        border-color: $--border-color-base;
+        color: $--color-text-regular;
     }
 
     &--default {
-        background-color: $--color-white !important;
-        border-color: $--border-color-base !important;
+        background-color: $--color-white;
+        border-color: $--border-color-base;
         &.is-plain,
         &.is-plain:focus {
-            color: $--color-text-regular !important;
-            background: $--color-white !important;
-            border-color: $--border-color-base !important;
+            color: $--color-text-regular;
+            background: $--color-white;
+            border-color: $--border-color-base;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: $--color-white !important;
-            border-color: $--border-color-base !important;
-            color: $--color-text-regular !important;
+            background-color: $--color-white;
+            border-color: $--border-color-base;
+            color: $--color-text-regular;
         }
 
         &:hover,
         &.is-plain:hover {
-            border-color: $--color-primary !important;
+            border-color: $--color-primary;
         }
     }
     &--success {
-        background-color: $--color-success !important;
-        border-color: $--color-success !important;
+        background-color: $--color-success;
+        border-color: $--color-success;
         &.is-plain,
         &.is-plain:focus {
-            color: $--color-success !important;
-            background: $--color-white !important;
-            border-color: $--color-success !important;
+            color: $--color-success;
+            background: $--color-white;
+            border-color: $--color-success;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: $--color-success !important;
-            border-color: $--color-success !important;
-            color: $--color-white !important;
+            background-color: $--color-success;
+            border-color: $--color-success;
+            color: $--color-white;
         }
     }
     &--warning {
-        background-color: $--color-warning !important;
-        border-color: $--color-warning !important;
+        background-color: $--color-warning;
+        border-color: $--color-warning;
         &.is-plain,
         &.is-plain:focus {
-            color: $--color-warning !important;
-            background: $--color-white !important;
-            border-color: $--color-warning !important;
+            color: $--color-warning;
+            background: $--color-white;
+            border-color: $--color-warning;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: $--color-warning !important;
-            border-color: $--color-warning !important;
-            color: $--color-white !important;
+            background-color: $--color-warning;
+            border-color: $--color-warning;
+            color: $--color-white;
         }
     }
     &--danger,
     &--error {
-        background-color: $--color-danger !important;
-        border-color: $--color-danger !important;
+        background-color: $--color-danger;
+        border-color: $--color-danger;
         &.is-plain,
         &.is-plain:focus {
-            color: $--color-danger !important;
-            background: $--color-white !important;
-            border-color: $--color-danger !important;
+            color: $--color-danger;
+            background: $--color-white;
+            border-color: $--color-danger;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: $--color-danger !important;
-            border-color: $--color-danger !important;
-            color: $--color-white !important;
+            background-color: $--color-danger;
+            border-color: $--color-danger;
+            color: $--color-white;
         }
     }
     &--primary {
-        background-color: var(--el-color-primary) !important;
-        border-color: var(--el-color-primary) !important;
+        background-color: $--color-primary;
+        border-color: $--color-primary;
         &.is-plain,
         &.is-plain:focus {
-            color: var(--el-color-primary) !important;
-            background: var(--el-color-primary) !important;
-            border-color: var(--el-color-primary) !important;
+            color: $--color-primary;
+            background: $--color-white;
+            border-color: $--color-primary;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: var(--el-color-primary) !important;
-            border-color: var(--el-color-primary) !important;
-            color: $--color-white !important;
-            opacity: $--opacity-hover-button !important;
+            background-color: $--color-primary;
+            border-color: $--color-primary;
+            color: $--color-white;
         }
     }
     &--info {
-        background-color: $--color-info !important;
-        border-color: $--color-info !important;
+        background-color: $--color-info;
+        border-color: $--color-info;
         &.is-plain,
         &.is-plain:focus {
-            color: $--color-info !important;
-            background: $--color-white !important;
-            border-color: $--color-info !important;
+            color: $--color-info;
+            background: $--color-white;
+            border-color: $--color-info;
         }
         &:hover,
         &:focus,
         &.is-plain:hover {
-            background-color: $--color-info !important;
-            border-color: $--color-info !important;
-            color: $--color-white !important;
+            background-color: $--color-info;
+            border-color: $--color-info;
+            color: $--color-white;
         }
     }
 }
@@ -129,14 +129,5 @@
 .el-picker-panel__footer {
     .el-button {
         padding: 10px !important;
-    }
-}
-
-.el-button.is-text {
-    background-color: #fff !important;
-    border: 1px solid #dcdfe6 !important;
-    &:hover {
-        color: #409eff !important;
-        border-color: #409eff !important;
     }
 }

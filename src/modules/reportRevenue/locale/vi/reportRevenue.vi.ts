@@ -11,6 +11,7 @@ export default {
         cashAtEndingOfShift: 'Tiền mặt cuối ca',
         bankingRevenue: 'Doanh thu chuyển khoản',
         differenceRevenue: 'Chênh lệch doanh thu',
+        status: 'Trạng thái',
         note: 'Ghi chú',
         action: 'Hành động',
     },

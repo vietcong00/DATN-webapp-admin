@@ -28,6 +28,37 @@ export const SHIFT_OPTIONS = [
     },
 ];
 
+export enum AcceptStatus {
+    APPROVE = 'APPROVE',
+    WAITING_APPROVE = 'WAITING_APPROVE',
+    REQUEST_CHECK_AGAIN = 'REQUEST_CHECK_AGAIN',
+    CHECKED_AGAIN = 'CHECKED_AGAIN',
+    REJECT = 'REJECT',
+}
+
+export const AcceptStatusOptions = [
+    {
+        label: 'app.acceptStatus.approve',
+        value: AcceptStatus.APPROVE,
+    },
+    {
+        label: 'app.acceptStatus.checkedAgain',
+        value: AcceptStatus.CHECKED_AGAIN,
+    },
+    {
+        label: 'app.acceptStatus.requestCheckAgain',
+        value: AcceptStatus.REQUEST_CHECK_AGAIN,
+    },
+    {
+        label: 'app.acceptStatus.waitingApprove',
+        value: AcceptStatus.WAITING_APPROVE,
+    },
+    {
+        label: 'app.acceptStatus.reject',
+        value: AcceptStatus.REJECT,
+    },
+];
+
 export const validateReportRevenueSchema = yup.object({
     shift: yup
         .string()
@@ -60,5 +91,5 @@ export const validateReportRevenueSchema = yup.object({
         .required()
         .label('bankingRevenue'),
     differenceRevenue: yup.number().label('differenceRevenue'),
-    note: yup.string().trim().required().max(INPUT_TEXT_MAX_LENGTH).label('note'),
+    note: yup.string().trim().max(INPUT_TEXT_MAX_LENGTH).nullable().label('note'),
 });
