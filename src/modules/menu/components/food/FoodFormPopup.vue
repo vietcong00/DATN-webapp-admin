@@ -40,6 +40,7 @@
             <div class="col-md-6">
                 <BaseInputNumber
                     v-model:value="form.price"
+                    :is-required="true"
                     :placeholder="$t('menu.food.placeholder.price')"
                     :label="$t('menu.food.foodPopup.price')"
                     :error="translateYupError(form.errors.price)"

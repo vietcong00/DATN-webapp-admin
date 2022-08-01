@@ -2,17 +2,6 @@ import { BillingStatus, PaymentMethod } from './types';
 import yup from '@/plugins/yup/index';
 import { INPUT_TEXT_MAX_LENGTH, REGEX } from '@/common/constants';
 
-export const BillingSortOptions = [
-    {
-        label: 'billing.billing.filterForm.createdAt',
-        value: 'createdAt',
-    },
-    {
-        label: 'billing.billing.filterForm.name',
-        value: 'name',
-    },
-];
-
 export const BillingStatusOptions = [
     {
         label: 'billing.billing.statusBillingOptions.eating',
@@ -58,9 +47,14 @@ export const validateBillingSchema = yup.object({
         .max(INPUT_TEXT_MAX_LENGTH)
         .oneOf(Object.values(BillingStatus))
         .nullable()
-        .optional()
-        .required(),
-    paymentTime: yup.string().matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON).required(),
+        .optional(),
+    paymentTime: yup.string().matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON),
     cashier: yup.string().trim().max(INPUT_TEXT_MAX_LENGTH).label('cashier'),
-    note: yup.string().trim().required().max(INPUT_TEXT_MAX_LENGTH).label('note'),
+    note: yup
+        .string()
+        .trim()
+        .max(INPUT_TEXT_MAX_LENGTH)
+        .optional()
+        .nullable()
+        .label('note'),
 });

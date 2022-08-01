@@ -19,7 +19,6 @@
 import { UtilMixins } from '@/mixins/utilMixins';
 import FilterForm from '../components/FilterForm.vue';
 import UserGrid from '../components/UserGrid.vue';
-import Sort from '../components/Sort.vue';
 import UserFormPopup from '../components/UserFormPopup.vue';
 import { Options } from 'vue-class-component';
 import { ElLoading } from 'element-plus';
@@ -36,7 +35,6 @@ import { SettingKey } from '../constants';
         FilterForm,
         UserGrid,
         UserFormPopup,
-        Sort,
     },
 })
 export default class UserListPage extends mixins(UtilMixins) {

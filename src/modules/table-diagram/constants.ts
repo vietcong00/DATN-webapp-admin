@@ -36,25 +36,6 @@ export const FloorOptions = [
     },
 ];
 
-export const SortOptions = [
-    {
-        label: 'event.list.filterForm.sort.createdAt',
-        value: 'createdAt',
-    },
-    {
-        label: 'event.list.filterForm.sort.title',
-        value: 'title',
-    },
-    {
-        label: 'event.list.filterForm.sort.status',
-        value: 'status',
-    },
-    {
-        label: 'event.list.filterForm.sort.quantity',
-        value: 'userQuantity',
-    },
-];
-
 export const ALL_USER_QUANTITY_RANGE = -1;
 
 export const EventSchema = yup.object({
@@ -80,15 +61,5 @@ export const EventSchema = yup.object({
         .transform((val) => (isNaN(val) ? null : val))
         .max(INPUT_NUMBER_MAX_VALUE),
 });
-
-export const SortOption = [
-    {
-        label: 'Title',
-        value: 'title',
-    },
-    {
-        label: 'event.list.header',
-    },
-];
 
 export const LIMIT_ARRIVAL_TIME_BOOKING = 10800000;

@@ -29,6 +29,7 @@
             <div class="col-md-6">
                 <BaseInputNumber
                     v-model:value="form.priority"
+                    :is-required="true"
                     :placeholder="$t('menu.category.placeholder.priority')"
                     :label="$t('menu.category.categoryPopup.priority')"
                     :error="translateYupError(form.errors.priority)"
@@ -38,7 +39,6 @@
                 <BaseInputText
                     v-model:value="form.note"
                     :error="translateYupError(form.errors.note)"
-                    :is-required="true"
                     :label="$t('menu.category.categoryPopup.note')"
                     :placeholder="$t('menu.category.placeholder.note')"
                 />

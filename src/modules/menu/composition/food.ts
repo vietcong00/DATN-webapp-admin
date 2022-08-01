@@ -20,7 +20,7 @@ export function initData() {
     const initValues = {
         foodImgId: null,
         foodName: '',
-        price: undefined,
+        price: 0,
         categoryId: null,
     };
     const isCreate = computed(() => !menuModule.selectedFood?.id);

@@ -43,17 +43,6 @@ export const permissions = [
     },
 ];
 
-export const SortOptions = [
-    {
-        label: 'role.list.sort.name',
-        value: 'name',
-    },
-    {
-        label: 'role.list.sort.createdAt',
-        value: 'createdAt',
-    },
-];
-
 export const PERMISSION_LOGIN = 'login';
 
 export const LOADING_BACKGROUND_COLOR = 'rgba(255, 255, 255, 0.9)';

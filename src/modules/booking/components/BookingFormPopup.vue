@@ -20,7 +20,6 @@
             <div class="col-md-6">
                 <BaseInputText
                     v-model:value="form.nameCustomer"
-                    :is-required="true"
                     :placeholder="$t('booking.booking.placeholder.nameCustomer')"
                     :label="$t('booking.booking.bookingDialog.nameCustomer')"
                     :error="translateYupError(form.errors.nameCustomer)"
@@ -30,7 +29,6 @@
                 <BaseInputText
                     v-model:value="form.phone"
                     :error="translateYupError(form.errors.phone)"
-                    :is-required="true"
                     :label="$t('booking.booking.bookingDialog.phone')"
                     :placeholder="$t('booking.booking.placeholder.phone')"
                 />
@@ -38,6 +36,7 @@
             <div class="col-md-6">
                 <BaseInputNumber
                     v-model:value="form.numberPeople"
+                    :is-required="true"
                     :placeholder="$t('booking.booking.placeholder.numberPeople')"
                     :label="$t('booking.booking.bookingDialog.numberPeople')"
                     :error="translateYupError(form.errors.numberPeople)"

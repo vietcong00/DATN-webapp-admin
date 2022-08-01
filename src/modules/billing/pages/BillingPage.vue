@@ -14,7 +14,6 @@ import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins } from 'vue-property-decorator';
 import { Options } from 'vue-class-component';
 import BillingTable from '../components/BillingTable.vue';
-import BillingSort from '../components/Sort.vue';
 import BillingPopup from '../components/BillingFormPopup.vue';
 import FilterForm from '../components/FilterForm.vue';
 import { billingModule } from '../store';
@@ -24,7 +23,7 @@ import { PermissionActions, PermissionResources } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    components: { FilterForm, BillingTable, BillingSort, BillingPopup },
+    components: { FilterForm, BillingTable, BillingPopup },
 })
 export default class BillingPage extends mixins(UtilMixins) {
     isShowSearchBox = true;

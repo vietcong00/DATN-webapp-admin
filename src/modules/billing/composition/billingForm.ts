@@ -12,7 +12,7 @@ import {
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
-import { IBillingUpdate, IBilling } from '../types';
+import { IBillingUpdate, IBilling, BillingStatus } from '../types';
 
 export function initData() {
     const { t } = useI18n();
@@ -38,7 +38,7 @@ export function initData() {
             paymentTotal: 0,
             paymentMethod: values.paymentMethod,
             paymentTime: moment(new Date()).utc().fmFullTimeWithoutSecond(),
-            billingStatus: values.billingStatus,
+            billingStatus: BillingStatus.PAID,
             note: values.note?.trim(),
         } as IBillingUpdate;
         const billingId = billingModule.selectedBilling?.id;

@@ -81,21 +81,6 @@ export const GenderOptions = [
     },
 ];
 
-export const SortOptions = [
-    {
-        label: 'user.list.filterForm.sort.fullName',
-        value: 'fullName',
-    },
-    {
-        label: 'user.list.filterForm.sort.status',
-        value: 'status',
-    },
-    {
-        label: 'user.list.filterForm.sort.createdAt',
-        value: 'createdAt',
-    },
-];
-
 export const PositionOptions = [
     {
         label: 'user.list.filterForm.position.developer',

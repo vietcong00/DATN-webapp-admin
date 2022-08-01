@@ -32,6 +32,7 @@ export default {
     placeholder: {
         nameCustomer: 'Enter customer name',
         phone: 'Enter phone',
+        note: 'Enter Note',
     },
     button: {
         clickHere: 'Click here',

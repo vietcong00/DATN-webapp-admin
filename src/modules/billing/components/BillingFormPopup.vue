@@ -18,10 +18,37 @@
         <div class="row">
             <div class="col-md-4">
                 <BaseInputText
+                    class="readonly-input-text"
+                    v-model:value="form.paymentTime"
+                    :error="translateYupError(form.errors.paymentTime)"
+                    :isReadonly="true"
+                    :label="$t('billing.billing.billingForm.paymentTime')"
+                />
+            </div>
+            <div class="col-md-4">
+                <BaseInputText
+                    class="readonly-input-text"
+                    v-model:value="form.cashier"
+                    :error="translateYupError(form.errors.cashier)"
+                    :isReadonly="true"
+                    :label="$t('billing.billing.billingForm.cashier')"
+                />
+            </div>
+            <div class="col-md-4">
+                <BaseInputText
+                    :class="checkBillingDone ? 'readonly-input-text' : ''"
+                    v-model:value="form.note"
+                    :error="translateYupError(form.errors.note)"
+                    :isReadonly="checkBillingDone"
+                    :label="$t('billing.billing.billingForm.note')"
+                    :placeholder="$t('billing.billing.placeholder.note')"
+                />
+            </div>
+            <div class="col-md-4">
+                <BaseInputText
                     :class="checkBillingDone ? 'readonly-input-text' : ''"
                     v-model:value="form.customerName"
                     :error="translateYupError(form.errors.nameCustomer)"
-                    :is-required="true"
                     :isReadonly="checkBillingDone"
                     :label="$t('billing.billing.billingForm.nameCustomer')"
                     :placeholder="$t('billing.billing.placeholder.nameCustomer')"
@@ -31,32 +58,11 @@
                 <BaseInputNumber
                     :class="checkBillingDone ? 'readonly-input-text' : ''"
                     name="phone"
-                    is-required="true"
                     v-model:value="form.customerPhone"
                     :isReadonly="checkBillingDone"
                     :label="$t('billing.billing.billingForm.phone')"
                     :placeholder="$t('billing.billing.placeholder.phone')"
                     :error="translateYupError(form.errors.phone)"
-                />
-            </div>
-            <div class="col-md-4">
-                <BaseSingleSelect
-                    v-model:value="form.billingStatus"
-                    :filterable="true"
-                    :options="statusBillingOptions"
-                    :is-required="true"
-                    :isDisabled="checkBillingDone"
-                    :label="$t('billing.billing.billingForm.statusBilling')"
-                    :error="translateYupError(form.errors.billingStatus)"
-                />
-            </div>
-            <div class="col-md-4">
-                <BaseInputText
-                    class="readonly-input-text"
-                    v-model:value="form.paymentTime"
-                    :error="translateYupError(form.errors.paymentTime)"
-                    :isReadonly="true"
-                    :label="$t('billing.billing.billingForm.paymentTime')"
                 />
             </div>
             <div class="col-md-4">
@@ -68,15 +74,6 @@
                     :isDisabled="checkBillingDone"
                     :error="translateYupError(form.errors.paymentMethod)"
                     :label="$t('billing.billing.billingForm.paymentMethod')"
-                />
-            </div>
-            <div class="col-md-4">
-                <BaseInputText
-                    class="readonly-input-text"
-                    v-model:value="form.cashier"
-                    :error="translateYupError(form.errors.cashier)"
-                    :isReadonly="true"
-                    :label="$t('billing.billing.billingForm.cashier')"
                 />
             </div>
             <div class="col-md-12 mb-3">

@@ -6,17 +6,6 @@ import {
     INPUT_MONEY_MIN_VALUE,
 } from '@/common/constants';
 
-export const ReportRevenueSortOptions = [
-    {
-        label: 'billing.billing.filterForm.createdAt',
-        value: 'createdAt',
-    },
-    {
-        label: 'billing.billing.filterForm.name',
-        value: 'name',
-    },
-];
-
 export const SHIFT_OPTIONS = [
     {
         label: 'reportRevenue.reportRevenue.shiftWork.morningShift',
