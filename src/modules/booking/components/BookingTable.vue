@@ -138,9 +138,7 @@
                             :content="$t('booking.booking.tooltip.done')"
                             placement="top"
                             v-if="
-                                (scope.row.status == BookingStatus.WAITING ||
-                                    scope.row.status ==
-                                        BookingStatus.WAITING_FOR_APPROVE) &&
+                                scope.row.status == BookingStatus.WAITING &&
                                 scope.row.tablesRestaurant
                             "
                         >

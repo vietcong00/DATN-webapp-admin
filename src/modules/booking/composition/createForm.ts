@@ -97,7 +97,9 @@ export function initData() {
                     nameCustomer: bookingDetail.data?.nameCustomer,
                     phone: bookingDetail.data?.phone,
                     numberPeople: bookingDetail.data?.numberPeople,
-                    arrivalTime: moment(bookingDetail.data?.arrivalTime).fmDayString(),
+                    arrivalTime: moment(
+                        bookingDetail.data?.arrivalTime,
+                    ).fmFullTimeWithoutSecond(),
                 },
             });
             tableDiagramModule.setTableSelected(bookingDetail.data.tablesRestaurant);

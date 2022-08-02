@@ -180,7 +180,10 @@ class UserModule extends VuexModule {
 
     @Action
     setQueryString(queryString: IQueryStringUser) {
-        this.MUTATE_QUERY_STRING(queryString);
+        this.MUTATE_QUERY_STRING({
+            ...this.queryString,
+            ...queryString,
+        });
     }
 
     @Action

@@ -77,10 +77,7 @@
             </router-link>
         </h4>
         <div class="small text-ellipsis">
-            {{ user.email }}
-        </div>
-        <div class="small">
-            {{ user.phoneNumber }}
+            {{ getNamePosition }}
         </div>
     </div>
 </template>
@@ -96,6 +93,8 @@ import { deleteUser } from '../composition/userForm';
 import { Edit as EditIcon, More as MoreIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { ISelectOptions } from '@/common/types';
+import { SupportLanguage } from '@/common/constants';
+import { appModule } from '@/store/app';
 
 @Options({
     components: { EditIcon, MoreIcon },
@@ -131,6 +130,14 @@ export default class UserCard extends Vue {
 
         return { updateStatus };
     });
+
+    get getNamePosition(): string {
+        const currentLanguage = appModule.selectedLanguage as SupportLanguage;
+        const position = userModule.userPositionList.find(
+            (position) => position.code === this.user.position,
+        );
+        return position ? position.value?.[currentLanguage] : '';
+    }
 
     isCanBeDeleted(): boolean {
         return (
