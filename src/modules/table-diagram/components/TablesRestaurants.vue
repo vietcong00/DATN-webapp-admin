@@ -7,7 +7,7 @@
                 </el-button>
             </div>
         </div>
-        <div :class="table.status">
+        <div :class="table.isUsed ? 'used' : ''">
             <div
                 class="table-layout"
                 @click="selectTable"
@@ -39,7 +39,7 @@
                 type="danger mt-3"
                 plain
                 round
-                v-if="table.status === TableStatus.USED"
+                v-if="table.isUsed"
                 @click="updateStatusTable(table.id, TableStatus.READY)"
             >
                 {{ $t('tableDiagram.table.button.endServe') }}
@@ -66,15 +66,11 @@ import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
 import { ITable } from '../types';
 import { IBookingUpdate } from '@/modules/booking/types';
-import { HttpStatus } from '@/common/constants';
-import { billingService } from '@/modules/billing/services/api.services';
-import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
 import { tableService } from '@/modules/booking/services/api.service';
 import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/utils/helper';
-import moment from 'moment';
 
 @Options({
     name: 'table',
@@ -145,19 +141,6 @@ export default class TablesRestaurants extends Vue {
     }
 
     async updateStatusTable(tableId: number, status: TableStatus): Promise<void> {
-        let createBillingResponse;
-        if (status === TableStatus.USED) {
-            createBillingResponse = await billingService.create({
-                tableId,
-                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
-                billingStatus: BillingStatus.EATING,
-            } as IBillingCreate);
-
-            if (!createBillingResponse?.success) {
-                showErrorNotificationFunction(createBillingResponse?.message as string);
-                return;
-            }
-        }
         const loading = ElLoading.service({
             target: '.content',
         });
@@ -171,13 +154,11 @@ export default class TablesRestaurants extends Vue {
             loading.close();
         } else {
             showErrorNotificationFunction(response.message);
-            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                const loading = ElLoading.service({
-                    target: '.content',
-                });
-                await tableDiagramModule.getTables();
-                loading.close();
-            }
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await tableDiagramModule.getTables();
+            loading.close();
         }
     }
 }

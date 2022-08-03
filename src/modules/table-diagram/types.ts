@@ -3,6 +3,7 @@ import { IQueryString } from '@/common/types';
 export interface ITable {
     id: number;
     name: string;
+    isUsed: boolean;
     status: string;
     numberSeat: number;
     floor: FloorRestaurant;

@@ -1,7 +1,7 @@
 import { tableDiagramModule } from './../../table-diagram/store';
 import { bookingService } from './../../table-diagram/services/api.service';
 import { IBooking, IBookingCreate } from './../types';
-import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
+import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
 import {
     showSuccessNotificationFunction,
@@ -69,14 +69,11 @@ export function initData() {
             await bookingModule.setIsShowBookingFormPopUp(false);
         } else {
             showErrorNotificationFunction(response.message as string);
-            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                bookingModule.setIsShowBookingFormPopUp(false);
-                const loading = ElLoading.service({
-                    target: '.content',
-                });
-                await bookingModule.getBookings();
-                loading.close();
-            }
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await bookingModule.getBookings();
+            loading.close();
         }
     });
     const { value: nameCustomer } = useField('nameCustomer');

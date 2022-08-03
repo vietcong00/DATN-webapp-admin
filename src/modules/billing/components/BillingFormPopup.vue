@@ -36,30 +36,30 @@
             </div>
             <div class="col-md-4">
                 <BaseInputText
-                    :class="checkBillingDone ? 'readonly-input-text' : ''"
+                    :class="!checkBillingWaitForPay ? 'readonly-input-text' : ''"
                     v-model:value="form.note"
                     :error="translateYupError(form.errors.note)"
-                    :isReadonly="checkBillingDone"
+                    :isReadonly="!checkBillingWaitForPay"
                     :label="$t('billing.billing.billingForm.note')"
                     :placeholder="$t('billing.billing.placeholder.note')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputText
-                    :class="checkBillingDone ? 'readonly-input-text' : ''"
+                    :class="!checkBillingWaitForPay ? 'readonly-input-text' : ''"
                     v-model:value="form.customerName"
                     :error="translateYupError(form.errors.nameCustomer)"
-                    :isReadonly="checkBillingDone"
+                    :isReadonly="!checkBillingWaitForPay"
                     :label="$t('billing.billing.billingForm.nameCustomer')"
                     :placeholder="$t('billing.billing.placeholder.nameCustomer')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputNumber
-                    :class="checkBillingDone ? 'readonly-input-text' : ''"
+                    :class="!checkBillingWaitForPay ? 'readonly-input-text' : ''"
                     name="phone"
                     v-model:value="form.customerPhone"
-                    :isReadonly="checkBillingDone"
+                    :isReadonly="!checkBillingWaitForPay"
                     :label="$t('billing.billing.billingForm.phone')"
                     :placeholder="$t('billing.billing.placeholder.phone')"
                     :error="translateYupError(form.errors.phone)"
@@ -71,7 +71,7 @@
                     :filterable="true"
                     :options="paymentMethodOptions"
                     :is-required="true"
-                    :isDisabled="checkBillingDone"
+                    :isDisabled="!checkBillingWaitForPay"
                     :error="translateYupError(form.errors.paymentMethod)"
                     :label="$t('billing.billing.billingForm.paymentMethod')"
                 />
@@ -116,7 +116,7 @@
                         <el-button
                             type="primary"
                             @click="onClickSaveButton()"
-                            v-if="!checkBillingDone"
+                            v-if="!!checkBillingWaitForPay"
                         >
                             {{ $t('billing.billing.button.submit') }}
                         </el-button>
@@ -141,8 +141,10 @@ import { BillingStatus } from '../types';
     components: { FoodBillingTable },
 })
 export default class BillingFormPopup extends UtilMixins {
-    get checkBillingDone(): boolean {
-        return billingModule.selectedBilling?.billingStatus === BillingStatus.PAID;
+    get checkBillingWaitForPay(): boolean {
+        return (
+            billingModule.selectedBilling?.billingStatus === BillingStatus.WAIT_FOR_PAY
+        );
     }
 
     get statusBillingOptions(): ISelectOptions[] {
