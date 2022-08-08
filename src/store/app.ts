@@ -8,6 +8,7 @@ class AppModule extends VuexModule {
     openSidebar = true;
     isShowNetworkError = false;
     selectedLanguage = appService.getLang();
+    isGuestPage = false;
 
     @Action
     setOpenSidebar(value: boolean) {
@@ -15,10 +16,20 @@ class AppModule extends VuexModule {
     }
 
     @Action
+    mutateIsGuestPage(value: boolean) {
+        this.MUTATE_IS_GUEST_PAGE(value);
+    }
+
+    @Action
     setLanguage(lang: SupportLanguage): void {
         this.SET_LANGUAGE(lang);
     }
     // GETTERS
+
+    @Mutation
+    MUTATE_IS_GUEST_PAGE(value: boolean) {
+        this.isGuestPage = value;
+    }
 
     @Mutation
     MUTATE_SET_OPEN_SIDEBAR(value: boolean) {

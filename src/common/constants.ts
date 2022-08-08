@@ -143,6 +143,7 @@ export enum PageName {
     PROMOTION_PAGE = 'PromotionPage',
     REPORT_REPORT_REVENUE_PAGE = 'ReportReportRevenuePage',
     CHEF_PAGE = 'chefPage',
+    GUEST_PAGE = 'guestPage',
 }
 
 export enum OrderDirection {

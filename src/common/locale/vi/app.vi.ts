@@ -67,6 +67,7 @@ export default {
         },
     },
     pageNotFound: 'Oops! Không tìm thấy trang!',
+    bookTablePage: 'Đặt bàn Online',
     backToHome: 'Trờ về trang chủ',
     notification: 'Thông báo',
     noData: 'Không có dữ liệu!',

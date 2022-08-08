@@ -94,5 +94,7 @@ export default {
         paidLeaveDays: 'ngày nghỉ hưởng lương',
         interviewAt: 'thời gian phỏng vấn',
         date: 'ngày',
+        arrivalTime: 'Thời gian tới',
+        numberPeople: 'Số người',
     },
 };

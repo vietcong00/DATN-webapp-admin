@@ -1,6 +1,10 @@
 <template>
     <div class="table-item" :class="table.id === tableSelected?.id ? 'selected' : ''">
-        <div class="table-action" v-if="table?.bookingCount" @click="getBookingsOfTable">
+        <div
+            class="table-action"
+            v-if="table?.bookingCount && !isGuestPage"
+            @click="getBookingsOfTable"
+        >
             <div class="booking-action">
                 <el-button type="warning" circle>
                     {{ table?.bookingCount ?? 0 }}
@@ -34,7 +38,11 @@
                 </div>
             </div>
         </div>
-        <div v-if="!(isShowSetupTableOfBookingPopup || isShowBookingFormPopUp)">
+        <div
+            v-if="
+                !(isShowSetupTableOfBookingPopup || isShowBookingFormPopUp || isGuestPage)
+            "
+        >
             <el-button
                 type="danger mt-3"
                 plain
@@ -71,6 +79,7 @@ import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/utils/helper';
+import { appModule } from '@/store/app';
 
 @Options({
     name: 'table',
@@ -95,6 +104,10 @@ export default class TablesRestaurants extends Vue {
 
     get selectedBooking(): IBookingUpdate | null {
         return bookingModule.selectedBooking;
+    }
+
+    get isGuestPage(): boolean {
+        return appModule.isGuestPage;
     }
 
     getImgLink(numberSeat: number): string {

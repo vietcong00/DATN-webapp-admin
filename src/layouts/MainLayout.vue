@@ -50,6 +50,7 @@ export default class MainLayout extends Vue {
 
     async created(): Promise<void> {
         await authModule.getProfile();
+        appModule.mutateIsGuestPage(false);
     }
 }
 </script>

@@ -40,10 +40,16 @@ export const BookingSchema = yup.object({
         .integer()
         .min(0)
         .optional()
+        .nullable()
         .transform((val) => (isNaN(val) ? null : val))
         .max(INPUT_NUMBER_MAX_VALUE)
         .required(),
-    arrivalTime: yup.string().matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON).required(),
+    arrivalTime: yup
+        .string()
+        .matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON)
+        .optional()
+        .nullable()
+        .required(),
 });
 
 export const LIMIT_ARRIVAL_TIME_BOOKING = 10800;

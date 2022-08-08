@@ -94,6 +94,8 @@ export default {
         paidLeaveDays: 'paid Leave Days',
         interviewAt: 'interview at',
         from: 'send from',
+        arrivalTime: 'arrival ime',
+        numberPeople: 'number people',
     },
 
     filterForm: {

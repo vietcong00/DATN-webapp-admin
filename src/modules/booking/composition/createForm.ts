@@ -1,3 +1,5 @@
+import { BookingSchema, BookingStatus } from './../constants';
+import { appModule } from '@/store/app';
 import { tableDiagramModule } from './../../table-diagram/store';
 import { bookingService } from './../../table-diagram/services/api.service';
 import { IBooking, IBookingCreate } from './../types';
@@ -13,7 +15,6 @@ import { useField, useForm } from 'vee-validate';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { BookingSchema } from '../constants';
 import { bookingModule } from '../store';
 
 export const validateBookingSchema = BookingSchema;
@@ -40,6 +41,9 @@ export function initData() {
             numberPeople: values.numberPeople,
             arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
             tableId: tableDiagramModule.tableSelected?.id,
+            status: appModule.isGuestPage
+                ? BookingStatus.WAITING_FOR_APPROVE
+                : BookingStatus.WAITING,
         } as IBookingCreate;
         let response;
         const bookingId = bookingModule.selectedBooking?.id;

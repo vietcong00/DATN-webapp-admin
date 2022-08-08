@@ -64,6 +64,7 @@ export default {
         },
     },
     pageNotFound: 'Oops! Page not found!',
+    bookTablePage: 'Booking Online',
     backToHome: 'Back to Homepage',
     notification: 'Notification',
     noData: 'Empty!',
