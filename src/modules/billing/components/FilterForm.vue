@@ -32,7 +32,7 @@
                             }}</label
                         >
                         <el-date-picker
-                            v-model="paymentDateRange"
+                            v-model="paymentTimeRange"
                             type="daterange"
                             unlink-panels
                             size="medium"
@@ -71,14 +71,14 @@ export default class FilterForm extends Vue {
         payerIds: [],
     };
 
-    paymentDateRange = [];
+    paymentTimeRange = [];
 
     async resetFilter(): Promise<void> {
         this.filterForm = {
             keyword: '',
             payerIds: [],
         };
-        this.paymentDateRange = [];
+        this.paymentTimeRange = [];
         billingModule.clearBillingQueryString();
         await this.handleFilter();
     }
@@ -91,8 +91,8 @@ export default class FilterForm extends Vue {
                 ? this.filterForm.keyword?.trim()
                 : undefined,
             payerIds: this.filterForm.payerIds,
-            paymentDateRange: this.paymentDateRange
-                ? (this.paymentDateRange as Date[]).map((date: Date) =>
+            paymentTimeRange: this.paymentTimeRange
+                ? (this.paymentTimeRange as Date[]).map((date: Date) =>
                       moment(date).utc().fmFullTimeString(),
                   )
                 : null,

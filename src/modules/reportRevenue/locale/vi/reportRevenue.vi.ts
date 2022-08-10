@@ -1,7 +1,7 @@
 export default {
-    pageName: 'Chốt doanh thu',
-    createTitle: 'Tạo mới Chốt doanh thu',
-    updateTitle: 'Chỉnh sửa Chốt doanh thu',
+    pageName: 'Báo cáo doanh thu',
+    createTitle: 'Chi tiết Báo cáo doanh thu',
+    updateTitle: 'Chỉnh sửa Báo cáo doanh thu',
     reportRevenueTable: {
         date: 'Ngày',
         shiftWork: 'Ca',
@@ -26,10 +26,10 @@ export default {
         bankingRevenue: 'Doanh thu chuyển khoản',
         differenceRevenue: 'Chênh lệch doanh thu',
         note: 'Ghi chú',
-        input: 'Đầu vào',
-        output: 'Đầu ra',
-        totalInput: 'Tổng đầu vào',
-        totalOutput: 'Tổng đầu ra',
+        input: 'Doanh thu lý thuyết',
+        output: 'Doanh thu thực tế',
+        totalInput: 'Tổng doanh thu lý thuyết',
+        totalOutput: 'Tổng doanh thu thực tế',
         action: 'Hành động',
     },
     foodBillingTable: {
@@ -58,5 +58,17 @@ export default {
     shiftWork: {
         morningShift: 'Ca sáng',
         afternoonShift: 'Ca chiều',
+    },
+    filterForm: {
+        keyword: {
+            label: 'Từ khóa',
+            placeholder: 'Nhập từ khóa',
+        },
+        dateRange: {
+            label: 'Phạm vi ngày báo cáo',
+            to: 'Đến',
+            startDate: 'Thời gian bắt đầu',
+            endDate: 'Thời gian kết thúc',
+        },
     },
 };

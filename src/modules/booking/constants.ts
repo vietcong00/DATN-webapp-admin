@@ -23,6 +23,10 @@ export const bookingStatusOptions = [
         label: 'booking.booking.status.waiting',
         value: BookingStatus.WAITING,
     },
+    {
+        label: 'booking.booking.status.waiting_for_approve',
+        value: BookingStatus.WAITING_FOR_APPROVE,
+    },
 ];
 
 export const ALL_USER_QUANTITY_RANGE = -1;

@@ -1,5 +1,7 @@
 export default {
     updateTitle: 'Chỉnh sửa hóa đơn',
+    detailTitle: 'Chi tiết hóa đơn',
+
     billingTable: {
         customerName: 'Tên khách hàng',
         customerPhone: 'Số điện thoại',

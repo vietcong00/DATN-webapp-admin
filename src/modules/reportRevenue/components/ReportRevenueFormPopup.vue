@@ -9,14 +9,14 @@
         <template #title>
             <h3 class="text-left">
                 {{
-                    form.isCreate
-                        ? $t('reportRevenue.reportRevenue.createTitle')
-                        : $t('reportRevenue.reportRevenue.updateTitle')
+                    checkIsShiftLeaderOfReportRevenue
+                        ? $t('reportRevenue.reportRevenue.updateTitle')
+                        : $t('reportRevenue.reportRevenue.createTitle')
                 }}
             </h3>
         </template>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <BaseInputText
                     class="readonly-input-text"
                     :value="parseDateTime(selectedReportRevenue.date, YYYY_MM_DD_HYPHEN)"
@@ -24,7 +24,7 @@
                     :label="$t('reportRevenue.reportRevenue.reportRevenueForm.date')"
                 />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <BaseInputText
                     class="readonly-input-text"
                     :value="fullNameShiftLeader"
@@ -34,7 +34,7 @@
                     "
                 />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <BaseInputText
                     class="readonly-input-text"
                     :value="
@@ -48,7 +48,7 @@
                     "
                 />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <BaseInputText
                     class="readonly-input-text"
                     :value="selectedReportRevenue.billingCount"
@@ -56,6 +56,15 @@
                     :label="
                         $t('reportRevenue.reportRevenue.reportRevenueForm.billingCount')
                     "
+                />
+            </div>
+            <div class="col-md-4">
+                <BaseInputText
+                    v-model:value="form.note"
+                    :class="isApproved ? 'readonly-input-text' : ''"
+                    :isReadonly="isApproved"
+                    :error="translateYupError(form.errors.note)"
+                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.note')"
                 />
             </div>
             <div class="col-md-6">
@@ -138,51 +147,29 @@
                 <h3>
                     {{ $t('reportRevenue.reportRevenue.reportRevenueForm.totalInput') }}
                 </h3>
-                <BaseInputText
-                    name="totalInput"
-                    class="readonly-input-text"
-                    :isReadonly="true"
-                    :value="parseMoney(calculateTotalInput)"
-                    :label="
-                        $t('reportRevenue.reportRevenue.reportRevenueForm.totalInput')
-                    "
-                    :error="translateYupError(form.errors.totalInput)"
-                />
-                <BaseInputText
-                    name="differenceRevenue"
-                    class="readonly-input-text"
-                    :class="calculateDifference < 0 ? 'text-danger' : 'text-info'"
-                    :isReadonly="true"
-                    :value="parseMoney(calculateDifference)"
-                    :label="
+                <h3>{{ parseMoney(calculateTotalInput) }}</h3>
+            </div>
+
+            <div class="col-md-6">
+                <h3 class="mb-3">
+                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.totalOutput') }}
+                </h3>
+                <h3>{{ parseMoney(calculateTotalOutput) }}</h3>
+            </div>
+            <div
+                class="col-md-12"
+                :class="calculateDifference < 0 ? 'text-danger' : 'text-info'"
+            >
+                <h3 class="mb-3">
+                    {{
                         $t(
                             'reportRevenue.reportRevenue.reportRevenueForm.differenceRevenue',
                         )
-                    "
-                    :error="translateYupError(form.errors.differenceRevenue)"
-                />
-            </div>
-            <div class="col-md-6">
-                <h3>
-                    {{ $t('reportRevenue.reportRevenue.reportRevenueForm.totalOutput') }}
+                    }}
                 </h3>
-                <BaseInputText
-                    name="totalOutput"
-                    class="readonly-input-text"
-                    :isReadonly="true"
-                    :value="parseMoney(calculateTotalOutput)"
-                    :label="
-                        $t('reportRevenue.reportRevenue.reportRevenueForm.totalOutput')
-                    "
-                    :error="translateYupError(form.errors.totalOutput)"
-                />
-                <BaseInputText
-                    v-model:value="form.note"
-                    :class="isApproved ? 'readonly-input-text' : ''"
-                    :isReadonly="isApproved"
-                    :error="translateYupError(form.errors.note)"
-                    :label="$t('reportRevenue.reportRevenue.reportRevenueForm.note')"
-                />
+                <h3>
+                    {{ parseMoney(Math.abs(calculateDifference)) }}
+                </h3>
             </div>
         </div>
         <template #footer>
@@ -200,7 +187,7 @@
                     >
                         <el-button
                             :disabled="isDisabledSaveButton"
-                            v-show="checkIsShiftLeaderOfReportRevenue"
+                            v-if="checkIsShiftLeaderOfReportRevenue"
                             type="primary"
                             @click="onClickSaveButton()"
                         >
@@ -235,6 +222,10 @@ export default class ReportRevenueFormPopup extends UtilMixins {
     }
 
     get checkIsShiftLeaderOfReportRevenue(): boolean {
+        if (this.selectedReportRevenue?.status === AcceptStatus.APPROVE) {
+            return false;
+        }
+
         if (!reportRevenueModule.selectedReportRevenue?.shiftLeaderId) {
             return true;
         }
@@ -273,20 +264,22 @@ export default class ReportRevenueFormPopup extends UtilMixins {
 
     get calculateTotalInput(): number {
         return (
-            parseFloat(this.form.cashAtBeginningOfShift as string) +
-            parseFloat(this.form.billingRevenue as string)
+            parseFloat(this.form.cashAtBeginningOfShift as string) ||
+            0 + parseFloat(this.form.billingRevenue as string) ||
+            0
         );
     }
 
     get calculateTotalOutput(): number {
         return (
-            parseFloat(this.form.cashAtEndingOfShift as string) +
-            parseFloat(this.form.bankingRevenue as string)
+            parseFloat(this.form.cashAtEndingOfShift as string) ||
+            0 + parseFloat(this.form.bankingRevenue as string) ||
+            0
         );
     }
 
     get calculateDifference(): number {
-        const diff = this.calculateTotalInput - this.calculateTotalOutput || 0;
+        const diff = this.calculateTotalOutput - this.calculateTotalInput || 0;
         this.form.differenceRevenue = diff;
         return diff;
     }

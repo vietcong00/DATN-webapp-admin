@@ -23,16 +23,6 @@
                 />
             </div>
             <div class="col-md-6">
-                <BaseInputNumber
-                    v-model:value="form.numberPeople"
-                    :is-required="true"
-                    :placeholder="$t('booking.booking.placeholder.numberPeople')"
-                    :label="$t('booking.booking.bookingDialog.numberPeople')"
-                    :error="translateYupError(form.errors.numberPeople)"
-                    @change="setNumberPeople"
-                />
-            </div>
-            <div class="col-md-6">
                 <BaseDatePicker
                     v-model:value="form.arrivalTime"
                     :placeholder="$t('booking.booking.placeholder.arrivalTime')"
@@ -44,11 +34,20 @@
                     :type="'datetime'"
                     :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                     :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                    @changeValue="setArrivalTime"
+                />
+            </div>
+            <div class="col-md-6">
+                <BaseInputNumber
+                    v-model:value="form.numberPeople"
+                    :is-required="true"
+                    :placeholder="$t('booking.booking.placeholder.numberPeople')"
+                    :label="$t('booking.booking.bookingDialog.numberPeople')"
+                    :error="translateYupError(form.errors.numberPeople)"
+                    @change="setNumberPeople"
                 />
             </div>
         </div>
-        <TableDiagram v-if="form.numberPeople && form.arrivalTime" />
+        <TableDiagram v-if="form.numberPeople" />
         <div class="mt-5 d-flex justify-content-center">
             <el-button
                 type="primary"
@@ -93,23 +92,15 @@ export default class GuestLayout extends mixins(UtilMixins) {
         (this.form.resetForm as () => void)();
     }
 
+    created(): void {
+        appModule.mutateIsGuestPage(true);
+    }
+
     setNumberPeople(): void {
         bookingModule.setSelectedBooking({
             ...bookingModule.selectedBooking,
             id: undefined,
             numberPeople: this.form.numberPeople as number,
-        });
-    }
-
-    created(): void {
-        appModule.mutateIsGuestPage(true);
-    }
-
-    setArrivalTime(): void {
-        bookingModule.setSelectedBooking({
-            ...bookingModule.selectedBooking,
-            id: undefined,
-            arrivalTime: this.form.arrivalTime as Date,
         });
     }
 }

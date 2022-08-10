@@ -1,3 +1,4 @@
+import { BillingStatus } from './../modules/billing/types';
 import { TableStatus } from './../modules/table-diagram/constants';
 import { IPopupAttributes, ISelectOptions } from '@/common/types';
 import { MessageBoxData } from 'element-plus';
@@ -37,6 +38,7 @@ export class UtilMixins extends Vue {
     BillingStatusOptions = BillingStatusOptions;
     TableStatus = TableStatus;
     AcceptStatus = AcceptStatus;
+    BillingStatus = BillingStatus;
     // Common function
     async showConfirmPopup(
         message: string,

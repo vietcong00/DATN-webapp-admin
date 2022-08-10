@@ -62,7 +62,7 @@ export interface IBillingUpdate {
 export interface IQueryStringBilling extends IQueryString {
     keyword?: string;
     payerIds?: number[];
-    paymentDateRange?: string[] | null;
+    paymentTimeRange?: string[] | null;
 }
 
 export interface IFoodBilling {

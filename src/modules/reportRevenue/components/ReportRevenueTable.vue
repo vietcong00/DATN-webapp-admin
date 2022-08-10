@@ -139,7 +139,7 @@
             </el-table-column>
             <el-table-column
                 fixed="right"
-                width="100"
+                width="140"
                 align="center"
                 :label="$t('reportRevenue.reportRevenue.reportRevenueTable.action')"
             >

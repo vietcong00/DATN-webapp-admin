@@ -1,5 +1,6 @@
 export default {
     updateTitle: 'Update billing',
+    detailTitle: 'Detail billing',
 
     billingTable: {
         customerName: 'Customer name',

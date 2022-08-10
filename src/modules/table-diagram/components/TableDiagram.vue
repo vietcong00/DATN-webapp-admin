@@ -236,6 +236,7 @@ import { bookingModule } from '@/modules/booking/store';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { mixins, Options } from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 import TablesRestaurants from '../components/TablesRestaurants.vue';
 import { FloorOptions, FloorRestaurant } from '../constants';
 import { TableMixins } from '../mixins';
@@ -253,6 +254,10 @@ import BookingListOfTablePopup from './BookingListOfTablePopup.vue';
 export default class TableDiagramPage extends mixins(TableMixins) {
     get tableList(): ITable[] {
         return tableDiagramModule.tableList || [];
+    }
+
+    get tableSelected(): ITable | null {
+        return tableDiagramModule.tableSelected;
     }
 
     get FloorOptions(): ISelectOptions[] {
@@ -287,6 +292,15 @@ export default class TableDiagramPage extends mixins(TableMixins) {
 
     floor = FloorRestaurant.FIRST;
     async changeFloor(): Promise<void> {
+        tableDiagramModule.setTableQueryString({
+            floor: this.floor,
+        });
+        this.getTableList();
+    }
+
+    @Watch('tableSelected')
+    async changeFloorTableSelected(): Promise<void> {
+        this.floor = this.tableSelected?.floor || FloorRestaurant.FIRST;
         tableDiagramModule.setTableQueryString({
             floor: this.floor,
         });

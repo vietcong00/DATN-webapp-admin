@@ -41,5 +41,5 @@ export interface IReportRevenueUpdateBody {
 export interface IQueryStringReportRevenue extends IQueryString {
     keyword?: string;
     payerIds?: number[];
-    paymentDateRange?: string[] | null;
+    dateRange?: string[] | null;
 }

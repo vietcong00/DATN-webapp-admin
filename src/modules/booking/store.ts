@@ -151,6 +151,8 @@ class BookingModule extends VuexModule {
 
     @Action
     setSelectedBooking(booking: IBookingUpdate | null) {
+        console.log(booking);
+
         this.MUTATE_SELECTED_BOOKING(booking);
     }
 

@@ -55,11 +55,10 @@
                     :type="'datetime'"
                     :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                     :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                    @changeValue="setArrivalTime"
                 />
             </div>
         </div>
-        <table-diagram />
+        <TableDiagram />
         <template #footer>
             <span class="dialog-footer">
                 <div class="row justify-content-center footer">
@@ -135,14 +134,6 @@ export default class BookingFormPopUp extends mixins(UtilMixins) {
             ...bookingModule.selectedBooking,
             id: undefined,
             numberPeople: this.form.numberPeople as number,
-        });
-    }
-
-    setArrivalTime(): void {
-        bookingModule.setSelectedBooking({
-            ...bookingModule.selectedBooking,
-            id: undefined,
-            arrivalTime: this.form.arrivalTime as Date,
         });
     }
 }

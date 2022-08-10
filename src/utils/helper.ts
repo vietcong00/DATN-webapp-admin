@@ -100,7 +100,7 @@ export async function showAlertMessageFunction(
     const confirmButtonClass = options?.confirmButtonClass || 'el-button--danger';
     const cancelButtonClass = options?.cancelButtonClass || 'el-button--default';
     const distinguishCancelAndClose = options?.distinguishCancelAndClose || true;
-    const type = options?.type || 'error';
+    const type = options?.type || 'warning';
     const showCancelButton = options?.showCancelButton || false;
     return await ElMessageBox.alert(
         message,

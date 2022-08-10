@@ -68,7 +68,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
-import { ElLoading, ElMessageBox } from 'element-plus';
+import { ElLoading } from 'element-plus';
 import { TableStatus } from '../constants';
 import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
@@ -140,17 +140,6 @@ export default class TablesRestaurants extends Vue {
         tableDiagramModule.setIsShowBookingsOfTablePopup(true);
         await bookingModule.getBookingsOfTable(this.table.id);
         loading.close();
-    }
-
-    checkNumberSeat(numberPeople: number, numberSeat: number): boolean {
-        if (numberPeople > numberSeat) {
-            const textWarning = `Yêu cầu đặt bàn có ${numberPeople} chỗ. Bàn bạn vừa chọn chỉ có ${numberSeat} chỗ. Vui lòng chọn bàn khác!`;
-            ElMessageBox.alert(textWarning, 'Warning', {
-                confirmButtonText: 'OK',
-            });
-            return false;
-        }
-        return true;
     }
 
     async updateStatusTable(tableId: number, status: TableStatus): Promise<void> {

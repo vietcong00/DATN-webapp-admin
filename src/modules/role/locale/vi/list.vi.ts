@@ -119,7 +119,7 @@ export default {
                 [ModuleName.MENU_FOOD]: 'Món ăn',
                 [ModuleName.MENU_CATEGORY]: 'Danh mục món ăn',
                 [ModuleName.BILLING]: 'Hóa đơn',
-                [ModuleName.REPORT_REVENUE]: 'Chốt doanh thu',
+                [ModuleName.REPORT_REVENUE]: 'Báo cáo doanh thu',
                 [ModuleName.ROLE]: 'Vai trò',
             },
         },

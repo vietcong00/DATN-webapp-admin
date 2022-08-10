@@ -46,6 +46,7 @@ export default {
         done: 'Đã hoàn thành',
         canceled: 'Đã hủy',
         waiting: 'Đang đợi',
+        waiting_for_approve: 'Chờ xác nhận',
     },
 
     placeholder: {

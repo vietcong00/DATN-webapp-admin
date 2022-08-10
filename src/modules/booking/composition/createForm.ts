@@ -65,16 +65,17 @@ export function initData() {
         }
         loading.close();
         if (response.success) {
-            await showAlertMessageFunction(
-                t('booking.booking.message.waitConfirm.message') as string,
-                t('booking.booking.message.waitConfirm.title') as string,
-                {},
-            );
-            showSuccessNotificationFunction(
-                !isCreate.value
-                    ? t('booking.booking.message.update.success')
-                    : (t('booking.booking.message.create.success') as string),
-            );
+            isGuest.value
+                ? await showAlertMessageFunction(
+                      t('booking.booking.message.waitConfirm.message') as string,
+                      t('booking.booking.message.waitConfirm.title') as string,
+                      {},
+                  )
+                : showSuccessNotificationFunction(
+                      !isCreate.value
+                          ? t('booking.booking.message.update.success')
+                          : (t('booking.booking.message.create.success') as string),
+                  );
             bookingModule.setBookingQueryString({
                 page: DEFAULT_FIRST_PAGE,
             });

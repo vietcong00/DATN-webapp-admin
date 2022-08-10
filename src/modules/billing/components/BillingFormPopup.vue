@@ -9,8 +9,8 @@
         <template #title>
             <h3 class="text-left">
                 {{
-                    form.isCreate
-                        ? $t('billing.billing.createTitle')
+                    selectedBilling.billingStatus === BillingStatus.PAID
+                        ? $t('billing.billing.detailTitle')
                         : $t('billing.billing.updateTitle')
                 }}
             </h3>
@@ -135,7 +135,7 @@ import { ISelectOptions } from '@/common/types';
 import { UtilMixins } from '@/mixins/utilMixins';
 import FoodBillingTable from '../components/FoodBillingTable.vue';
 import { parseLanguageSelectOptions } from '@/utils/helper';
-import { BillingStatus } from '../types';
+import { BillingStatus, IBillingUpdate } from '../types';
 
 @Options({
     components: { FoodBillingTable },
@@ -145,6 +145,10 @@ export default class BillingFormPopup extends UtilMixins {
         return (
             billingModule.selectedBilling?.billingStatus === BillingStatus.WAIT_FOR_PAY
         );
+    }
+
+    get selectedBilling(): IBillingUpdate | null {
+        return billingModule.selectedBilling;
     }
 
     get statusBillingOptions(): ISelectOptions[] {

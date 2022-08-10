@@ -16,9 +16,13 @@
                     <div class="col-xl-4 col-md-4 col-12">
                         <BaseInputText
                             v-model:value="filterForm.keyword"
-                            :label="$t('billing.billing.filterForm.keyword.label')"
+                            :label="
+                                $t('reportRevenue.reportRevenue.filterForm.keyword.label')
+                            "
                             :placeholder="
-                                $t('billing.billing.filterForm.keyword.placeholder')
+                                $t(
+                                    'reportRevenue.reportRevenue.filterForm.keyword.placeholder',
+                                )
                             "
                             size="default"
                         />
@@ -28,24 +32,28 @@
                             class="text-start w-100 fw-bold"
                             style="margin-bottom: 8px"
                             >{{
-                                $t('billing.billing.filterForm.paymentDateRange.label')
+                                $t(
+                                    'reportRevenue.reportRevenue.filterForm.dateRange.label',
+                                )
                             }}</label
                         >
                         <el-date-picker
-                            v-model="paymentDateRange"
+                            v-model="dateRange"
                             type="daterange"
                             unlink-panels
                             size="medium"
                             :range-separator="
-                                $t('billing.billing.filterForm.paymentDateRange.to')
+                                $t('reportRevenue.reportRevenue.filterForm.dateRange.to')
                             "
                             :start-placeholder="
                                 $t(
-                                    'billing.billing.filterForm.paymentDateRange.startDate',
+                                    'reportRevenue.reportRevenue.filterForm.dateRange.startDate',
                                 )
                             "
                             :end-placeholder="
-                                $t('billing.billing.filterForm.paymentDateRange.endDate')
+                                $t(
+                                    'reportRevenue.reportRevenue.filterForm.dateRange.endDate',
+                                )
                             "
                         />
                     </div>
@@ -71,14 +79,14 @@ export default class FilterForm extends Vue {
         payerIds: [],
     };
 
-    paymentDateRange = [];
+    dateRange = [];
 
     async resetFilter(): Promise<void> {
         this.filterForm = {
             keyword: '',
             payerIds: [],
         };
-        this.paymentDateRange = [];
+        this.dateRange = [];
         reportRevenueModule.clearQueryString();
         await this.handleFilter();
     }
@@ -91,8 +99,8 @@ export default class FilterForm extends Vue {
                 ? this.filterForm.keyword?.trim()
                 : undefined,
             payerIds: this.filterForm.payerIds,
-            paymentDateRange: this.paymentDateRange
-                ? (this.paymentDateRange as Date[]).map((date: Date) =>
+            dateRange: this.dateRange
+                ? (this.dateRange as Date[]).map((date: Date) =>
                       moment(date).utc().fmFullTimeString(),
                   )
                 : null,

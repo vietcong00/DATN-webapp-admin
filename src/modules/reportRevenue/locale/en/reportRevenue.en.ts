@@ -29,10 +29,10 @@ export default {
         exportMoney: 'Export Material Money',
         differenceRevenue: 'Difference Revenue',
         note: 'Note',
-        input: 'Input',
-        output: 'Output',
-        totalInput: 'Total Input',
-        totalOutput: 'Total Output',
+        input: 'Theoretical revenue',
+        output: 'Actual revenue',
+        totalInput: 'Total theoretical revenue',
+        totalOutput: 'Actual total revenue',
         action: 'Actions',
     },
     placeholder: {
@@ -55,5 +55,17 @@ export default {
     shiftWork: {
         morningShift: 'Morning Shift',
         afternoonShift: 'Afternoon Shift',
+    },
+    filterForm: {
+        keyword: {
+            label: 'Keyword',
+            placeholder: 'Enter keyword',
+        },
+        dateRange: {
+            label: 'Report Date Range',
+            to: 'To',
+            startDate: 'Start date',
+            endDate: 'End date',
+        },
     },
 };

@@ -228,9 +228,6 @@ import { BookingMixins } from '../mixins';
 import { bookingService } from '@/modules/table-diagram/services/api.service';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { BookingStatus } from '../constants';
-import { billingService } from '@/modules/billing/services/api.services';
-import moment from 'moment';
-import { BillingStatus, IBillingCreate } from '@/modules/billing/types';
 import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
@@ -275,25 +272,12 @@ export default class BookingTable extends mixins(BookingMixins) {
     }
 
     async changeStatus(booking: IBooking, status: BookingStatus): Promise<void> {
-        let createBillingResponse;
-        if (status === BookingStatus.DONE) {
-            createBillingResponse = await billingService.create({
-                customerName: booking?.nameCustomer || '',
-                customerPhone: booking?.phone || '',
-                tableId: booking?.tablesRestaurant?.id || '',
-                arrivalTime: moment(new Date()).fmFullTimeWithoutSecond(),
-                billingStatus: BillingStatus.EATING,
-            } as IBillingCreate);
-
-            if (!createBillingResponse?.success) {
-                showErrorNotificationFunction(createBillingResponse?.message as string);
-                return;
-            }
-        }
         const response = await bookingService.update(booking.id, {
             status: status,
             arrivalTime: booking?.arrivalTime,
             tableId: booking?.tablesRestaurant?.id || '',
+            nameCustomer: booking?.nameCustomer || '',
+            phone: booking?.phone || '',
         });
         if (response.success) {
             showSuccessNotificationFunction(
