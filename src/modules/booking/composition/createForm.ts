@@ -1,4 +1,5 @@
-import { BookingSchema, BookingStatus } from './../constants';
+import { commonService } from '@/common/services/api.services';
+import { BookingGuestSchema, BookingSchema, BookingStatus } from './../constants';
 import { appModule } from '@/store/app';
 import { tableDiagramModule } from './../../table-diagram/store';
 import { bookingService } from './../../table-diagram/services/api.service';
@@ -8,6 +9,7 @@ import { IBodyResponse } from '@/common/types';
 import {
     showSuccessNotificationFunction,
     showErrorNotificationFunction,
+    showAlertMessageFunction,
 } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import moment from 'moment';
@@ -18,6 +20,7 @@ import { useI18n } from 'vue-i18n';
 import { bookingModule } from '../store';
 
 export const validateBookingSchema = BookingSchema;
+export const validateBookingGuestSchema = BookingGuestSchema;
 
 export function initData() {
     const { t } = useI18n();
@@ -27,10 +30,13 @@ export function initData() {
         numberPeople: undefined,
         arrivalTime: undefined,
     };
+    const isGuest = computed(() => appModule.isGuestPage);
     const isCreate = computed(() => !bookingModule.selectedBooking?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
-        validationSchema: validateBookingSchema,
+        validationSchema: isGuest.value
+            ? validateBookingGuestSchema
+            : validateBookingSchema,
     });
 
     const onSubmit = handleSubmit(async (values) => {
@@ -50,13 +56,20 @@ export function initData() {
         const loading = ElLoading.service({
             target: '.booking-form-popup',
         });
-        if (!isCreate.value) {
+        if (isGuest.value) {
+            response = await commonService.createGuestBooking(createBody);
+        } else if (!isCreate.value) {
             response = await bookingService.update(bookingId as number, createBody);
         } else {
             response = await bookingService.create(createBody);
         }
         loading.close();
         if (response.success) {
+            await showAlertMessageFunction(
+                t('booking.booking.message.waitConfirm.message') as string,
+                t('booking.booking.message.waitConfirm.title') as string,
+                {},
+            );
             showSuccessNotificationFunction(
                 !isCreate.value
                     ? t('booking.booking.message.update.success')
@@ -68,7 +81,7 @@ export function initData() {
             const loading = ElLoading.service({
                 target: '.content',
             });
-            await bookingModule.getBookings();
+            if (!isGuest.value) await bookingModule.getBookings();
             loading.close();
             await bookingModule.setIsShowBookingFormPopUp(false);
         } else {
@@ -76,7 +89,7 @@ export function initData() {
             const loading = ElLoading.service({
                 target: '.content',
             });
-            await bookingModule.getBookings();
+            if (!isGuest.value) await bookingModule.getBookings();
             loading.close();
         }
     });

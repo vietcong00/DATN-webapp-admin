@@ -83,6 +83,12 @@ export default {
             confirmAsk: 'Bạn có chắc chắn muốn hủy đơn đặt bàn này không?',
         },
 
+        waitConfirm: {
+            title: 'Thông báo',
+            message:
+                'Tạo đơn đặt bàn thành công. Chúng tôi sẽ xác nhận đơn đặt bàn của bạn và sẽ liên hệ với bạn sau ít phút.',
+        },
+
         button: {
             cancel: 'Hủy',
             confirm: 'Xác nhận',

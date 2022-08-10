@@ -1,3 +1,5 @@
+import { commonService } from '@/common/services/api.services';
+import { appModule } from './../../store/app';
 import { FloorRestaurant } from './constants';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
@@ -90,9 +92,13 @@ class TableDiagramModule extends VuexModule {
 
     @Action
     async getTables() {
-        const response = (await tableService.getList({
-            ...this.tableQueryString,
-        })) as IBodyResponse<IGetListResponse<ITable>>;
+        const response = appModule.isGuestPage
+            ? ((await commonService.getGuestTableList({
+                  ...this.tableQueryString,
+              })) as IBodyResponse<IGetListResponse<ITable>>)
+            : ((await tableService.getList({
+                  ...this.tableQueryString,
+              })) as IBodyResponse<IGetListResponse<ITable>>);
         if (response.success) {
             this.MUTATE_TABLES_RESTAURANTS(response?.data?.items || []);
         } else {

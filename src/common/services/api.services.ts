@@ -1,3 +1,4 @@
+import { IQueryStringTable, ITable } from './../../modules/table-diagram/types';
 import service from '@/plugins/axios';
 import { BaseService } from '@/utils/api';
 import {
@@ -11,6 +12,7 @@ import {
 import { AxiosPromise } from 'axios';
 import { IProvince } from '@/modules/user/types';
 import { ICategory } from '@/modules/menu/types';
+import { IBookingCreate } from '@/modules/booking/types';
 
 class CommonApiService extends BaseService {
     getProvinces(): Promise<IBodyResponse<IGetListResponse<IProvince>>> {
@@ -40,6 +42,19 @@ class CommonApiService extends BaseService {
 
     getDropdownCategories(): Promise<IBodyResponse<IGetListResponse<ICategory>>> {
         return this.client.get(this.baseUrl + '/category');
+    }
+
+    getGuestTableList(
+        query: IQueryStringTable,
+    ): Promise<IBodyResponse<IGetListResponse<ITable>>> {
+        return this.client.get(this.baseUrl + '/table', { params: query });
+    }
+
+    createGuestBooking(data: IBookingCreate) {
+        return this.client.post<void, IBodyResponse<void>>(
+            this.baseUrl + '/booking',
+            data,
+        );
     }
 }
 

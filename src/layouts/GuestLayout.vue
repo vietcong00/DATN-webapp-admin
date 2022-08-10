@@ -7,6 +7,7 @@
             <div class="col-md-6">
                 <BaseInputText
                     v-model:value="form.nameCustomer"
+                    :is-required="true"
                     :placeholder="$t('booking.booking.placeholder.nameCustomer')"
                     :label="$t('booking.booking.bookingDialog.nameCustomer')"
                     :error="translateYupError(form.errors.nameCustomer)"
@@ -15,6 +16,7 @@
             <div class="col-md-6">
                 <BaseInputText
                     v-model:value="form.phone"
+                    :is-required="true"
                     :error="translateYupError(form.errors.phone)"
                     :label="$t('booking.booking.bookingDialog.phone')"
                     :placeholder="$t('booking.booking.placeholder.phone')"
@@ -101,7 +103,6 @@ export default class GuestLayout extends mixins(UtilMixins) {
 
     created(): void {
         appModule.mutateIsGuestPage(true);
-        this.form.openPopup();
     }
 
     setArrivalTime(): void {

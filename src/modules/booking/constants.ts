@@ -44,12 +44,27 @@ export const BookingSchema = yup.object({
         .transform((val) => (isNaN(val) ? null : val))
         .max(INPUT_NUMBER_MAX_VALUE)
         .required(),
-    arrivalTime: yup
+    arrivalTime: yup.string().optional().nullable().required(),
+});
+
+export const BookingGuestSchema = yup.object({
+    nameCustomer: yup.string().trim().max(INPUT_TEXT_MAX_LENGTH).optional().required(),
+    phone: yup
         .string()
-        .matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON)
+        .trim()
+        .matches(REGEX.PHONE_NUMBER, 'user.form.phoneNumber.invalid')
+        .optional()
+        .required(),
+    numberPeople: yup
+        .number()
+        .integer()
+        .min(0)
         .optional()
         .nullable()
+        .transform((val) => (isNaN(val) ? null : val))
+        .max(INPUT_NUMBER_MAX_VALUE)
         .required(),
+    arrivalTime: yup.string().optional().nullable().required(),
 });
 
 export const LIMIT_ARRIVAL_TIME_BOOKING = 10800;

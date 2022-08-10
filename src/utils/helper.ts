@@ -93,8 +93,7 @@ export async function showAlertMessageFunction(
     options?: IPopupAttributes,
 ): Promise<MessageBoxData> {
     const confirmButtonText =
-        options?.confirmButtonText ||
-        (i18n.global.t('common.app.buttons.delete') as string);
+        options?.confirmButtonText || (i18n.global.t('common.app.buttons.ok') as string);
     const cancelButtonText =
         options?.cancelButtonText ||
         (i18n.global.t('common.app.buttons.cancel') as string);

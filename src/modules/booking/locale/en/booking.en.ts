@@ -99,6 +99,12 @@ export default {
             confirmAsk: 'Are you sure you want to canceled this booking?',
         },
 
+        waitConfirm: {
+            title: 'Notification',
+            message:
+                'Create booking successfully! We will confirm your table reservation and get back to you in a few minutes.',
+        },
+
         button: {
             cancel: 'Cancel',
             confirm: 'Confirm',

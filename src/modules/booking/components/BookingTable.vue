@@ -292,6 +292,8 @@ export default class BookingTable extends mixins(BookingMixins) {
         }
         const response = await bookingService.update(booking.id, {
             status: status,
+            arrivalTime: booking?.arrivalTime,
+            tableId: booking?.tablesRestaurant?.id || '',
         });
         if (response.success) {
             showSuccessNotificationFunction(
@@ -299,6 +301,13 @@ export default class BookingTable extends mixins(BookingMixins) {
             );
             bookingModule.getBookings();
             tableDiagramModule.setCanChosenTable(false);
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await bookingModule.getBookings();
+            loading.close();
         }
     }
 
