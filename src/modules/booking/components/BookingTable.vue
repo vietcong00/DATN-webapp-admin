@@ -101,6 +101,7 @@
                 :label="$t('booking.booking.bookingTable.header.actions')"
                 width="170"
                 fixed="right"
+                v-if="isCanUpdate"
             >
                 <template #default="scope">
                     <div class="booking-table-action">
@@ -229,6 +230,7 @@ import { bookingService } from '@/modules/table-diagram/services/api.service';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { BookingStatus } from '../constants';
 import {
+    checkUserHasPermission,
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/utils/helper';
@@ -241,6 +243,7 @@ import {
 } from '@element-plus/icons-vue';
 import { ElLoading } from 'element-plus';
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 @Options({
     name: 'booking-table-component',
     components: {
@@ -265,6 +268,12 @@ export default class BookingTable extends mixins(BookingMixins) {
 
     get totalItems(): number {
         return bookingModule.totalBookings;
+    }
+
+    get isCanUpdate(): boolean {
+        return checkUserHasPermission(bookingModule.userPermissions, [
+            `${PermissionResources.BOOKING}_${PermissionActions.UPDATE}`,
+        ]);
     }
 
     created(): void {

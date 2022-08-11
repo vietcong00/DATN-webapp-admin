@@ -54,6 +54,7 @@
                     :label="$t('menu.food.foodPopup.category')"
                     :placeholder="$t('menu.food.placeholder.category')"
                     name="category"
+                    :filterable="true"
                     :error="translateYupError(form.errors.categoryId)"
                 />
             </div>

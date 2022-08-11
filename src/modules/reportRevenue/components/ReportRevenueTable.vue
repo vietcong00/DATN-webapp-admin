@@ -213,19 +213,19 @@ export default class ReportRevenueTable extends mixins(UtilMixins) {
         reportRevenueModule.reportRevenueQueryString.page = value;
     }
 
-    get isCanDelete(): boolean {
-        return checkUserHasPermission(reportRevenueModule.userPermissions, [
-            `${PermissionResources.REPORT_REVENUE}_${PermissionActions.DELETE}`,
-        ]);
-    }
-
     get isCanUpdate(): boolean {
         return checkUserHasPermission(reportRevenueModule.userPermissions, [
             `${PermissionResources.REPORT_REVENUE}_${PermissionActions.UPDATE}`,
         ]);
     }
 
-    isCanApproveStatus(): boolean {
+    get isCanApproveStatus(): boolean {
+        console.log(
+            checkUserHasPermission(reportRevenueModule.userPermissions, [
+                `${PermissionResources.REPORT_REVENUE}_${PermissionActions.APPROVE_STATUS}`,
+            ]),
+        );
+
         return checkUserHasPermission(reportRevenueModule.userPermissions, [
             `${PermissionResources.REPORT_REVENUE}_${PermissionActions.APPROVE_STATUS}`,
         ]);

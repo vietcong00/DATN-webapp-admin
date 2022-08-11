@@ -51,7 +51,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('common.app.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -65,7 +65,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('common.app.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >

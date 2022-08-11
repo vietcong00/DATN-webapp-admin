@@ -17,10 +17,17 @@
             <el-table-column
                 prop="name"
                 :label="$t('menu.food.foodTable.header.name')"
-                sortable="custom"
+                width="350"
             >
                 <template #default="scope">
-                    {{ scope.row.foodName }}
+                    <div class="d-flex">
+                        <BaseAvatar
+                            :imageUrl="scope.row.foodImg.url"
+                            :height="25"
+                            :width="25"
+                        />
+                        <div class="ms-3 mt-1">{{ scope.row.foodName }}</div>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -51,7 +58,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('common.app.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -65,7 +72,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('common.app.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >
@@ -176,5 +183,9 @@ export default class MaterialTable extends mixins(MenuMixins) {
 .action-icon {
     height: 1em;
     width: 1em;
+}
+
+.food-img {
+    width: 25px;
 }
 </style>

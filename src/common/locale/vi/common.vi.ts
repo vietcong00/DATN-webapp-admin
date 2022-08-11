@@ -97,4 +97,16 @@ export default {
         arrivalTime: 'Thời gian tới',
         numberPeople: 'Số người',
     },
+
+    breadcrumb: {
+        home: 'Trang chủ',
+        dashboard: 'Thống kê',
+        user: 'Quản lý nhân sự',
+        tableDiagram: 'Sơ đồ bàn',
+        booking: 'Quản lý đặt bàn',
+        menu: 'Thực đơn',
+        billing: 'Hóa đơn',
+        reportRevenue: 'Báo cáo doanh thu',
+        role: 'Phân quyền',
+    },
 };

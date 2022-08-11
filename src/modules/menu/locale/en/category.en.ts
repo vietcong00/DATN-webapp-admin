@@ -44,17 +44,17 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create category successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update category successfully!',
         },
 
         delete: {
             title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            confirmAsk: 'Are you sure you want to delete this category?',
+            success: 'Delete category successfully!',
         },
     },
 
