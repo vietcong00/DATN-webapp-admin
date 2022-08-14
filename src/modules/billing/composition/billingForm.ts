@@ -20,8 +20,9 @@ export function initData() {
         customerName: '',
         customerPhone: '',
         paymentMethod: undefined,
-        billingStatus: undefined,
+        billingStatus: BillingStatus.WAIT_FOR_SELECT_FOOD,
         paymentTime: '',
+        paymentTotal: 0,
         cashier: '',
         note: '',
     };
@@ -35,7 +36,7 @@ export function initData() {
             customerName: values.customerName?.trim(),
             customerPhone: values.customerPhone?.trim(),
             cashierId: appService.getUser().id,
-            paymentTotal: 0,
+            paymentTotal: billingModule.paymentTotal,
             paymentMethod: values.paymentMethod,
             paymentTime: moment(new Date()).utc().fmFullTimeWithoutSecond(),
             billingStatus: BillingStatus.PAID,
@@ -78,6 +79,7 @@ export function initData() {
     const { value: paymentTime } = useField('paymentTime');
     const { value: cashier } = useField('cashier');
     const { value: note } = useField('note');
+    const { value: paymentTotal } = useField('paymentTotal');
 
     const openPopup = async () => {
         const loading = ElLoading.service({ target: '.billing-form-popup' });
@@ -114,6 +116,7 @@ export function initData() {
         paymentTime,
         cashier,
         note,
+        paymentTotal,
         validate,
         openPopup,
         onSubmit,

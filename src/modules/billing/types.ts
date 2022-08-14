@@ -8,6 +8,7 @@ export enum BillingStatus {
     WAIT_FOR_PAY = 'wait_for_pay',
     CANCELED = 'canceled',
     PAID = 'paid',
+    WAIT_FOR_SELECT_FOOD = 'wait_for_select_food',
 }
 
 export enum ReasonCanceled {

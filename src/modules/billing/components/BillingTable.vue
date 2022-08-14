@@ -154,8 +154,9 @@ export default class BillingTable extends mixins(UtilMixins) {
     statusBadge(status: BillingStatus): string {
         switch (status) {
             case BillingStatus.EATING:
-                return 'info';
+                return 'warning';
             case BillingStatus.WAIT_FOR_PAY:
+            case BillingStatus.WAIT_FOR_SELECT_FOOD:
                 return 'info';
             case BillingStatus.PAID:
                 return 'success';

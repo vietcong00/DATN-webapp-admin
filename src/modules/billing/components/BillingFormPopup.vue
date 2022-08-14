@@ -174,6 +174,7 @@ export default class BillingFormPopup extends UtilMixins {
     }
 
     get totalBillingPrice(): number {
+        billingModule.setPaymentTotal(this.calculatePriceIncludeTax(this.totalFoodPrice));
         return this.calculatePriceIncludeTax(this.totalFoodPrice);
     }
 

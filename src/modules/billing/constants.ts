@@ -19,6 +19,10 @@ export const BillingStatusOptions = [
         label: 'billing.billing.statusBillingOptions.paid',
         value: BillingStatus.PAID,
     },
+    {
+        label: 'billing.billing.statusBillingOptions.wait_for_select_food',
+        value: BillingStatus.WAIT_FOR_SELECT_FOOD,
+    },
 ];
 
 export const PaymentMethodOptions = [

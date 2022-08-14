@@ -78,6 +78,7 @@ export default {
         canceled: 'Canceled',
         wait_for_pay: 'Wait For Pay',
         paid: 'Paid',
+        wait_for_select_food: 'Wait for select food',
     },
 
     paymentMethodOptions: {

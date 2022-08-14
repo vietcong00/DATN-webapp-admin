@@ -50,6 +50,8 @@ class BillingModule extends VuexModule {
     totalFoodBillings = 0;
     foodBillingQueryString: IQueryStringFoodBilling = initFoodBookingQueryString;
 
+    paymentTotal = 0;
+
     get userPermissions(): string[] {
         return appService.getUserPermissionsByResource(PermissionResources.BILLING);
     }
@@ -95,6 +97,11 @@ class BillingModule extends VuexModule {
     }
 
     @Action
+    setPaymentTotal(value: number) {
+        this.MUTATE_PAYMENT_TOTAL(value);
+    }
+
+    @Action
     setBillingQueryString(query: IQueryStringBilling) {
         this.MUTATE_BILLING_QUERY_STRING(query);
     }
@@ -134,6 +141,11 @@ class BillingModule extends VuexModule {
     @Mutation
     MUTATE_TOTAL_BILLING(totalBillings: number) {
         this.totalBillings = totalBillings;
+    }
+
+    @Mutation
+    MUTATE_PAYMENT_TOTAL(data: number) {
+        this.paymentTotal = data;
     }
 
     @Mutation

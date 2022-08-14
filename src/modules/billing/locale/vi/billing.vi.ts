@@ -76,6 +76,7 @@ export default {
         canceled: 'Hủy',
         waitForPay: 'Chờ thanh toán',
         paid: 'Đã thanh toán',
+        wait_for_select_food: 'Chờ gọi món',
     },
     paymentMethodOptions: {
         banking: 'Chuyển khoản',
